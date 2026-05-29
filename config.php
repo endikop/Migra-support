@@ -1,10 +1,16 @@
 <?php
 // Убираем session_start() отсюда
-$host = 'localhost';
-$dbname = 'migrant_system';
-$username = 'root';
-$password = '';
-$port = 3307;
+// $host = 'localhost';
+// $dbname = 'migrant_system';
+// $username = 'root';
+// $password = '';
+// $port = 3307;
+
+$host = getenv('MYSQL_HOST');
+$dbname = getenv('MYSQL_DB');
+$username = getenv('MYSQL_USER');
+$password = getenv('MYSQL_PASSWORD');
+$port = 3306;
 
 date_default_timezone_set('Europe/Moscow');
 
