@@ -15,11 +15,20 @@ $port = 3306;
 date_default_timezone_set('Europe/Moscow');
 
 try {
-    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::MYSQL_ATTR_SSL_CA,'');
-    $pdo->setAttribute(PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT, false);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    // Опции подключения должны передаваться сразу в конструктор PDO
+    $options = [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::MYSQL_ATTR_SSL_CA       => '',
+        PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+    ];
+
+    $pdo = new PDO(
+        "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4", 
+        $username, 
+        $password, 
+        $options
+    );
 } catch(PDOException $e) {
     die("Ошибка подключения к базе данных: " . $e->getMessage());
 }
