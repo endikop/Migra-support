@@ -1,0 +1,276 @@
+/* ============================================
+   УНИВЕРСАЛЬНЫЕ АНИМАЦИИ
+   Оптимизированные для производительности
+   ============================================ */
+
+/* === БАЗОВЫЕ АНИМАЦИИ === */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* === ПРИМЕНЕНИЕ АНИМАЦИЙ === */
+
+/* Header и навигация */
+header,
+.header,
+.modern-header,
+nav,
+.navbar {
+    animation: fadeInDown 0.5s ease;
+}
+
+/* Основной контент */
+main,
+.main-content {
+    animation: fadeInUp 0.6s ease;
+}
+
+/* Карточки */
+.card,
+.service-card,
+.city-card,
+.info-card,
+.stat-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover,
+.service-card:hover,
+.city-card:hover,
+.info-card:hover,
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Кнопки */
+a,
+button,
+.btn {
+    transition: all 0.3s ease;
+}
+
+button:hover,
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+button:active,
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Аватары */
+.user-avatar,
+.profile-avatar,
+.avatar {
+    transition: transform 0.3s ease;
+}
+
+.user-avatar:hover,
+.profile-avatar:hover,
+.avatar:hover {
+    transform: scale(1.05);
+}
+
+/* Dropdown меню */
+.dropdown-menu,
+.lang-dropdown,
+.user-dropdown {
+    animation: fadeInDown 0.2s ease;
+}
+
+/* Мобильное меню */
+.mobile-nav,
+.mobile-menu {
+    animation: fadeInDown 0.3s ease;
+}
+
+/* Модальные окна */
+.modal,
+.popup {
+    animation: scaleIn 0.3s ease;
+}
+
+/* Алерты и тосты */
+.alert,
+.toast,
+.notification {
+    animation: slideInRight 0.3s ease;
+}
+
+/* === АНИМАЦИИ ПРИ СКРОЛЛЕ === */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* === ПЛАВНАЯ ПРОКРУТКА === */
+html {
+    scroll-behavior: smooth;
+}
+
+/* === GPU УСКОРЕНИЕ === */
+header,
+.header,
+nav,
+.card,
+.btn,
+button,
+.user-avatar,
+.modal {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* === ДОСТУПНОСТЬ === */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* === ДОПОЛНИТЕЛЬНЫЕ ЭФФЕКТЫ === */
+
+/* Эффект свечения при наведении */
+.glow-on-hover {
+    transition: box-shadow 0.3s ease;
+}
+
+.glow-on-hover:hover {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+}
+
+/* Эффект подъема */
+.lift-on-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lift-on-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Эффект масштабирования */
+.scale-on-hover {
+    transition: transform 0.3s ease;
+}
+
+.scale-on-hover:hover {
+    transform: scale(1.05);
+}
+
+/* Эффект вращения */
+.rotate-on-hover {
+    transition: transform 0.3s ease;
+}
+
+.rotate-on-hover:hover {
+    transform: rotate(5deg);
+}
+
+/* === ЗАГРУЗКА СТРАНИЦЫ === */
+body {
+    animation: fadeIn 0.5s ease;
+}
+
+/* Анимация fadeInDown для основного контента страниц */
+.page-fade-in,
+main.container {
+    animation: fadeInDown 0.6s ease;
+}
+
+/* === ПЕРЕХОДЫ МЕЖДУ СТРАНИЦАМИ === */
+.page-transition-enter {
+    animation: fadeInUp 0.5s ease;
+}
+
+.page-transition-exit {
+    animation: fadeOut 0.3s ease;
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
