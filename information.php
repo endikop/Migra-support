@@ -549,16 +549,24 @@ $translations = [
 
         html {
             scroll-behavior: smooth;
+            background: #1a1a2e;
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--gradient-dark);
+            background-attachment: fixed;
             color: var(--light);
             line-height: 1.7;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+        }
+
+        @supports (-webkit-touch-callout: none) {
+            body {
+                background-attachment: scroll;
+            }
         }
 
         body::before {
@@ -572,6 +580,7 @@ $translations = [
                 radial-gradient(circle at 20% 80%, rgba(58, 134, 255, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(131, 56, 236, 0.15) 0%, transparent 50%);
             z-index: -1;
+            pointer-events: none;
         }
 
         /* Декоративные плавающие элементы */
@@ -688,13 +697,14 @@ $translations = [
             display: flex;
             align-items: center;
             gap: 15px;
+            margin-left: auto;
         }
 
         .language-selector {
             display: flex;
             gap: 5px;
             flex-wrap: nowrap;
-            justify-content: flex-end;
+            align-items: center;
         }
 
         .lang-btn {

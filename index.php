@@ -1075,6 +1075,10 @@ $translations = [
             overflow-x: hidden;
         }
 
+        @supports (-webkit-touch-callout: none) {
+            body { background-attachment: scroll; }
+        }
+
         body::before {
             content: '';
             position: fixed;
@@ -1087,13 +1091,6 @@ $translations = [
                 radial-gradient(circle at 80% 20%, rgba(131, 56, 236, 0.15) 0%, transparent 50%);
             z-index: -1;
             pointer-events: none;
-        }
-
-        /* Фикс для мобильных: Safari не поддерживает background-attachment: fixed */
-        @supports (-webkit-touch-callout: none) {
-            body {
-                background-attachment: scroll;
-            }
         }
 
         .container {
@@ -1170,14 +1167,14 @@ $translations = [
             display: flex;
             align-items: center;
             gap: 15px;
+            margin-left: auto;
         }
 
-        /* Language Selector для 5 языков - ИСПРАВЛЕНО */
+        /* Language Selector */
         .language-selector {
             display: flex;
             gap: 5px;
-            flex-wrap: nowrap;
-            justify-content: flex-end;
+            align-items: center;
         }
 
         .lang-btn {
@@ -2672,15 +2669,15 @@ $translations = [
             .mission-quick-section {
                 gap: 30px;
             }
-            
+
+            .header-right {
+                gap: 8px;
+            }
+
             .lang-btn {
                 padding: 5px 7px;
                 font-size: 0.72rem;
                 min-width: 38px;
-            }
-            
-            .header-right {
-                gap: 8px;
             }
         }
         
