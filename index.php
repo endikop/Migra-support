@@ -1084,6 +1084,25 @@ $translations = [
                 radial-gradient(circle at 20% 80%, rgba(58, 134, 255, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(131, 56, 236, 0.15) 0%, transparent 50%);
             z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Мобильный фикс: backdrop-filter на старых Android вызывает белый экран */
+        @supports not (backdrop-filter: blur(1px)) {
+            header,
+            .header-nav,
+            .mobile-nav,
+            .card,
+            .hero-section,
+            .mission-section,
+            .quick-help-section,
+            footer {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            header { background: rgba(26, 26, 46, 0.98) !important; }
+            .mobile-nav { background: rgba(26, 26, 46, 0.99) !important; }
+            footer { background: rgba(13, 13, 23, 0.99) !important; }
         }
 
         .container {
@@ -1095,6 +1114,7 @@ $translations = [
         /* Header - Обновленное меню навигации как во втором коде */
         header {
             background: rgba(26, 26, 46, 0.95);
+            -webkit-backdrop-filter: blur(20px);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: var(--shadow);
@@ -1453,7 +1473,7 @@ $translations = [
         /* Main Content */
         main {
             padding: 40px 0;
-            margin-top: 120px;
+            margin-top: 0;
         }
 
         /* Hero Section - ЗАТЕМНЕННЫЙ БАННЕР */
@@ -2381,17 +2401,19 @@ $translations = [
         .mobile-nav {
             display: none;
             position: fixed;
-            top: 72px;
+            top: 0;
             left: 0;
             right: 0;
             background: rgba(26, 26, 46, 0.98);
+            -webkit-backdrop-filter: blur(20px);
             backdrop-filter: blur(20px);
             border-radius: 0 0 var(--radius) var(--radius);
             box-shadow: var(--shadow-xl);
-            z-index: 1000;
+            z-index: 999;
             overflow: hidden;
             max-height: 0;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.3s ease, top 0.3s ease;
+            padding-top: 0;
         }
         
         .mobile-nav.active {
@@ -2501,20 +2523,16 @@ $translations = [
             }
             
             main {
-                margin-top: 60px;
+                padding-top: 20px;
             }
             
             .mobile-nav {
-                top: 60px;
+                display: block;
             }
             
             .services-grid,
             .services-grid-4 {
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            }
-            
-            .mobile-nav {
-                display: block;
             }
         }
 
@@ -2575,12 +2593,13 @@ $translations = [
             }
             
             .header-top {
-                flex-wrap: wrap;
-                gap: 15px;
+                flex-wrap: nowrap;
+                gap: 8px;
+                padding: 0.75rem 0;
             }
             
             .logo {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
             }
             
             .logo-icon {
@@ -2616,14 +2635,13 @@ $translations = [
             .language-selector {
                 flex-wrap: nowrap;
                 justify-content: center;
-                width: 100%;
-                max-width: 280px;
+                gap: 3px;
             }
             
             .lang-btn {
-                padding: 6px 8px;
-                font-size: 0.75rem;
-                min-width: 45px;
+                padding: 6px 7px;
+                font-size: 0.72rem;
+                min-width: 36px;
             }
         }
 
@@ -2673,31 +2691,126 @@ $translations = [
             /* Language selector для очень маленьких экранов */
             .language-selector {
                 flex-wrap: nowrap;
-                max-width: 250px;
+                gap: 2px;
             }
             
             .lang-btn {
-                padding: 5px 6px;
-                font-size: 0.7rem;
-                min-width: 40px;
+                padding: 5px 5px;
+                font-size: 0.68rem;
+                min-width: 32px;
             }
             
             /* На очень маленьких экранах можно немного уменьшить отступы */
             .header-right {
-                gap: 8px;
+                gap: 6px;
             }
         }
         
         @media (max-width: 400px) {
             /* На очень маленьких экранах (например, iPhone SE) */
             .language-selector {
-                max-width: 220px;
+                gap: 2px;
             }
             
             .lang-btn {
-                padding: 4px 5px;
-                font-size: 0.65rem;
-                min-width: 35px;
+                padding: 4px 4px;
+                font-size: 0.62rem;
+                min-width: 28px;
+            }
+            
+            .header-right {
+                gap: 5px;
+            }
+        }
+        @media (max-width: 420px) {
+            .logo-text {
+                display: none;
+            }
+        }
+        
+        /* Предотвращаем горизонтальный скролл */
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        /* Фикс слайдера на мобильных: не даём содержимому выходить за экран */
+        @media (max-width: 768px) {
+            .services-slider-container {
+                padding: 0 30px;
+                /* touch scroll вместо кнопок */
+                overflow-x: visible;
+            }
+            
+            .services-slider {
+                /* Включаем touch-drag на мобильных */
+                cursor: grab;
+            }
+            
+            /* Stat cards - одна колонка на телефоне */
+            .city-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            /* Mission/Quick-help padding */
+            .mission-section,
+            .quick-help-section {
+                padding: 25px 20px;
+            }
+            
+            /* Уменьшаем hero padding */
+            .hero-section {
+                padding: 40px 16px;
+                margin-bottom: 30px;
+            }
+            
+            /* Admin btn скрываем текст на маленьких экранах */
+            .user-info .btn span {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .city-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-card p {
+                font-size: 1.2rem;
+            }
+            
+            /* Dropdown не выходит за экран */
+            .dropdown-menu {
+                right: -10px;
+                min-width: 160px;
+            }
+        }
+        
+        /* iOS Safari: фикс sticky header */
+        @supports (-webkit-touch-callout: none) {
+            header {
+                position: -webkit-sticky;
+                position: sticky;
+            }
+        }
+        
+        /* Touch-friendly tap targets */
+        @media (hover: none) and (pointer: coarse) {
+            .nav-tab, .mobile-nav-tab, .city-btn, .btn, .lang-btn {
+                min-height: 44px;
+            }
+            
+            /* Убираем hover эффекты на touch-устройствах для производительности */
+            .card:hover,
+            .service-card:hover,
+            .service-card-4:hover,
+            .service-slide:hover {
+                transform: none;
+            }
+            
+            .mission-section:hover,
+            .quick-help-section:hover {
+                transform: none;
             }
         }
     </style>
@@ -3237,6 +3350,14 @@ $translations = [
                 // Убедимся, что элементы существуют
                 console.log('Burger menu and mobile nav found');
                 
+                // Устанавливаем top мобильной навигации динамически
+                function updateMobileNavTop() {
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    mobileNav.style.top = headerHeight + 'px';
+                }
+                updateMobileNavTop();
+                window.addEventListener('resize', updateMobileNavTop);
+                
                 // Функция закрытия меню
                 function closeMobileMenu() {
                     burgerMenu.classList.remove('active');
@@ -3346,6 +3467,29 @@ $translations = [
             if (prevBtn) prevBtn.disabled = currentSlide === 0;
             if (nextBtn) nextBtn.disabled = currentSlide >= maxSlide;
         }
+
+        // Touch/swipe поддержка для слайдера
+        (function() {
+            const sliderContainer = document.querySelector('.services-slider-container');
+            if (!sliderContainer) return;
+            
+            let startX = 0;
+            let isDragging = false;
+            
+            sliderContainer.addEventListener('touchstart', function(e) {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            }, { passive: true });
+            
+            sliderContainer.addEventListener('touchend', function(e) {
+                if (!isDragging) return;
+                const diff = startX - e.changedTouches[0].clientX;
+                if (Math.abs(diff) > 50) {
+                    slideServices(diff > 0 ? 'next' : 'prev');
+                }
+                isDragging = false;
+            }, { passive: true });
+        })();
 
         // Обновление при изменении размера окна
         window.addEventListener('resize', function() {
