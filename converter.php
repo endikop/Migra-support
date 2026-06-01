@@ -65,7 +65,7 @@ $cacheFile = 'exchange_rates_cache.json';
 function getExchangeRates() {
     global $cacheFile;
     
-    // Проверяем кэш (обновляем каждые 5 минут = 300 секунд)
+    // Проверяем кэш
     if (file_exists($cacheFile)) {
         $cacheData = json_decode(file_get_contents($cacheFile), true);
         if ($cacheData && time() - $cacheData['timestamp'] < 300) {
@@ -73,51 +73,42 @@ function getExchangeRates() {
         }
     }
     
-    // Получаем актуальные курсы
+    // Получаем курсы
     $url = 'https://api.exchangerate-api.com/v4/latest/USD';
-    
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-    
+    curl_setopt_array($ch, [
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_TIMEOUT => 10
+    ]);
     $response = curl_exec($ch);
     curl_close($ch);
     
     if ($response) {
         $data = json_decode($response, true);
         if (isset($data['rates'])) {
-            // Сохраняем в кэш
-            $cacheData = [
-                'timestamp' => time(),
-                'rates' => $data['rates']
-            ];
-            file_put_contents($cacheFile, json_encode($cacheData));
+            // Сохраняем в кэш ТОЛЬКО если директория доступна для записи
+            $cacheDir = dirname($cacheFile);
+            if (is_dir($cacheDir) && is_writable($cacheDir)) {
+                $cacheData = [
+                    'timestamp' => time(),
+                    'rates' => $data['rates']
+                ];
+                @file_put_contents($cacheFile, json_encode($cacheData));
+            }
             return $data['rates'];
         }
     }
     
-    // Возвращаем запасные значения если API недоступно
+    // Fallback-значения
     return [
-        'USD' => 1,
-        'EUR' => 0.92,
-        'GBP' => 0.79,
-        'JPY' => 148.5,
-        'CNY' => 7.3,
-        'RUB' => 92.5,
-        'BYN' => 3.2,
-        'PLN' => 4.0,
-        'CHF' => 0.88,
-        'CAD' => 1.36,
-        'AUD' => 1.52,
-        'NZD' => 1.66,
-        'SGD' => 1.35,
-        'HKD' => 7.82,
-        'KRW' => 1320.5,
-        'INR' => 83.2,
-        'BRL' => 5.05,
-        'TRY' => 29.8
+        'USD' => 1, 'EUR' => 0.92, 'GBP' => 0.79,
+        'JPY' => 148.5, 'CNY' => 7.3, 'RUB' => 92.5,
+        'BYN' => 3.2, 'PLN' => 4.0, 'CHF' => 0.88,
+        'CAD' => 1.36, 'AUD' => 1.52, 'NZD' => 1.66,
+        'SGD' => 1.35, 'HKD' => 7.82, 'KRW' => 1320.5,
+        'INR' => 83.2, 'BRL' => 5.05, 'TRY' => 29.8
     ];
 }
 
