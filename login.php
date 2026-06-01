@@ -1,4 +1,5 @@
 ﻿<?php
+session_start();
 require_once 'config.php';
 
 // Если пользователь уже авторизован, перенаправляем на профиль
@@ -28,7 +29,6 @@ if (isset($_GET['lang']) && in_array($_GET['lang'], $supportedLanguages)) {
 function t($ru, $en, $pt = '', $fr = '', $de = '') {
     global $lang;
     
-    // Если для языка нет перевода, используем английский
     switch ($lang) {
         case 'en':
             return $en;
@@ -109,9 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors[] = t('Неверное имя пользователя или пароль', 'Invalid username or password', 'Nome de usuário ou senha inválidos', 'Nom d\'utilisateur ou mot de passe invalide', 'Ungültiger Benutzername oder Passwort');
             }
         } catch (PDOException $e) {
-            // Универсальное сообщение об ошибке для пользователя
             $errors[] = t('Ошибка авторизации. Попробуйте позже.', 'Authorization error. Please try again later.', 'Erro de autorização. Tente novamente mais tarde.', 'Erreur d\'autorisation. Veuillez réessayer plus tard.', 'Autorisierungsfehler. Bitte versuchen Sie es später erneut.');
-            // Логируем ошибку для разработчика (в реальном проекте пишем в лог-файл)
             error_log("Login error: " . $e->getMessage());
         }
     }
@@ -127,188 +125,38 @@ if (!isset($_SESSION['redirect_after_login']) && isset($_SERVER['HTTP_REFERER'])
 
 // Тексты для перевода
 $translations = [
-    'main_title' => t(
-        'Вход - MigraSupport', 
-        'Login - MigraSupport', 
-        'Entrar - MigraSupport', 
-        'Connexion - MigraSupport', 
-        'Anmelden - MigraSupport'
-    ),
-    'login_title' => t(
-        'Вход в систему', 
-        'Login to System', 
-        'Entrar no Sistema', 
-        'Connexion au Système', 
-        'Anmelden am System'
-    ),
-    'login_desc' => t(
-        'Войдите в свой аккаунт для доступа ко всем функциям.', 
-        'Login to your account to access all features.', 
-        'Entre em sua conta para acessar todos os recursos.', 
-        'Connectez-vous à votre compte pour accéder à toutes les fonctionnalités.', 
-        'Melden Sie sich in Ihrem Konto an, um auf alle Funktionen zuzugreifen.'
-    ),
-    'home' => t(
-        'Главная', 
-        'Home', 
-        'Início', 
-        'Accueil', 
-        'Startseite'
-    ),
-    'information' => t(
-        'Информация', 
-        'Information', 
-        'Informação', 
-        'Information', 
-        'Informationen'
-    ),
-    'map_services' => t(
-        'Карта служб', 
-        'Services Map', 
-        'Mapa de Serviços', 
-        'Carte des Services', 
-        'Dienstleistungskarte'
-    ),
-    'translator' => t(
-        'Переводчик', 
-        'Translator', 
-        'Tradutor', 
-        'Traducteur', 
-        'Übersetzer'
-    ),
-    'currency_converter' => t(
-        'Конвертер валют', 
-        'Currency Converter', 
-        'Conversor de Moeda', 
-        'Convertisseur de Devises', 
-        'Währungsrechner'
-    ),
-    'city_chat' => t(
-        'Чат города', 
-        'City Chat', 
-        'Chat da Cidade', 
-        'Chat de la Ville', 
-        'Stadt-Chat'
-    ),
-    'profile' => t(
-        'Профиль', 
-        'Profile', 
-        'Perfil', 
-        'Profil', 
-        'Profil'
-    ),
-    'login_nav' => t(
-        'Вход', 
-        'Login', 
-        'Entrar', 
-        'Connexion', 
-        'Anmelden'
-    ),
-    'register_nav' => t(
-        'Регистрация', 
-        'Register', 
-        'Registrar', 
-        'Inscription', 
-        'Registrieren'
-    ),
-    'admin_panel' => t(
-        'Админ', 
-        'Admin', 
-        'Admin', 
-        'Admin', 
-        'Admin'
-    ),
-    'logout' => t(
-        'Выйти', 
-        'Logout', 
-        'Sair', 
-        'Déconnexion', 
-        'Abmelden'
-    ),
-    'username_email' => t(
-        'Имя пользователя или Email', 
-        'Username or Email', 
-        'Nome de usuário ou Email', 
-        'Nom d\'utilisateur ou Email', 
-        'Benutzername oder E-Mail'
-    ),
-    'password' => t(
-        'Пароль', 
-        'Password', 
-        'Senha', 
-        'Mot de passe', 
-        'Passwort'
-    ),
-    'login_btn' => t(
-        'Войти в систему', 
-        'Login to System', 
-        'Entrar no Sistema', 
-        'Connexion au Système', 
-        'Anmelden am System'
-    ),
-    'no_account' => t(
-        'Нет аккаунта?', 
-        'No account?', 
-        'Não tem conta?', 
-        'Pas de compte ?', 
-        'Kein Konto?'
-    ),
-    'register_here' => t(
-        'Зарегистрируйтесь здесь', 
-        'Register here', 
-        'Registre-se aqui', 
-        'Inscrivez-vous ici', 
-        'Hier registrieren'
-    ),
-    'footer_title' => t(
-        'Комплексная система поддержки мигрантов в Беларуси.',
-        'Comprehensive migrant support system in Belarus.',
-        'Sistema abrangente de apoio a migrantes na Bielorrússia.',
-        'Système complet de soutien aux migrants en Biélorussie.',
-        'Umfassendes Migrantenunterstützungssystem in Belarus.'
-    ),
-    'quick_links' => t(
-        'Быстрые ссылки', 
-        'Quick Links', 
-        'Links Rápidos', 
-        'Liens Rapides', 
-        'Schnelllinks'
-    ),
-    'contacts' => t(
-        'Контакты', 
-        'Contacts', 
-        'Contatos', 
-        'Contacts', 
-        'Kontakte'
-    ),
-    'all_rights_reserved' => t(
-        'Все права защищены.', 
-        'All rights reserved.', 
-        'Todos os direitos reservados.', 
-        'Tous droits réservés.', 
-        'Alle Rechte vorbehalten.'
-    ),
-    'login_error' => t(
-        'Ошибка входа', 
-        'Login error', 
-        'Erro de login', 
-        'Erreur de connexion', 
-        'Anmeldefehler'
-    ),
-    'minsk_belarus' => t(
-        'Минск, Беларусь', 
-        'Minsk, Belarus', 
-        'Minsk, Bielorrússia', 
-        'Minsk, Biélorussie', 
-        'Minsk, Belarus'
-    )
+    'main_title' => t('Вход - MigraSupport', 'Login - MigraSupport', 'Entrar - MigraSupport', 'Connexion - MigraSupport', 'Anmelden - MigraSupport'),
+    'login_title' => t('Вход в систему', 'Login to System', 'Entrar no Sistema', 'Connexion au Système', 'Anmelden am System'),
+    'login_desc' => t('Войдите в свой аккаунт для доступа ко всем функциям.', 'Login to your account to access all features.', 'Entre em sua conta para acessar todos os recursos.', 'Connectez-vous à votre compte pour accéder à toutes les fonctionnalités.', 'Melden Sie sich in Ihrem Konto an, um auf alle Funktionen zuzugreifen.'),
+    'home' => t('Главная', 'Home', 'Início', 'Accueil', 'Startseite'),
+    'information' => t('Информация', 'Information', 'Informação', 'Information', 'Informationen'),
+    'map_services' => t('Карта служб', 'Services Map', 'Mapa de Serviços', 'Carte des Services', 'Dienstleistungskarte'),
+    'translator' => t('Переводчик', 'Translator', 'Tradutor', 'Traducteur', 'Übersetzer'),
+    'currency_converter' => t('Конвертер валют', 'Currency Converter', 'Conversor de Moeda', 'Convertisseur de Devises', 'Währungsrechner'),
+    'city_chat' => t('Чат города', 'City Chat', 'Chat da Cidade', 'Chat de la Ville', 'Stadt-Chat'),
+    'profile' => t('Профиль', 'Profile', 'Perfil', 'Profil', 'Profil'),
+    'login_nav' => t('Вход', 'Login', 'Entrar', 'Connexion', 'Anmelden'),
+    'register_nav' => t('Регистрация', 'Register', 'Registrar', 'Inscription', 'Registrieren'),
+    'admin_panel' => t('Админ', 'Admin', 'Admin', 'Admin', 'Admin'),
+    'logout' => t('Выйти', 'Logout', 'Sair', 'Déconnexion', 'Abmelden'),
+    'username_email' => t('Имя пользователя или Email', 'Username or Email', 'Nome de usuário ou Email', 'Nom d\'utilisateur ou Email', 'Benutzername oder E-Mail'),
+    'password' => t('Пароль', 'Password', 'Senha', 'Mot de passe', 'Passwort'),
+    'login_btn' => t('Войти в систему', 'Login to System', 'Entrar no Sistema', 'Connexion au Système', 'Anmelden am System'),
+    'no_account' => t('Нет аккаунта?', 'No account?', 'Não tem conta?', 'Pas de compte ?', 'Kein Konto?'),
+    'register_here' => t('Зарегистрируйтесь здесь', 'Register here', 'Registre-se aqui', 'Inscrivez-vous ici', 'Hier registrieren'),
+    'footer_title' => t('Комплексная система поддержки мигрантов в Беларуси.', 'Comprehensive migrant support system in Belarus.', 'Sistema abrangente de apoio a migrantes na Bielorrússia.', 'Système complet de soutien aux migrants en Biélorussie.', 'Umfassendes Migrantenunterstützungssystem in Belarus.'),
+    'quick_links' => t('Быстрые ссылки', 'Quick Links', 'Links Rápidos', 'Liens Rapides', 'Schnelllinks'),
+    'contacts' => t('Контакты', 'Contacts', 'Contatos', 'Contacts', 'Kontakte'),
+    'all_rights_reserved' => t('Все права защищены.', 'All rights reserved.', 'Todos os direitos reservados.', 'Tous droits réservés.', 'Alle Rechte vorbehalten.'),
+    'login_error' => t('Ошибка входа', 'Login error', 'Erro de login', 'Erreur de connexion', 'Anmeldefehler'),
+    'minsk_belarus' => t('Минск, Беларусь', 'Minsk, Belarus', 'Minsk, Bielorrússia', 'Minsk, Biélorussie', 'Minsk, Belarus')
 ];
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $lang; ?>">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title><?php echo $translations['main_title']; ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -420,6 +268,7 @@ $translations = [
         /* Header */
         header {
             background: rgba(26, 26, 46, 0.95);
+            -webkit-backdrop-filter: blur(20px);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: var(--shadow);
@@ -524,35 +373,7 @@ $translations = [
             box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
         }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: var(--gradient-secondary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 1rem;
-            box-shadow: 0 6px 15px rgba(255, 0, 110, 0.3);
-            transition: var(--transition);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .user-avatar:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 10px 25px rgba(255, 0, 110, 0.4);
-        }
-
+        /* Кнопки */
         .btn {
             padding: 10px 20px;
             border: none;
@@ -595,25 +416,28 @@ $translations = [
             box-shadow: 0 12px 25px rgba(58, 134, 255, 0.4);
         }
 
+        /* Бургер-меню - ИСПРАВЛЕНО */
         .burger-menu {
             display: none;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
-            padding: 10px;
-            gap: 5px;
+            width: 44px;
+            height: 44px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            border-radius: 12px;
             transition: var(--transition);
+            gap: 5px;
         }
 
         .burger-menu:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .burger-line {
             width: 24px;
-            height: 3px;
+            height: 2.5px;
             background: white;
             transition: var(--transition);
             border-radius: 2px;
@@ -621,19 +445,18 @@ $translations = [
 
         .burger-menu.active .burger-line:nth-child(1) {
             transform: rotate(45deg) translate(6px, 6px);
-            background: var(--accent);
         }
 
         .burger-menu.active .burger-line:nth-child(2) {
             opacity: 0;
-            transform: translateX(-10px);
+            transform: scaleX(0);
         }
 
         .burger-menu.active .burger-line:nth-child(3) {
             transform: rotate(-45deg) translate(6px, -6px);
-            background: var(--accent);
         }
 
+        /* Основная навигация */
         .header-nav {
             background: rgba(26, 26, 46, 0.95);
             backdrop-filter: blur(20px);
@@ -703,36 +526,36 @@ $translations = [
             transform: scale(1.1);
         }
 
-        /* Mobile navigation */
+        /* Мобильная навигация - ИСПРАВЛЕНА */
         .mobile-nav {
             display: none;
             position: fixed;
-            top: 72px;
             left: 0;
             right: 0;
             background: rgba(26, 26, 46, 0.98);
             backdrop-filter: blur(20px);
             border-radius: 0 0 var(--radius) var(--radius);
             box-shadow: var(--shadow-xl);
-            z-index: 1000;
-            overflow: hidden;
+            z-index: 999;
+            overflow-y: auto;
             max-height: 0;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .mobile-nav.active {
-            max-height: 500px;
+            max-height: 80vh;
         }
         
         .mobile-nav-tabs {
             display: flex;
             flex-direction: column;
             list-style: none;
-            padding: 15px;
+            padding: 16px;
+            margin: 0;
             opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
         }
         
         .mobile-nav.active .mobile-nav-tabs {
@@ -747,42 +570,24 @@ $translations = [
             color: var(--gray-light);
             display: flex;
             align-items: center;
-            gap: 10px;
-            border-radius: 8px;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-            transform: translateX(-10px);
-            opacity: 0;
-            transition: all 0.3s ease;
+            gap: 12px;
+            border-radius: 12px;
+            margin-bottom: 4px;
+            font-size: 1rem;
         }
-        
-        .mobile-nav.active .mobile-nav-tab {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        
-        .mobile-nav.active .mobile-nav-tab:nth-child(1) { transition-delay: 0.1s; }
-        .mobile-nav.active .mobile-nav-tab:nth-child(2) { transition-delay: 0.15s; }
-        .mobile-nav.active .mobile-nav-tab:nth-child(3) { transition-delay: 0.2s; }
-        .mobile-nav.active .mobile-nav-tab:nth-child(4) { transition-delay: 0.25s; }
-        .mobile-nav.active .mobile-nav-tab:nth-child(5) { transition-delay: 0.3s; }
-        .mobile-nav.active .mobile-nav-tab:nth-child(6) { transition-delay: 0.35s; }
-        .mobile-nav.active .mobile-nav-tab:nth-child(7) { transition-delay: 0.4s; }
-        .mobile-nav.active .mobile-nav-tab:nth-child(8) { transition-delay: 0.45s; }
         
         .mobile-nav-link {
             text-decoration: none;
             color: inherit;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             width: 100%;
         }
         
-        .mobile-nav-tab:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateX(5px) !important;
+        .mobile-nav-tab:active {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(0.98);
         }
         
         .mobile-nav-tab.active {
@@ -792,14 +597,15 @@ $translations = [
         }
         
         .mobile-nav-tab i {
-            font-size: 1rem;
-            width: 22px;
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
         }
 
         /* Main Content */
         main {
             padding: 40px 0;
-            margin-top: 120px;
+            min-height: calc(100vh - 200px);
         }
 
         .login-container {
@@ -1009,13 +815,6 @@ $translations = [
             margin-bottom: 35px;
         }
 
-        .footer-section {
-            animation: fadeInUp 0.8s ease;
-        }
-
-        .footer-section:nth-child(2) { animation-delay: 0.1s; }
-        .footer-section:nth-child(3) { animation-delay: 0.2s; }
-
         .footer-section h3 {
             margin-bottom: 20px;
             color: white;
@@ -1132,7 +931,25 @@ $translations = [
             font-size: 0.85rem;
         }
 
-        /* Responsive */
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ===== RESPONSIVE STYLES ===== */
+
         @media (max-width: 992px) {
             .header-nav {
                 display: none;
@@ -1146,16 +963,8 @@ $translations = [
                 gap: 10px;
             }
             
-            main {
-                margin-top: 60px;
-            }
-            
             .mobile-nav {
-                top: 60px;
-            }
-            
-            .login-header h1 {
-                font-size: 2rem;
+                display: block;
             }
         }
 
@@ -1168,12 +977,26 @@ $translations = [
                 font-size: 2rem;
             }
 
+            .login-header p {
+                font-size: 0.95rem;
+            }
+
             .login-form {
                 padding: 30px 20px;
             }
 
+            .container {
+                padding: 0 16px;
+            }
+            
+            .header-top {
+                flex-wrap: nowrap;
+                gap: 8px;
+                padding: 0.75rem 0;
+            }
+            
             .logo {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
             }
             
             .logo-icon {
@@ -1182,36 +1005,25 @@ $translations = [
                 font-size: 1rem;
             }
             
-            .btn {
-                padding: 8px 15px;
-                font-size: 0.8rem;
-            }
-            
             .language-selector {
                 flex-wrap: nowrap;
-                justify-content: center;
-                width: 100%;
-                max-width: 280px;
+                gap: 3px;
             }
             
             .lang-btn {
                 padding: 6px 8px;
-                font-size: 0.75rem;
-                min-width: 45px;
+                font-size: 0.72rem;
+                min-width: 40px;
             }
         }
 
         @media (max-width: 576px) {
-            .container {
-                padding: 0 15px;
-            }
-
             .login-header h1 {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
 
             .login-header p {
-                font-size: 1rem;
+                font-size: 0.85rem;
             }
 
             .form-input {
@@ -1239,37 +1051,83 @@ $translations = [
             }
             
             .language-selector {
-                flex-wrap: nowrap;
-                max-width: 250px;
+                gap: 2px;
             }
             
             .lang-btn {
                 padding: 5px 6px;
-                font-size: 0.7rem;
-                min-width: 40px;
+                font-size: 0.68rem;
+                min-width: 36px;
             }
         }
         
         @media (max-width: 400px) {
-            .language-selector {
-                max-width: 220px;
+            .logo-text {
+                display: none;
             }
             
             .lang-btn {
                 padding: 4px 5px;
-                font-size: 0.65rem;
-                min-width: 35px;
+                font-size: 0.62rem;
+                min-width: 32px;
+            }
+            
+            .burger-menu {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .burger-line {
+                width: 20px;
             }
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+        /* ===== UNIVERSAL MOBILE FIXES ===== */
+
+        /* Предотвращаем горизонтальный скролл */
+        html, body { 
+            max-width: 100%; 
+            overflow-x: hidden; 
+        }
+
+        /* Фикс backdrop-filter на старых Android */
+        @supports not (backdrop-filter: blur(1px)) {
+            header, .header-nav, .mobile-nav, .login-form, footer {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            header { background: rgba(26, 26, 46, 0.98) !important; }
+            .mobile-nav { background: rgba(26, 26, 46, 0.99) !important; }
+            footer { background: rgba(13, 13, 23, 0.99) !important; }
+            .login-form { background: rgba(26, 26, 46, 0.95) !important; }
+        }
+
+        /* iOS Safari sticky fix */
+        @supports (-webkit-touch-callout: none) {
+            header { position: -webkit-sticky; position: sticky; }
+        }
+
+        /* Touch: увеличиваем области нажатия на мобильных */
+        @media (hover: none) and (pointer: coarse) {
+            .mobile-nav-tab {
+                min-height: 48px;
+            }
+            
+            .lang-btn {
+                min-height: 36px;
+            }
+            
+            .login-button {
+                min-height: 52px;
+            }
+        }
+        
+        /* Запрещаем масштабирование полей ввода на iOS */
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+            select,
+            textarea,
+            input {
+                font-size: 16px;
             }
         }
     </style>
@@ -1298,32 +1156,20 @@ $translations = [
                     </a>
                 </div>
                 
-                <!-- Правая часть хедера -->
                 <div class="header-right">
-                    <!-- Language Selector с 5 языками -->
                     <div class="language-selector">
-                        <button class="lang-btn <?php echo $lang === 'ru' ? 'active' : ''; ?>" onclick="changeLanguage('ru')">
-                            RU
-                        </button>
-                        <button class="lang-btn <?php echo $lang === 'en' ? 'active' : ''; ?>" onclick="changeLanguage('en')">
-                            EN
-                        </button>
-                        <button class="lang-btn <?php echo $lang === 'pt' ? 'active' : ''; ?>" onclick="changeLanguage('pt')">
-                            PT
-                        </button>
-                        <button class="lang-btn <?php echo $lang === 'fr' ? 'active' : ''; ?>" onclick="changeLanguage('fr')">
-                            FR
-                        </button>
-                        <button class="lang-btn <?php echo $lang === 'de' ? 'active' : ''; ?>" onclick="changeLanguage('de')">
-                            DE
-                        </button>
+                        <button class="lang-btn <?php echo $lang === 'ru' ? 'active' : ''; ?>" onclick="changeLanguage('ru')">RU</button>
+                        <button class="lang-btn <?php echo $lang === 'en' ? 'active' : ''; ?>" onclick="changeLanguage('en')">EN</button>
+                        <button class="lang-btn <?php echo $lang === 'pt' ? 'active' : ''; ?>" onclick="changeLanguage('pt')">PT</button>
+                        <button class="lang-btn <?php echo $lang === 'fr' ? 'active' : ''; ?>" onclick="changeLanguage('fr')">FR</button>
+                        <button class="lang-btn <?php echo $lang === 'de' ? 'active' : ''; ?>" onclick="changeLanguage('de')">DE</button>
                     </div>
                 </div>
             </div>
             
             <!-- Основная навигация -->
             <nav class="header-nav">
-                <ul class="nav-tabs" id="mainTabs">
+                <ul class="nav-tabs">
                     <li class="nav-tab">
                         <a href="index.php" class="nav-link">
                             <i class="fas fa-home"></i> <?php echo $translations['home']; ?>
@@ -1429,7 +1275,7 @@ $translations = [
                     <label class="form-label"><?php echo $translations['username_email']; ?></label>
                     <input type="text" 
                            name="username" 
-                           class="form-input <?php echo isset($_POST['username']) && empty($_POST['username']) ? 'error' : ''; ?>" 
+                           class="form-input" 
                            value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>"
                            required
                            autocomplete="username">
@@ -1439,15 +1285,14 @@ $translations = [
                     <label class="form-label"><?php echo $translations['password']; ?></label>
                     <input type="password" 
                            name="password" 
-                           class="form-input <?php echo isset($_POST['password']) && empty($_POST['password']) ? 'error' : ''; ?>" 
+                           class="form-input" 
                            required
                            autocomplete="current-password">
                 </div>
 
-                <button type="submit" class="login-button" id="loginButton">
+                <button type="submit" class="login-button">
                     <i class="fas fa-sign-in-alt"></i>
-                    <span class="button-text"><?php echo $translations['login_btn']; ?></span>
-                    <div class="loading" id="loginLoading" style="display: none;"></div>
+                    <span><?php echo $translations['login_btn']; ?></span>
                 </button>
 
                 <div class="register-link">
@@ -1500,65 +1345,98 @@ $translations = [
     </footer>
 
     <script>
+        // Функция смены языка
         function changeLanguage(lang) {
             const url = new URL(window.location.href);
             url.searchParams.set('lang', lang);
             window.location.href = url.toString();
         }
 
-        // Обработка отправки формы
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            const submitButton = document.getElementById('loginButton');
-            const loadingSpinner = document.getElementById('loginLoading');
-            const buttonText = submitButton.querySelector('.button-text');
-            
-            // Показываем индикатор загрузки
-            buttonText.style.display = 'none';
-            loadingSpinner.style.display = 'inline-block';
-            submitButton.disabled = true;
-        });
-
-        // Автоматический фокус на поле ввода
+        // Инициализация при загрузке DOM
         document.addEventListener('DOMContentLoaded', function() {
-            const usernameInput = document.querySelector('input[name="username"]');
-            if (usernameInput) {
-                usernameInput.focus();
-            }
-
-            // Burger menu functionality with smooth animation
+            // Получаем элементы
             const burgerMenu = document.getElementById('burgerMenu');
             const mobileNav = document.getElementById('mobileNav');
+            const header = document.querySelector('header');
             
-            if (burgerMenu && mobileNav) {
-                burgerMenu.addEventListener('click', function() {
-                    this.classList.toggle('active');
+            // Функция обновления позиции мобильного меню
+            function updateMobileNavPosition() {
+                if (mobileNav && header) {
+                    const headerHeight = header.offsetHeight;
+                    mobileNav.style.top = headerHeight + 'px';
+                }
+            }
+            
+            // Функция закрытия мобильного меню
+            function closeMobileMenu() {
+                if (burgerMenu && mobileNav) {
+                    burgerMenu.classList.remove('active');
+                    mobileNav.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            }
+            
+            // Функция открытия/закрытия мобильного меню
+            function toggleMobileMenu(e) {
+                if (e) e.stopPropagation();
+                if (burgerMenu && mobileNav) {
+                    burgerMenu.classList.toggle('active');
                     mobileNav.classList.toggle('active');
                     
-                    // Prevent body scroll when menu is open
+                    // Блокируем/разблокируем прокрутку body
                     if (mobileNav.classList.contains('active')) {
                         document.body.style.overflow = 'hidden';
                     } else {
                         document.body.style.overflow = '';
                     }
-                });
+                }
+            }
+            
+            // Инициализация бургер-меню
+            if (burgerMenu && mobileNav) {
+                // Устанавливаем начальную позицию
+                updateMobileNavPosition();
                 
-                // Close mobile nav when clicking outside
-                document.addEventListener('click', function(event) {
-                    if (!burgerMenu.contains(event.target) && !mobileNav.contains(event.target)) {
-                        burgerMenu.classList.remove('active');
-                        mobileNav.classList.remove('active');
-                        document.body.style.overflow = '';
+                // Обновляем позицию при изменении размера окна
+                window.addEventListener('resize', function() {
+                    updateMobileNavPosition();
+                    // Закрываем меню при изменении ориентации экрана
+                    if (window.innerWidth > 992) {
+                        closeMobileMenu();
                     }
                 });
                 
-                // Close mobile nav when clicking on a link
-                document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                // Обработчик клика по бургер-меню
+                burgerMenu.addEventListener('click', toggleMobileMenu);
+                
+                // Закрытие при клике вне меню
+                document.addEventListener('click', function(event) {
+                    if (mobileNav.classList.contains('active')) {
+                        // Проверяем, был ли клик не по бургер-меню и не по мобильной навигации
+                        if (!burgerMenu.contains(event.target) && !mobileNav.contains(event.target)) {
+                            closeMobileMenu();
+                        }
+                    }
+                });
+                
+                // Закрытие при клике на ссылку в меню
+                const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+                mobileLinks.forEach(link => {
                     link.addEventListener('click', function() {
-                        burgerMenu.classList.remove('active');
-                        mobileNav.classList.remove('active');
-                        document.body.style.overflow = '';
+                        closeMobileMenu();
                     });
                 });
+                
+                // Предотвращаем всплытие кликов внутри мобильного меню
+                mobileNav.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+            
+            // Автофокус на поле username
+            const usernameInput = document.querySelector('input[name="username"]');
+            if (usernameInput && usernameInput.value === '') {
+                usernameInput.focus();
             }
         });
     </script>

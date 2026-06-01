@@ -1,4 +1,5 @@
 ﻿<?php
+session_start();
 require_once 'config.php';
 
 // ПРОСТАЯ ФУНКЦИЯ ЦЕНЗУРЫ ПРЯМО В КОДЕ
@@ -963,6 +964,7 @@ foreach ($translations as $key => $value) {
         /* Header */
         header {
             background: rgba(26, 26, 46, 0.95);
+            -webkit-backdrop-filter: blur(20px);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: var(--shadow);
@@ -1175,11 +1177,10 @@ foreach ($translations as $key => $value) {
             transform: scale(1.1);
         }
 
-        /* Mobile navigation */
+        /* Mobile navigation - ИСПРАВЛЕНА */
         .mobile-nav {
             display: none;
             position: fixed;
-            top: 72px;
             left: 0;
             right: 0;
             background: rgba(26, 26, 46, 0.98);
@@ -1187,14 +1188,14 @@ foreach ($translations as $key => $value) {
             border-radius: 0 0 var(--radius) var(--radius);
             box-shadow: var(--shadow-xl);
             z-index: 1000;
-            overflow: hidden;
+            overflow-y: auto;
             max-height: 0;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .mobile-nav.active {
-            max-height: 500px;
+            max-height: 80vh;
         }
         
         .mobile-nav-tabs {
@@ -1203,8 +1204,8 @@ foreach ($translations as $key => $value) {
             list-style: none;
             padding: 15px;
             opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
         }
         
         .mobile-nav.active .mobile-nav-tabs {
@@ -1223,24 +1224,7 @@ foreach ($translations as $key => $value) {
             border-radius: 8px;
             margin-bottom: 5px;
             font-size: 0.9rem;
-            transform: translateX(-10px);
-            opacity: 0;
-            transition: all 0.3s ease;
         }
-        
-        .mobile-nav.active .mobile-nav-tab {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        
-        .mobile-nav.active .mobile-nav-tab:nth-child(1) { transition-delay: 0.1s; }
-        .mobile-nav.active .mobile-nav-tab:nth-child(2) { transition-delay: 0.15s; }
-        .mobile-nav.active .mobile-nav-tab:nth-child(3) { transition-delay: 0.2s; }
-        .mobile-nav.active .mobile-nav-tab:nth-child(4) { transition-delay: 0.25s; }
-        .mobile-nav.active .mobile-nav-tab:nth-child(5) { transition-delay: 0.3s; }
-        .mobile-nav.active .mobile-nav-tab:nth-child(6) { transition-delay: 0.35s; }
-        .mobile-nav.active .mobile-nav-tab:nth-child(7) { transition-delay: 0.4s; }
-        .mobile-nav.active .mobile-nav-tab:nth-child(8) { transition-delay: 0.45s; }
         
         .mobile-nav-link {
             text-decoration: none;
@@ -1251,10 +1235,9 @@ foreach ($translations as $key => $value) {
             width: 100%;
         }
         
-        .mobile-nav-tab:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateX(5px) !important;
+        .mobile-nav-tab:active {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(0.98);
         }
         
         .mobile-nav-tab.active {
@@ -1271,7 +1254,7 @@ foreach ($translations as $key => $value) {
         /* Main Content */
         main {
             padding: 40px 0;
-            margin-top: 120px;
+            margin-top: 0;
         }
 
         .registration-container {
@@ -1904,7 +1887,7 @@ foreach ($translations as $key => $value) {
             }
             
             .mobile-nav {
-                top: 60px;
+                display: block;
             }
             
             .registration-header h1 {
@@ -2056,6 +2039,66 @@ foreach ($translations as $key => $value) {
         .redirect-button {
             display: none;
         }
+
+        /* ===== UNIVERSAL MOBILE FIXES (auto-patched) ===== */
+
+        /* Предотвращаем горизонтальный скролл */
+        html, body { max-width: 100%; overflow-x: hidden; }
+
+        /* Фикс backdrop-filter на старых Android */
+        @supports not (backdrop-filter: blur(1px)) {
+            header, .header-nav, .mobile-nav, .card, footer {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            header { background: rgba(26, 26, 46, 0.98) !important; }
+            .mobile-nav { background: rgba(26, 26, 46, 0.99) !important; }
+            footer { background: rgba(13, 13, 23, 0.99) !important; }
+        }
+
+        /* Скрываем логотип-текст на очень маленьких экранах */
+        @media (max-width: 420px) {
+            .logo-text { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            /* Хедер — одна строка, без переноса */
+            .header-top {
+                flex-wrap: nowrap !important;
+                gap: 8px !important;
+                padding: 0.75rem 0 !important;
+            }
+            .logo { font-size: 1.2rem !important; }
+            .logo-icon { width: 35px !important; height: 35px !important; font-size: 1rem !important; }
+            .user-avatar { width: 35px !important; height: 35px !important; font-size: 0.9rem !important; }
+            .header-right { gap: 8px !important; }
+            /* Языковые кнопки компактнее */
+            .language-selector { flex-wrap: nowrap !important; gap: 3px !important; }
+            .lang-btn { padding: 6px 7px !important; font-size: 0.72rem !important; min-width: 36px !important; }
+            /* Кнопки */
+            .btn { padding: 8px 14px !important; font-size: 0.8rem !important; }
+            /* Карточки */
+            .card { padding: 20px !important; }
+        }
+
+        @media (max-width: 480px) {
+            .lang-btn { padding: 5px 5px !important; font-size: 0.68rem !important; min-width: 30px !important; }
+            .dropdown-menu { right: -10px !important; min-width: 160px !important; }
+        }
+
+        /* iOS Safari sticky fix */
+        @supports (-webkit-touch-callout: none) {
+            header { position: -webkit-sticky; position: sticky; }
+        }
+
+        /* Touch: убираем hover-transform для производительности */
+        @media (hover: none) and (pointer: coarse) {
+            .card:hover, .service-card:hover, .service-card-4:hover,
+            .service-slide:hover, .mission-section:hover, .quick-help-section:hover {
+                transform: none !important;
+            }
+        }
+        /* ===== END MOBILE FIXES ===== */
     </style>
 </head>
 <body>
@@ -2146,7 +2189,7 @@ foreach ($translations as $key => $value) {
                 </ul>
             </nav>
             
-            <!-- Мобильная навигация -->
+            <!-- Мобильная навигация - ИСПРАВЛЕНА -->
             <div class="mobile-nav" id="mobileNav">
                 <ul class="mobile-nav-tabs">
                     <li class="mobile-nav-tab">
@@ -2799,8 +2842,78 @@ foreach ($translations as $key => $value) {
             return true;
         }
 
-        // Инициализация при загрузке
+        // Инициализация при загрузке - ИСПРАВЛЕНА
         document.addEventListener('DOMContentLoaded', function() {
+            // Динамическая позиция мобильной навигации
+            var mobileNavEl = document.getElementById('mobileNav');
+            var headerEl = document.querySelector('header');
+            
+            if (mobileNavEl && headerEl) {
+                function updateMobileNavPosition() {
+                    mobileNavEl.style.top = headerEl.offsetHeight + 'px';
+                }
+                
+                function closeMobileMenu() {
+                    var burgerMenu = document.getElementById('burgerMenu');
+                    if (burgerMenu) burgerMenu.classList.remove('active');
+                    mobileNavEl.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+                
+                function toggleMobileMenu(e) {
+                    if (e) e.stopPropagation();
+                    var burgerMenu = document.getElementById('burgerMenu');
+                    if (burgerMenu) {
+                        burgerMenu.classList.toggle('active');
+                        mobileNavEl.classList.toggle('active');
+                        
+                        if (mobileNavEl.classList.contains('active')) {
+                            document.body.style.overflow = 'hidden';
+                        } else {
+                            document.body.style.overflow = '';
+                        }
+                    }
+                }
+                
+                // Устанавливаем начальную позицию
+                updateMobileNavPosition();
+                
+                // Обновляем позицию при изменении размера окна
+                window.addEventListener('resize', updateMobileNavPosition);
+                
+                // Закрываем меню при изменении ориентации
+                window.addEventListener('orientationchange', function() {
+                    closeMobileMenu();
+                    setTimeout(updateMobileNavPosition, 100);
+                });
+                
+                // Обработчик клика по бургер-меню
+                var burgerMenu = document.getElementById('burgerMenu');
+                if (burgerMenu) {
+                    burgerMenu.addEventListener('click', toggleMobileMenu);
+                }
+                
+                // Закрытие при клике вне меню
+                document.addEventListener('click', function(event) {
+                    if (mobileNavEl.classList.contains('active')) {
+                        var burgerMenu = document.getElementById('burgerMenu');
+                        if (!burgerMenu.contains(event.target) && !mobileNavEl.contains(event.target)) {
+                            closeMobileMenu();
+                        }
+                    }
+                });
+                
+                // Предотвращаем закрытие при клике внутри меню
+                mobileNavEl.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+                
+                // Закрытие при клике на ссылку в меню
+                document.querySelectorAll('.mobile-nav-link').forEach(function(link) {
+                    link.addEventListener('click', closeMobileMenu);
+                });
+            }
+
             // Проверяем поля при загрузке
             const username = document.querySelector('input[name="username"]');
             const email = document.querySelector('input[name="email"]');
@@ -2826,42 +2939,6 @@ foreach ($translations as $key => $value) {
             
             if (passportNumber && passportNumber.value) {
                 validatePassportNumber(passportNumber);
-            }
-            
-            // Burger menu functionality with smooth animation
-            const burgerMenu = document.getElementById('burgerMenu');
-            const mobileNav = document.getElementById('mobileNav');
-            
-            if (burgerMenu && mobileNav) {
-                burgerMenu.addEventListener('click', function() {
-                    this.classList.toggle('active');
-                    mobileNav.classList.toggle('active');
-                    
-                    // Prevent body scroll when menu is open
-                    if (mobileNav.classList.contains('active')) {
-                        document.body.style.overflow = 'hidden';
-                    } else {
-                        document.body.style.overflow = '';
-                    }
-                });
-                
-                // Close mobile nav when clicking outside
-                document.addEventListener('click', function(event) {
-                    if (!burgerMenu.contains(event.target) && !mobileNav.contains(event.target)) {
-                        burgerMenu.classList.remove('active');
-                        mobileNav.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                });
-                
-                // Close mobile nav when clicking on a link
-                document.querySelectorAll('.mobile-nav-link').forEach(link => {
-                    link.addEventListener('click', function() {
-                        burgerMenu.classList.remove('active');
-                        mobileNav.classList.remove('active');
-                        document.body.style.overflow = '';
-                    });
-                });
             }
         });
     </script>
