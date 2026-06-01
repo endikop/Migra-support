@@ -2623,17 +2623,10 @@ $translations = [
             }
             
             /* Language selector для мобильных */
-            .language-selector {
-                flex-wrap: nowrap;
-                justify-content: center;
-                width: 100%;
-                max-width: 280px;
-            }
-            
             .lang-btn {
                 padding: 6px 8px;
                 font-size: 0.75rem;
-                min-width: 45px;
+                min-width: 42px;
             }
         }
 
@@ -2680,34 +2673,22 @@ $translations = [
                 gap: 30px;
             }
             
-            /* Language selector для очень маленьких экранов */
-            .language-selector {
-                flex-wrap: nowrap;
-                max-width: 250px;
-            }
-            
             .lang-btn {
-                padding: 5px 6px;
-                font-size: 0.7rem;
-                min-width: 40px;
+                padding: 5px 7px;
+                font-size: 0.72rem;
+                min-width: 38px;
             }
             
-            /* На очень маленьких экранах можно немного уменьшить отступы */
             .header-right {
                 gap: 8px;
             }
         }
         
         @media (max-width: 400px) {
-            /* На очень маленьких экранах (например, iPhone SE) */
-            .language-selector {
-                max-width: 220px;
-            }
-            
             .lang-btn {
-                padding: 4px 5px;
-                font-size: 0.65rem;
-                min-width: 35px;
+                padding: 4px 6px;
+                font-size: 0.68rem;
+                min-width: 34px;
             }
         }
     </style>
