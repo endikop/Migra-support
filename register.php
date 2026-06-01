@@ -1,5 +1,4 @@
 ﻿<?php
-session_start();
 require_once 'config.php';
 
 // ПРОСТАЯ ФУНКЦИЯ ЦЕНЗУРЫ ПРЯМО В КОДЕ
