@@ -6,7 +6,7 @@ ini_set('display_errors', 0);
 // Включаем буферизацию вывода для чистого JSON ответа
 ob_start();
 
-session_start();
+
 require_once 'config.php';
 
 // Подключаем систему цензуры
