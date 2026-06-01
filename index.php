@@ -1061,11 +1061,13 @@ $translations = [
 
         html {
             scroll-behavior: smooth;
+            background: #1a1a2e;
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--gradient-dark);
+            background-attachment: fixed;
             color: var(--light);
             line-height: 1.7;
             min-height: 100vh;
@@ -1084,6 +1086,14 @@ $translations = [
                 radial-gradient(circle at 20% 80%, rgba(58, 134, 255, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(131, 56, 236, 0.15) 0%, transparent 50%);
             z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Фикс для мобильных: Safari не поддерживает background-attachment: fixed */
+        @supports (-webkit-touch-callout: none) {
+            body {
+                background-attachment: scroll;
+            }
         }
 
         .container {
