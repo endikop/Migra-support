@@ -14,6 +14,10 @@ $port = 3306;
 
 date_default_timezone_set('Europe/Moscow');
 
+// Инициализируем переменные
+$db_error = false;
+$pdo = null;
+
 try {
     // Опции подключения должны передаваться сразу в конструктор PDO
     $options = [
@@ -30,7 +34,14 @@ try {
         $options
     );
 } catch(PDOException $e) {
-    die("Ошибка подключения к базе данных: " . $e->getMessage());
+    // Логируем ошибку и выводим общее сообщение
+    error_log("Ошибка подключения к БД: " . $e->getMessage());
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        $_SESSION['db_error'] = "Ошибка подключения к базе данных. Пожалуйста, попробуйте позже.";
+    }
+    // Не используем die() с выводом, чтобы не нарушать заголовки
+    // Вместо этого устанавливаем флаг ошибки
+    $db_error = true;
 }
 
 function isLoggedIn() {

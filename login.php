@@ -1,15 +1,11 @@
-﻿<?php
-// Включаем буферизацию вывода для предотвращения ошибок с заголовками
-if (!ob_get_level()) {
+<?php
+// Включаем буферизацию вывода ДО любого кода
+if (ob_get_level() == 0) {
     ob_start();
 }
 
 session_start();
 require_once 'config.php';
-
-// Отключаем вывод ошибок на экран в продакшене
-error_reporting(0);
-ini_set('display_errors', 0);
 
 // Если пользователь уже авторизован, перенаправляем на профиль
 if (isset($_SESSION['user_id'])) {
@@ -72,6 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (empty($errors)) {
         try {
+            // Проверяем, что подключение к БД установлено
+            if (!$pdo) {
+                throw new PDOException("Нет подключения к базе данных");
+            }
+            
             // Ищем пользователя по username или email
             $stmt = $pdo->prepare("
                 SELECT * FROM users 
