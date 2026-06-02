@@ -511,9 +511,6 @@ $translations = [
     <!-- Универсальные анимации -->
     <?php include_once 'include_animations.php'; ?>
     
-    <!-- Единая мобильная адаптивность -->
-    <link rel="stylesheet" href="css/mobile-responsive.css">
-    
     <style>
         :root {
             --primary: #3a86ff;
@@ -2318,8 +2315,5 @@ $translations = [
             updateVisaSlider();
         });
     </script>
-    
-    <!-- Единая мобильная адаптивность -->
-    <script src="js/mobile-responsive.js"></script>
 </body>
 </html>
