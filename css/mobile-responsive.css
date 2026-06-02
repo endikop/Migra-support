@@ -1,0 +1,692 @@
+/* mobile-responsive.css - Единая мобильная адаптивность для всех страниц MigraSupport */
+
+/* ==========================================================================
+   БАЗОВАЯ МОБИЛЬНАЯ АДАПТИВНОСТЬ
+   ========================================================================== */
+
+/* Декоративные плавающие элементы - отключаем на мобильных */
+@media (max-width: 768px) {
+    body::before,
+    .floating-element {
+        display: none;
+    }
+}
+
+/* ==========================================================================
+   ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ СТРАНИЦ
+   ========================================================================== */
+
+/* КОНТЕЙНЕР */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px !important;
+    }
+}
+
+/* ХЕДЕР */
+@media (max-width: 768px) {
+    header {
+        padding: 0 15px !important;
+    }
+    
+    .header-wrapper {
+        padding: 10px 0 !important;
+    }
+    
+    .header-top {
+        flex-wrap: wrap;
+        gap: 15px !important;
+        padding: 0 !important;
+    }
+    
+    .logo {
+        font-size: 1.3rem !important;
+    }
+    
+    .logo-icon {
+        width: 35px !important;
+        height: 35px !important;
+        font-size: 1rem !important;
+    }
+    
+    .logo-text {
+        font-size: 1.2rem !important;
+    }
+}
+
+/* ЛЕВАЯ ЧАСТЬ ХЕДЕРА (лого + навигация) */
+@media (max-width: 768px) {
+    .header-left {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+}
+
+/* БУРГЕР-МЕНЮ - ЕДИНЫЙ СТИЛЬ */
+@media (max-width: 992px) {
+    .burger-menu {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        gap: 5px;
+    }
+    
+    .burger-menu:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
+    }
+    
+    .burger-line {
+        width: 24px;
+        height: 2.5px;
+        background: white;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+    }
+    
+    .burger-menu.active .burger-line:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+    }
+    
+    .burger-menu.active .burger-line:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+    }
+    
+    .burger-menu.active .burger-line:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+    }
+}
+
+/* ОСНОВНАЯ НАВИГАЦИЯ - СКРЫВАЕМ НА МОБИЛЬНЫХ */
+@media (max-width: 992px) {
+    .header-nav {
+        display: none !important;
+    }
+    
+    .nav-tabs {
+        display: none !important;
+    }
+}
+
+/* МОБИЛЬНАЯ НАВИГАЦИЯ - ЕДИНЫЙ СТИЛЬ */
+.mobile-nav {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    background: rgba(26, 26, 46, 0.98);
+    backdrop-filter: blur(20px);
+    border-radius: 0 0 var(--radius) var(--radius);
+    box-shadow: var(--shadow-xl);
+    z-index: 1000;
+    overflow-y: auto;
+    max-height: 0;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    top: 120px; /* Высота хедера */
+}
+
+.mobile-nav.active {
+    max-height: 80vh;
+}
+
+.mobile-nav-tabs {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 16px;
+    margin: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.mobile-nav.active .mobile-nav-tabs {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.mobile-nav-tab {
+    padding: 14px 18px;
+    transition: var(--transition);
+    font-weight: 500;
+    color: var(--gray-light);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 12px;
+    margin-bottom: 4px;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.mobile-nav-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.mobile-nav-tab:active {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(0.98);
+}
+
+.mobile-nav-tab.active {
+    color: white;
+    background: rgba(255, 255, 255, 0.08);
+    border-left: 3px solid var(--accent);
+}
+
+.mobile-nav-tab i {
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+}
+
+/* ПРАВАЯ ЧАСТЬ ХЕДЕРА (языки + пользователь) */
+@media (max-width: 768px) {
+    .header-right {
+        width: 100%;
+        justify-content: flex-end !important;
+        gap: 10px !important;
+    }
+}
+
+/* ПАНЕЛЬ ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ - ЕДИНЫЙ СТИЛЬ */
+@media (max-width: 768px) {
+    .language-selector {
+        gap: 4px !important;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 4px;
+        border-radius: 10px;
+        min-width: auto;
+    }
+    
+    .lang-btn {
+        padding: 6px 8px !important;
+        font-size: 0.75rem !important;
+        min-width: 35px !important;
+        text-align: center;
+        flex: 0 0 auto;
+    }
+    
+    .lang-btn:hover {
+        transform: none;
+    }
+}
+
+/* ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ */
+@media (max-width: 768px) {
+    .user-info {
+        gap: 8px !important;
+    }
+    
+    .user-avatar {
+        width: 35px !important;
+        height: 35px !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .dropdown-menu {
+        min-width: 160px;
+        right: -10px;
+    }
+    
+    .dropdown-item {
+        padding: 10px 15px;
+        font-size: 0.85rem;
+    }
+}
+
+/* КНОПКИ */
+@media (max-width: 768px) {
+    .btn {
+        padding: 8px 15px !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px) !important;
+    }
+}
+
+/* ОСНОВНОЕ СОДЕРЖИМОЕ */
+@media (max-width: 768px) {
+    main {
+        padding: 20px 0 !important;
+        margin-top: 90px !important; /* Высота хедера на мобильных */
+    }
+    
+    .card {
+        padding: 20px !important;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .card-title {
+        font-size: 1.4rem !important;
+    }
+}
+
+/* ФОРМЫ */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .form-input {
+        padding: 12px 15px !important;
+        font-size: 0.9rem !important;
+    }
+    
+    select.form-input {
+        padding-right: 40px !important;
+        background-position: right 15px center;
+    }
+}
+
+/* ФУТЕР */
+@media (max-width: 768px) {
+    footer {
+        padding: 30px 0 20px !important;
+        margin-top: 40px !important;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr !important;
+        gap: 25px !important;
+        text-align: center;
+    }
+    
+    .footer-section h3::after {
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+    }
+    
+    .social-links {
+        justify-content: center !important;
+    }
+    
+    .footer-links a {
+        justify-content: center;
+    }
+    
+    .footer-bottom {
+        font-size: 0.8rem !important;
+        padding-top: 20px !important;
+    }
+}
+
+/* ==========================================================================
+   СПЕЦИАЛЬНЫЕ СТИЛИ ДЛЯ КОНКРЕТНЫХ СТРАНИЦ
+   ========================================================================== */
+
+/* INDEX.PHP - Главная страница */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2rem !important;
+        line-height: 1.3 !important;
+    }
+    
+    .hero-section p {
+        font-size: 1rem !important;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    
+    .service-card {
+        padding: 25px !important;
+    }
+    
+    .service-icon {
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 1.5rem !important;
+    }
+}
+
+/* INFORMATION.PHP - Информация */
+@media (max-width: 768px) {
+    .info-steps {
+        flex-direction: column !important;
+        gap: 30px !important;
+    }
+    
+    .step-circle {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 1rem !important;
+    }
+    
+    .doc-cards {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .faq-item {
+        padding: 15px !important;
+    }
+}
+
+/* MAP.PHP - Карта служб */
+@media (max-width: 768px) {
+    .map-container {
+        height: 400px !important;
+        border-radius: 12px !important;
+    }
+    
+    .city-selector {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .services-list {
+        max-height: 300px !important;
+    }
+}
+
+/* TRANSLATOR.PHP - Переводчик */
+@media (max-width: 768px) {
+    .translator-container {
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+    
+    .language-selector-group {
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+    
+    .text-area-group {
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+    
+    .translation-history {
+        max-height: 300px !important;
+    }
+}
+
+/* CONVERTER.PHP - Конвертер валют */
+@media (max-width: 768px) {
+    .converter-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    
+    .currency-form {
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+    
+    .currency-rates-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* CHAT.PHP - Чат города */
+@media (max-width: 768px) {
+    .chat-layout {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    
+    .chat-messages {
+        max-height: 400px !important;
+    }
+    
+    .chat-input-group {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .chat-input-group textarea {
+        min-height: 80px !important;
+    }
+}
+
+/* PERSONAL_CHATS.PHP - Личные чаты */
+@media (max-width: 768px) {
+    .messenger-layout {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .chats-sidebar {
+        display: none !important;
+    }
+    
+    .mobile-chat-toggle {
+        display: flex !important;
+    }
+    
+    .chat-detail {
+        padding: 15px !important;
+    }
+    
+    .message-input-group {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+}
+
+/* LOGIN.PHP и REGISTER.PHP - Авторизация */
+@media (max-width: 768px) {
+    .login-container,
+    .register-container {
+        padding: 20px !important;
+    }
+    
+    .login-header,
+    .register-header {
+        padding: 30px !important;
+    }
+    
+    .login-header h1,
+    .register-header h1 {
+        font-size: 2rem !important;
+    }
+    
+    .login-form,
+    .register-form {
+        padding: 25px !important;
+    }
+    
+    .form-buttons {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+}
+
+/* NEWS_SIMPLE.PHP - Новости */
+@media (max-width: 768px) {
+    .news-detail {
+        padding: 30px 0 !important;
+    }
+    
+    .news-card {
+        padding: 20px !important;
+    }
+    
+    .news-title {
+        font-size: 1.6rem !important;
+    }
+    
+    .news-meta {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .news-content {
+        font-size: 1rem !important;
+    }
+}
+
+/* ==========================================================================
+   УТИЛИТЫ И ХЕЛПЕРЫ
+   ========================================================================== */
+
+/* Скрыть на мобильных */
+@media (max-width: 768px) {
+    .hide-on-mobile {
+        display: none !important;
+    }
+}
+
+/* Показать только на мобильных */
+@media (min-width: 769px) {
+    .show-on-mobile {
+        display: none !important;
+    }
+}
+
+/* АДАПТИВНЫЕ СЕТКИ */
+@media (max-width: 768px) {
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* АДАПТИВНЫЕ ОТСТУПЫ */
+@media (max-width: 768px) {
+    .section-padding {
+        padding: 30px 0 !important;
+    }
+    
+    .section-title {
+        font-size: 1.8rem !important;
+        margin-bottom: 25px !important;
+    }
+}
+
+/* АДАПТИВНЫЕ ШРИФТЫ */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px !important;
+        line-height: 1.6 !important;
+    }
+    
+    h1 { font-size: 2rem !important; }
+    h2 { font-size: 1.6rem !important; }
+    h3 { font-size: 1.3rem !important; }
+    h4 { font-size: 1.1rem !important; }
+    h5 { font-size: 1rem !important; }
+    h6 { font-size: 0.9rem !important; }
+}
+
+/* АДАПТИВНЫЕ ТЕНИ И РАДИУСЫ */
+@media (max-width: 768px) {
+    :root {
+        --shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+        --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+        --shadow-xl: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
+        --radius: 12px !important;
+        --radius-lg: 16px !important;
+        --radius-xl: 20px !important;
+    }
+}
+
+/* ==========================================================================
+   ИСПРАВЛЕНИЯ ДЛЯ IOS И SAMSUNG BROWSER
+   ========================================================================== */
+
+/* Фикс для IOS input type=search */
+@media (max-width: 768px) {
+    input[type="search"]::-webkit-search-decoration,
+    input[type="search"]::-webkit-search-cancel-button,
+    input[type="search"]::-webkit-search-results-button,
+    input[type="search"]::-webkit-search-results-decoration {
+        display: none;
+    }
+}
+
+/* Фикс для Samsung Browser -вопросы с backdrop-filter */
+@media (max-width: 768px) and (-webkit-min-device-pixel-ratio:0) {
+    header,
+    .dropdown-menu,
+    .card {
+        background: rgba(26, 26, 46, 0.98) !important;
+    }
+}
+
+/* Фикс для старых Android браузеров */
+@media (max-width: 768px) {
+    .lang-btn,
+    .btn {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+
+/* Фикс для мобильного скролла */
+@media (max-width: 768px) {
+    html {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* ==========================================================================
+   Д��БАГ-СТИЛИ (только для разработки)
+   ========================================================================== */
+
+/* Включите для отладки адаптивности */
+/* body.debug::after {
+    content: 'MOBILE 768px';
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: #ff006e;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 9999;
+}
+
+@media (max-width: 992px) {
+    body.debug::after {
+        content: 'TABLET 992px';
+        background: #8338ec;
+    }
+}
+
+@media (max-width: 768px) {
+    body.debug::after {
+        content: 'MOBILE 768px';
+        background: #3a86ff;
+    }
+}
+
+@media (max-width: 576px) {
+    body.debug::after {
+        content: 'PHONE 576px';
+        background: #38b000;
+    }
+} */
