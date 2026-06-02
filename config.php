@@ -114,4 +114,3 @@ function displayUserAvatar($pdo, $userId, $userName, $size = 'small') {
                 </div>';
     }
 }
-?>
