@@ -1,9 +1,4 @@
 <?php
-// Включаем буферизацию вывода ДО любого кода
-if (ob_get_level() == 0) {
-    ob_start();
-}
-
 // refresh_rates.php
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

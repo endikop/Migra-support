@@ -1,9 +1,4 @@
-<?php
-// Включаем буферизацию вывода ДО любого кода
-if (ob_get_level() == 0) {
-    ob_start();
-}
-
+﻿<?php
 session_start();
 require_once '../src/config/config.php';
 require_once '../src/components/include_avatar.php';

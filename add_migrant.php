@@ -1,17 +1,12 @@
-<?php
-// Включаем буферизацию вывода ДО любого кода
-if (ob_get_level() == 0) {
-    ob_start();
-}
+﻿    <?php
+    session_start();
+    require_once 'config.php';
 
-session_start();
-require_once 'config.php';
+    // Подключаем файл с данными аватара
+    require_once 'include_avatar.php';
 
-// Подключаем файл с данными аватара
-require_once 'include_avatar.php';
-
-// Подключаем файл со списком стран
-require_once 'countries.php';
+    // Подключаем файл со списком стран
+    require_once 'countries.php';
 
     // Проверка авторизации и прав администратора
     if (!isLoggedIn()) {
