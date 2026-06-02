@@ -1794,39 +1794,7 @@ function getCurrencyName($currency, $lang) {
                 min-width: 35px;
             }
         }
-    
-        /* === UNIFIED HEADER MOBILE FIX (all pages) === */
-        @media (max-width: 992px) {
-            .header-nav { display: none !important; }
-            .burger-menu { display: flex !important; }
-            .mobile-nav { display: block !important; }
-            main { margin-top: 60px; }
-            .header-right { gap: 8px; }
-            .lang-btn { padding: 6px 9px; font-size: 0.76rem; min-width: 38px; }
-        }
-        @media (max-width: 768px) {
-            .header-top { flex-wrap: nowrap; gap: 8px; padding: 0.7rem 0; }
-            .logo { font-size: 1.2rem !important; }
-            .logo-icon { width: 34px !important; height: 34px !important; font-size: 1rem !important; }
-            .user-avatar { width: 34px !important; height: 34px !important; font-size: 0.85rem !important; }
-            .language-selector { flex-wrap: nowrap; gap: 3px; }
-            .lang-btn { padding: 5px 7px; font-size: 0.72rem; min-width: 34px; }
-            .header-right { gap: 6px; }
-            .footer-content { grid-template-columns: 1fr !important; text-align: center; }
-            .footer-section h3::after { left: 50% !important; transform: translateX(-50%) !important; }
-            .social-links { justify-content: center !important; }
-        }
-        @media (max-width: 576px) {
-            .container { padding: 0 12px; }
-            .lang-btn { padding: 4px 6px; font-size: 0.68rem; min-width: 30px; }
-            .language-selector { gap: 2px; }
-            .header-right { gap: 5px; }
-        }
-        @media (max-width: 400px) {
-            .lang-btn { padding: 3px 5px; font-size: 0.65rem; min-width: 27px; }
-        }
-        /* === END UNIFIED HEADER MOBILE FIX === */
-</style>
+    </style>
 </head>
 <body>
     <!-- Header -->
