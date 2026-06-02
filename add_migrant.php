@@ -1,5 +1,4 @@
     <?php
-    session_start();
     require_once 'config.php';
 
     // Подключаем файл с данными аватара
@@ -7,12 +6,6 @@
 
     // Подключаем файл со списком стран
     require_once 'countries.php';
-
-    // Проверка авторизации и прав администратора
-    if (!isLoggedIn()) {
-        header('Location: login.php');
-        exit;
-    }
 
     // Если пользователь не админ - перенаправляем на главную
     if (!isAdmin()) {
