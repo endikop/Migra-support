@@ -1795,174 +1795,37 @@ function getCurrencyName($currency, $lang) {
             }
         }
     
-        /* ===== UNIFIED MOBILE RESPONSIVE (all pages) ===== */
-
-        /* Header base - ensure flex layout */
-        .header-wrapper { display: flex; flex-direction: column; }
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.85rem 0;
-            flex-wrap: nowrap;
-            gap: 10px;
-        }
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-shrink: 0;
-        }
-        .language-selector {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-            flex-wrap: nowrap;
-        }
-        .lang-btn {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            border-radius: 8px;
-            padding: 7px 11px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.82rem;
-            min-width: 42px;
-            text-align: center;
-            white-space: nowrap;
-        }
-        .lang-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-1px); }
-        .lang-btn.active { background: linear-gradient(135deg,#3a86ff,#8338ec); box-shadow: 0 4px 12px rgba(58,134,255,0.3); }
-
-        /* Burger always hidden on desktop */
-        .burger-menu { display: none; }
-
-        /* Mobile nav always hidden on desktop */
-        .mobile-nav { display: none; }
-
-        /* === 992px breakpoint === */
+        /* === UNIFIED HEADER MOBILE FIX (all pages) === */
         @media (max-width: 992px) {
             .header-nav { display: none !important; }
-            .burger-menu {
-                display: flex !important;
-                flex-direction: column;
-                cursor: pointer;
-                padding: 9px;
-                gap: 5px;
-                background: rgba(255,255,255,0.1);
-                border-radius: 8px;
-                transition: all 0.3s ease;
-                flex-shrink: 0;
-            }
-            .burger-menu:hover { background: rgba(255,255,255,0.15); }
-            .burger-line { width: 22px; height: 3px; background: white; transition: all 0.3s ease; border-radius: 2px; }
-            .burger-menu.active .burger-line:nth-child(1) { transform: rotate(45deg) translate(6px,6px); background: #ff006e; }
-            .burger-menu.active .burger-line:nth-child(2) { opacity: 0; }
-            .burger-menu.active .burger-line:nth-child(3) { transform: rotate(-45deg) translate(6px,-6px); background: #ff006e; }
-
-            .mobile-nav {
-                display: block !important;
-                position: fixed;
-                top: 62px;
-                left: 0; right: 0;
-                background: rgba(26,26,46,0.98);
-                backdrop-filter: blur(20px);
-                border-radius: 0 0 16px 16px;
-                box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-                z-index: 999;
-                overflow: hidden;
-                max-height: 0;
-                transition: max-height 0.3s ease;
-            }
-            .mobile-nav.active { max-height: 520px; }
-            .mobile-nav-tabs { display: flex; flex-direction: column; list-style: none; padding: 12px; }
-            .mobile-nav-tab {
-                padding: 13px 16px;
-                font-weight: 500;
-                color: rgba(248,249,250,0.8);
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                border-radius: 8px;
-                margin-bottom: 4px;
-                font-size: 0.92rem;
-                transition: all 0.3s ease;
-            }
-            .mobile-nav-tab:hover { color: white; background: rgba(255,255,255,0.06); }
-            .mobile-nav-tab.active { color: white; background: rgba(255,255,255,0.09); border-left: 3px solid #ff006e; }
-            .mobile-nav-tab i { font-size: 1rem; width: 20px; }
-            .mobile-nav-link { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px; width: 100%; }
-
-            main { margin-top: 60px !important; }
-
-            .lang-btn { padding: 6px 9px; font-size: 0.78rem; min-width: 38px; }
+            .burger-menu { display: flex !important; }
+            .mobile-nav { display: block !important; }
+            main { margin-top: 60px; }
             .header-right { gap: 8px; }
-            .logo { font-size: 1.25rem !important; }
-            .logo-icon { width: 36px !important; height: 36px !important; font-size: 1.05rem !important; }
+            .lang-btn { padding: 6px 9px; font-size: 0.76rem; min-width: 38px; }
         }
-
-        /* === 768px breakpoint === */
         @media (max-width: 768px) {
-            .container { padding: 0 14px; }
-            .header-top { padding: 0.7rem 0; }
-
-            .lang-btn { padding: 5px 8px; font-size: 0.74rem; min-width: 34px; }
+            .header-top { flex-wrap: nowrap; gap: 8px; padding: 0.7rem 0; }
+            .logo { font-size: 1.2rem !important; }
+            .logo-icon { width: 34px !important; height: 34px !important; font-size: 1rem !important; }
+            .user-avatar { width: 34px !important; height: 34px !important; font-size: 0.85rem !important; }
+            .language-selector { flex-wrap: nowrap; gap: 3px; }
+            .lang-btn { padding: 5px 7px; font-size: 0.72rem; min-width: 34px; }
             .header-right { gap: 6px; }
-
-            .logo-text { display: inline !important; }
-            .logo { font-size: 1.15rem !important; }
-
-            .user-avatar, .user-avatar-header {
-                width: 34px !important;
-                height: 34px !important;
-                font-size: 0.85rem !important;
-            }
-
-            .btn { padding: 7px 13px; font-size: 0.8rem; }
-
             .footer-content { grid-template-columns: 1fr !important; text-align: center; }
             .footer-section h3::after { left: 50% !important; transform: translateX(-50%) !important; }
             .social-links { justify-content: center !important; }
-
-            .hero-section { padding: 45px 18px !important; }
-            .hero-title { font-size: 1.85rem !important; }
-            .hero-subtitle { font-size: 1rem !important; }
-            .hero-buttons { flex-direction: column; align-items: center; }
-            .hero-buttons .btn { width: 100%; max-width: 280px; justify-content: center; }
-
-            .mission-title, .section-title { font-size: 1.7rem !important; }
         }
-
-        /* === 576px breakpoint === */
         @media (max-width: 576px) {
             .container { padding: 0 12px; }
-            .lang-btn { padding: 4px 6px; font-size: 0.7rem; min-width: 31px; }
-            .language-selector { gap: 3px; }
-
-            .hero-title { font-size: 1.55rem !important; }
-            .hero-subtitle { font-size: 0.9rem !important; }
-
-            .cities-grid { grid-template-columns: repeat(2, 1fr) !important; }
-            .city-header { grid-template-columns: 1fr !important; }
-            .city-image { height: 190px !important; }
-
-            .card { padding: 18px !important; }
-            .city-selector { padding: 18px !important; }
-
-            .emergency-help { flex-direction: column !important; text-align: center !important; gap: 14px !important; }
-            .emergency-icon { width: 58px !important; height: 58px !important; font-size: 1.4rem !important; }
-        }
-
-        /* === 400px breakpoint === */
-        @media (max-width: 400px) {
-            .lang-btn { padding: 3px 5px; font-size: 0.65rem; min-width: 28px; }
+            .lang-btn { padding: 4px 6px; font-size: 0.68rem; min-width: 30px; }
             .language-selector { gap: 2px; }
-            .logo-text { display: none !important; }
             .header-right { gap: 5px; }
         }
-        /* ===== END UNIFIED MOBILE RESPONSIVE ===== */
+        @media (max-width: 400px) {
+            .lang-btn { padding: 3px 5px; font-size: 0.65rem; min-width: 27px; }
+        }
+        /* === END UNIFIED HEADER MOBILE FIX === */
 </style>
 </head>
 <body>
