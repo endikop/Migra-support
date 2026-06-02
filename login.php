@@ -1,7 +1,13 @@
 ﻿<?php
+// Убираем все возможные BOM и пробелы ДО PHP-тега
+// Никакого вывода до этой строки быть не должно!
+
+// Отключаем буферизацию вывода для надежности
+if (ob_get_level()) ob_end_clean();
+ob_start();
+
 session_start();
 require_once 'config.php';
-
 
 // Если пользователь уже авторизован, перенаправляем на профиль
 if (isset($_SESSION['user_id'])) {
@@ -98,7 +104,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         
                         // Перенаправляем на страницу, с которой пришли или на профиль
                         $redirect = $_SESSION['redirect_after_login'] ?? 'profile.php';
-                        unset($_SESSION['redirect_after_login']);    
+                        unset($_SESSION['redirect_after_login']);
+                        
+                        // Очищаем буфер перед редиректом
+                        ob_end_clean();
                         header("Location: $redirect");
                         exit();
                     }
@@ -122,6 +131,10 @@ if (!isset($_SESSION['redirect_after_login']) && isset($_SERVER['HTTP_REFERER'])
         $_SESSION['redirect_after_login'] = $_SERVER['HTTP_REFERER'];
     }
 }
+
+// Очищаем буфер перед выводом HTML
+if (ob_get_level()) ob_end_clean();
+ob_start();
 
 // Тексты для перевода
 $translations = [
@@ -1442,3 +1455,7 @@ $translations = [
     </script>
 </body>
 </html>
+<?php
+// Финализируем буфер вывода
+ob_end_flush();
+?>
