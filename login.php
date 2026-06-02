@@ -1,15 +1,8 @@
 ﻿<?php
-// ОЧЕНЬ ВАЖНО: В ЭТОМ ФАЙЛЕ НЕТ НИКАКИХ СИМВОЛОВ ДО ЭТОЙ СТРОКИ!
-// Даже пробелов или пустых строк быть не должно!
-
-// Включаем буферизацию вывода с самого начала
-ob_start();
-
 require_once 'config.php';
 
 // Если пользователь уже авторизован, перенаправляем на профиль
 if (isset($_SESSION['user_id'])) {
-    ob_end_clean(); // Очищаем буфер перед редиректом
     header('Location: profile.php');
     exit();
 }
@@ -87,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     } elseif ($user['status'] === 'suspended') {
                         $errors[] = t('Аккаунт временно приостановлен.', 'Account temporarily suspended.', 'Conta temporariamente suspensa.', 'Compte temporairement suspendu.', 'Konto vorübergehend gesperrt.');
                     } else {
-                        // Обновляем last_activity вместо last_login
+                        // Обновляем last_activity
                         $stmt = $pdo->prepare("UPDATE users SET last_activity = NOW() WHERE id = ?");
                         $stmt->execute([$user['id']]);
                         
@@ -105,8 +98,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $redirect = $_SESSION['redirect_after_login'] ?? 'profile.php';
                         unset($_SESSION['redirect_after_login']);
                         
-                        // Очищаем буфер перед редиректом
-                        ob_end_clean();
                         header("Location: $redirect");
                         exit();
                     }
@@ -130,10 +121,6 @@ if (!isset($_SESSION['redirect_after_login']) && isset($_SERVER['HTTP_REFERER'])
         $_SESSION['redirect_after_login'] = $_SERVER['HTTP_REFERER'];
     }
 }
-
-// Очищаем буфер и начинаем новый для HTML вывода
-ob_end_clean();
-ob_start();
 
 // Тексты для перевода
 $translations = [
@@ -235,6 +222,7 @@ $translations = [
             z-index: -1;
         }
 
+        /* Декоративные плавающие элементы */
         .floating-element {
             position: fixed;
             width: 300px;
@@ -276,6 +264,7 @@ $translations = [
             padding: 0 24px;
         }
 
+        /* Header */
         header {
             background: rgba(26, 26, 46, 0.95);
             -webkit-backdrop-filter: blur(20px);
@@ -383,6 +372,7 @@ $translations = [
             box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
         }
 
+        /* Кнопки */
         .btn {
             padding: 10px 20px;
             border: none;
@@ -425,6 +415,7 @@ $translations = [
             box-shadow: 0 12px 25px rgba(58, 134, 255, 0.4);
         }
 
+        /* Бургер-меню */
         .burger-menu {
             display: none;
             flex-direction: column;
@@ -464,6 +455,7 @@ $translations = [
             transform: rotate(-45deg) translate(6px, -6px);
         }
 
+        /* Основная навигация */
         .header-nav {
             background: rgba(26, 26, 46, 0.95);
             backdrop-filter: blur(20px);
@@ -533,6 +525,7 @@ $translations = [
             transform: scale(1.1);
         }
 
+        /* Мобильная навигация */
         .mobile-nav {
             display: none;
             position: fixed;
@@ -608,6 +601,7 @@ $translations = [
             text-align: center;
         }
 
+        /* Main Content */
         main {
             padding: 40px 0;
             min-height: calc(100vh - 200px);
@@ -792,6 +786,7 @@ $translations = [
             color: var(--danger);
         }
 
+        /* Footer */
         footer {
             background: rgba(13, 13, 23, 0.95);
             backdrop-filter: blur(20px);
@@ -935,6 +930,7 @@ $translations = [
             font-size: 0.85rem;
         }
 
+        /* Анимации */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -951,6 +947,7 @@ $translations = [
             to { opacity: 1; }
         }
 
+        /* Responsive */
         @media (max-width: 992px) {
             .header-nav {
                 display: none;
@@ -1127,9 +1124,11 @@ $translations = [
     </style>
 </head>
 <body>
+    <!-- Декоративные элементы -->
     <div class="floating-element"></div>
     <div class="floating-element"></div>
 
+    <!-- Header -->
     <header>
         <div class="container header-wrapper">
             <div class="header-top">
@@ -1159,6 +1158,7 @@ $translations = [
                 </div>
             </div>
             
+            <!-- Основная навигация -->
             <nav class="header-nav">
                 <ul class="nav-tabs">
                     <li class="nav-tab">
@@ -1199,6 +1199,7 @@ $translations = [
                 </ul>
             </nav>
             
+            <!-- Мобильная навигация -->
             <div class="mobile-nav" id="mobileNav">
                 <ul class="mobile-nav-tabs">
                     <li class="mobile-nav-tab">
@@ -1241,6 +1242,7 @@ $translations = [
         </div>
     </header>
 
+    <!-- Main Content -->
     <main class="container">
         <div class="login-container">
             <div class="login-header">
@@ -1292,6 +1294,7 @@ $translations = [
         </div>
     </main>
 
+    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -1333,17 +1336,21 @@ $translations = [
     </footer>
 
     <script>
+        // Функция смены языка
         function changeLanguage(lang) {
             const url = new URL(window.location.href);
             url.searchParams.set('lang', lang);
             window.location.href = url.toString();
         }
 
+        // Инициализация при загрузке DOM
         document.addEventListener('DOMContentLoaded', function() {
+            // Получаем элементы
             const burgerMenu = document.getElementById('burgerMenu');
             const mobileNav = document.getElementById('mobileNav');
             const header = document.querySelector('header');
             
+            // Функция обновления позиции мобильного меню
             function updateMobileNavPosition() {
                 if (mobileNav && header) {
                     const headerHeight = header.offsetHeight;
@@ -1351,6 +1358,7 @@ $translations = [
                 }
             }
             
+            // Функция закрытия мобильного меню
             function closeMobileMenu() {
                 if (burgerMenu && mobileNav) {
                     burgerMenu.classList.remove('active');
@@ -1359,12 +1367,14 @@ $translations = [
                 }
             }
             
+            // Функция открытия/закрытия мобильного меню
             function toggleMobileMenu(e) {
                 if (e) e.stopPropagation();
                 if (burgerMenu && mobileNav) {
                     burgerMenu.classList.toggle('active');
                     mobileNav.classList.toggle('active');
                     
+                    // Блокируем/разблокируем прокрутку body
                     if (mobileNav.classList.contains('active')) {
                         document.body.style.overflow = 'hidden';
                     } else {
@@ -1373,18 +1383,24 @@ $translations = [
                 }
             }
             
+            // Инициализация бургер-меню
             if (burgerMenu && mobileNav) {
+                // Устанавливаем начальную позицию
                 updateMobileNavPosition();
                 
+                // Обновляем позицию при изменении размера окна
                 window.addEventListener('resize', function() {
                     updateMobileNavPosition();
+                    // Закрываем меню при изменении ориентации экрана
                     if (window.innerWidth > 992) {
                         closeMobileMenu();
                     }
                 });
                 
+                // Обработчик клика по бургер-меню
                 burgerMenu.addEventListener('click', toggleMobileMenu);
                 
+                // Закрытие при клике вне меню
                 document.addEventListener('click', function(event) {
                     if (mobileNav.classList.contains('active')) {
                         if (!burgerMenu.contains(event.target) && !mobileNav.contains(event.target)) {
@@ -1393,6 +1409,7 @@ $translations = [
                     }
                 });
                 
+                // Закрытие при клике на ссылку в меню
                 const mobileLinks = document.querySelectorAll('.mobile-nav-link');
                 mobileLinks.forEach(link => {
                     link.addEventListener('click', function() {
@@ -1400,11 +1417,13 @@ $translations = [
                     });
                 });
                 
+                // Предотвращаем всплытие кликов внутри мобильного меню
                 mobileNav.addEventListener('click', function(e) {
                     e.stopPropagation();
                 });
             }
             
+            // Автофокус на поле username
             const usernameInput = document.querySelector('input[name="username"]');
             if (usernameInput && usernameInput.value === '') {
                 usernameInput.focus();
@@ -1413,7 +1432,3 @@ $translations = [
     </script>
 </body>
 </html>
-<?php
-// Завершаем буферизацию
-ob_end_flush();
-?>
