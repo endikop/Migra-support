@@ -98,7 +98,4 @@ function displayUserAvatar($pdo, $userId, $userName, $size = 'small') {
                 </div>';
     }
 }
-<<<<<<< HEAD
 // ВАЖНО: НЕТ ЗАКРЫВАЮЩЕГО ТЕГА ?> В КОНЦЕ!
-=======
->>>>>>> e9096b0373b627a89cf4ea4768c54313d1ae00cf
