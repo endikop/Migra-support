@@ -1,10 +1,9 @@
 <?php
-// Убираем session_start() отсюда
-// $host = 'localhost';
-// $dbname = 'migrant_system';
-// $username = 'root';
-// $password = '';
-// $port = 3307;
+// Добавьте ЭТИ строки в САМОЕ НАЧАЛО config.php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+// ... остальной код config.php ...
 
 $host = getenv('MYSQL_HOST');
 $dbname = getenv('MYSQL_DB');
