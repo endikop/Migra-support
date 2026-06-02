@@ -1,16 +1,17 @@
-﻿<?php
-// Включаем буферизацию вывода ДО любого кода
-if (ob_get_level() == 0) {
-    ob_start();
-}
+<?php
+// Самая первая операция - буферизация вывода
+ob_start();
 
+// Затем стартуем сессию
 session_start();
+
+// Подключаем конфигурацию
 require_once 'config.php';
 
 // Если пользователь уже авторизован, перенаправляем на профиль
 if (isset($_SESSION['user_id'])) {
     // Очищаем буфер вывода перед установкой заголовков
-    ob_end_clean();
+    @ob_end_clean();
     header('Location: profile.php');
     exit();
 }
@@ -112,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         unset($_SESSION['redirect_after_login']);
                         
                         // Очищаем буфер вывода перед установкой заголовков
-                        ob_end_clean();
+                        @ob_end_clean();
                         header("Location: $redirect");
                         exit();
                     }

@@ -1,4 +1,7 @@
-﻿<?php
+<?php
+// Самая первая операция - буферизация вывода
+ob_start();
+
 session_start();
 require_once 'config.php';
 

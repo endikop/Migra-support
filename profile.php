@@ -1,16 +1,17 @@
-﻿<?php
-// Включаем буферизацию вывода ДО любого кода
-if (ob_get_level() == 0) {
-    ob_start();
-}
+<?php
+// Самая первая операция - буферизация вывода
+ob_start();
 
+// Затем стартуем сессию
 session_start();
+
+// Подключаем конфигурацию
 require_once 'config.php';
 
 // Проверяем авторизацию
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
-    ob_end_clean();
+    @@ob_end_clean();
     header('Location: login.php');
     exit();
 }
