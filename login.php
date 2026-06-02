@@ -1,8 +1,20 @@
 ﻿<?php
+// Включаем буферизацию вывода для предотвращения ошибок с заголовками
+if (!ob_get_level()) {
+    ob_start();
+}
+
+session_start();
 require_once 'config.php';
+
+// Отключаем вывод ошибок на экран в продакшене
+error_reporting(0);
+ini_set('display_errors', 0);
 
 // Если пользователь уже авторизован, перенаправляем на профиль
 if (isset($_SESSION['user_id'])) {
+    // Очищаем буфер вывода перед установкой заголовков
+    ob_end_clean();
     header('Location: profile.php');
     exit();
 }
@@ -80,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     } elseif ($user['status'] === 'suspended') {
                         $errors[] = t('Аккаунт временно приостановлен.', 'Account temporarily suspended.', 'Conta temporariamente suspensa.', 'Compte temporairement suspendu.', 'Konto vorübergehend gesperrt.');
                     } else {
-                        // Обновляем last_activity
+                        // Обновляем last_activity вместо last_login
                         $stmt = $pdo->prepare("UPDATE users SET last_activity = NOW() WHERE id = ?");
                         $stmt->execute([$user['id']]);
                         
@@ -98,6 +110,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $redirect = $_SESSION['redirect_after_login'] ?? 'profile.php';
                         unset($_SESSION['redirect_after_login']);
                         
+                        // Очищаем буфер вывода перед установкой заголовков
+                        ob_end_clean();
                         header("Location: $redirect");
                         exit();
                     }
@@ -415,7 +429,7 @@ $translations = [
             box-shadow: 0 12px 25px rgba(58, 134, 255, 0.4);
         }
 
-        /* Бургер-меню */
+        /* Бургер-меню - ИСПРАВЛЕНО */
         .burger-menu {
             display: none;
             flex-direction: column;
@@ -525,7 +539,7 @@ $translations = [
             transform: scale(1.1);
         }
 
-        /* Мобильная навигация */
+        /* Мобильная навигация - ИСПРАВЛЕНА */
         .mobile-nav {
             display: none;
             position: fixed;
@@ -947,7 +961,8 @@ $translations = [
             to { opacity: 1; }
         }
 
-        /* Responsive */
+        /* ===== RESPONSIVE STYLES ===== */
+
         @media (max-width: 992px) {
             .header-nav {
                 display: none;
@@ -1080,11 +1095,15 @@ $translations = [
             }
         }
 
+        /* ===== UNIVERSAL MOBILE FIXES ===== */
+
+        /* Предотвращаем горизонтальный скролл */
         html, body { 
             max-width: 100%; 
             overflow-x: hidden; 
         }
 
+        /* Фикс backdrop-filter на старых Android */
         @supports not (backdrop-filter: blur(1px)) {
             header, .header-nav, .mobile-nav, .login-form, footer {
                 backdrop-filter: none !important;
@@ -1096,10 +1115,12 @@ $translations = [
             .login-form { background: rgba(26, 26, 46, 0.95) !important; }
         }
 
+        /* iOS Safari sticky fix */
         @supports (-webkit-touch-callout: none) {
             header { position: -webkit-sticky; position: sticky; }
         }
 
+        /* Touch: увеличиваем области нажатия на мобильных */
         @media (hover: none) and (pointer: coarse) {
             .mobile-nav-tab {
                 min-height: 48px;
@@ -1114,6 +1135,7 @@ $translations = [
             }
         }
         
+        /* Запрещаем масштабирование полей ввода на iOS */
         @media screen and (-webkit-min-device-pixel-ratio: 0) {
             select,
             textarea,
@@ -1256,7 +1278,7 @@ $translations = [
                         <h4><i class="fas fa-exclamation-circle"></i> <?php echo $translations['login_error']; ?></h4>
                         <ul>
                             <?php foreach ($errors as $error): ?>
-                                <li><?php echo htmlspecialchars($error); ?></li>
+                                <li><?php echo $error; ?></li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
@@ -1403,6 +1425,7 @@ $translations = [
                 // Закрытие при клике вне меню
                 document.addEventListener('click', function(event) {
                     if (mobileNav.classList.contains('active')) {
+                        // Проверяем, был ли клик не по бургер-меню и не по мобильной навигации
                         if (!burgerMenu.contains(event.target) && !mobileNav.contains(event.target)) {
                             closeMobileMenu();
                         }

@@ -1,8 +1,10 @@
 <?php
-// Запускаем сессию в самом начале
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+// Убираем session_start() отсюда
+// $host = 'localhost';
+// $dbname = 'migrant_system';
+// $username = 'root';
+// $password = '';
+// $port = 3307;
 
 $host = getenv('MYSQL_HOST');
 $dbname = getenv('MYSQL_DB');
@@ -13,6 +15,7 @@ $port = 3306;
 date_default_timezone_set('Europe/Moscow');
 
 try {
+    // Опции подключения должны передаваться сразу в конструктор PDO
     $options = [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -38,31 +41,41 @@ function isAdmin() {
     return isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin';
 }
 
+// Функция для проверки, что пользователь активен (не заблокирован и не неактивен)
 function isUserActive($pdo = null) {
     if (!isset($_SESSION['user_id'])) {
         return false;
     }
     
+    // Если передан объект PDO, проверяем статус в базе данных
     if ($pdo) {
         try {
             $stmt = $pdo->prepare("SELECT status FROM users WHERE id = ?");
             $stmt->execute([$_SESSION['user_id']]);
             $status = $stmt->fetchColumn();
+            
+            // Обновляем статус в сессии для быстрого доступа
             $_SESSION['status'] = $status;
+            
+            // Пользователь активен только если статус 'active'
             return $status === 'active';
         } catch (PDOException $e) {
+            // В случае ошибки считаем пользователя неактивным
             return false;
         }
     }
     
+    // Если PDO не передан, проверяем статус в сессии
     return isset($_SESSION['status']) && $_SESSION['status'] === 'active';
 }
 
+// Функция для проверки, может ли пользователь выполнять действия (авторизован И активен)
 function canUserPerformActions($pdo = null) {
     if (!isLoggedIn()) {
         return false;
     }
     
+    // Если PDO не передан, пытаемся использовать глобальную переменную
     if ($pdo === null) {
         global $pdo;
     }
@@ -70,6 +83,9 @@ function canUserPerformActions($pdo = null) {
     return isUserActive($pdo);
 }
 
+
+
+// Функция для получения аватара пользователя
 function getUserAvatar($pdo, $userId) {
     try {
         $stmt = $pdo->prepare("SELECT avatar FROM users WHERE id = ?");
@@ -81,6 +97,7 @@ function getUserAvatar($pdo, $userId) {
     }
 }
 
+// Функция для отображения аватара в HTML
 function displayUserAvatar($pdo, $userId, $userName, $size = 'small') {
     $avatar = getUserAvatar($pdo, $userId);
     $sizeClass = $size === 'large' ? 'user-avatar-large' : 'user-avatar';
@@ -98,4 +115,3 @@ function displayUserAvatar($pdo, $userId, $userName, $size = 'small') {
                 </div>';
     }
 }
-// КОНЕЦ ФАЙЛА - НЕТ ЗАКРЫВАЮЩЕГО ТЕГА ?>
