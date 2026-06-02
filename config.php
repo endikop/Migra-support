@@ -1,5 +1,5 @@
 <?php
-// Добавьте ЭТИ строки в САМОЕ НАЧАЛО config.php
+// Запускаем сессию в самом начале
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -98,4 +98,4 @@ function displayUserAvatar($pdo, $userId, $userName, $size = 'small') {
                 </div>';
     }
 }
-// ВАЖНО: НЕТ ЗАКРЫВАЮЩЕГО ТЕГА ?> В КОНЦЕ!
+// КОНЕЦ ФАЙЛА - НЕТ ЗАКРЫВАЮЩЕГО ТЕГА ?>
