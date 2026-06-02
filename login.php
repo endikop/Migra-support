@@ -1,5 +1,6 @@
 ﻿<?php
 require_once 'config.php';
+//dsdsds
 
 // Если пользователь уже авторизован, перенаправляем на профиль
 if (isset($_SESSION['user_id'])) {
