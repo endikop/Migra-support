@@ -1,4 +1,5 @@
-﻿<?php
+<?php
+session_start();
 // Отключаем вывод ошибок для чистого JSON ответа
 error_reporting(0);
 ini_set('display_errors', 0);

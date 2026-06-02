@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // РќРµ Р·Р°РїСѓСЃРєР°РµРј session_start() РїРѕРІС‚РѕСЂРЅРѕ
 require_once '../src/config/config.php'
 require_once '../src/components/header_nav.php';;

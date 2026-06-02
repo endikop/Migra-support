@@ -1,4 +1,10 @@
 <?php
+// Включаем буферизацию вывода ДО любого кода
+if (ob_get_level() == 0) {
+    ob_start();
+}
+
+session_start();
 
 require_once 'config.php';
 
