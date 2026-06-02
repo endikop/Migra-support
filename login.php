@@ -98,8 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         
                         // Перенаправляем на страницу, с которой пришли или на профиль
                         $redirect = $_SESSION['redirect_after_login'] ?? 'profile.php';
-                        unset($_SESSION['redirect_after_login']);
-                        
+                        unset($_SESSION['redirect_after_login']);    
                         header("Location: $redirect");
                         exit();
                     }
