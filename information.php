@@ -1,13 +1,14 @@
 ﻿<?php
+session_start();
 require_once 'config.php';
+
+// Подключаем файл с данными аватара
+require_once 'include_avatar.php';
 
 // Проверяем авторизацию
 $isLoggedIn = isset($_SESSION['user_id']);
 $userName = $isLoggedIn ? $_SESSION['first_name'] . ' ' . $_SESSION['last_name'] : '';
 $userType = $isLoggedIn ? $_SESSION['user_type'] : '';
-
-// Подключаем файл с данными аватара
-require_once 'include_avatar.php';
 
 // Поддерживаемые языки
 $supportedLanguages = ['ru', 'en', 'pt', 'fr', 'de'];
@@ -1804,7 +1805,7 @@ $translations = [
                         <?php endif; ?>
                         <div class="profile-dropdown">
                             <div class="user-avatar" id="profileAvatar" title="<?php echo t('Перейти в профиль', 'Go to Profile', 'Ir para o Perfil', 'Aller au Profil', 'Zum Profil gehen'); ?>">
-                                <?php if ($userAvatar): ?>
+                                <?php if (isset($userAvatar) && $userAvatar): ?>
                                     <img src="<?php echo htmlspecialchars($userAvatar); ?>" 
                                          alt="<?php echo htmlspecialchars($userName); ?>"
                                          style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
