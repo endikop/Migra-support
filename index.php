@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 require_once 'config.php';
 
@@ -3147,19 +3148,7 @@ $translations = [
         <?php endif; ?>
 
         <!-- Экстренная помощь (с подсветкой при наведении) -->
-        <div class="emergency-help">
-            <div class="emergency-icon">
-                <i class="fas fa-phone-alt"></i>
-            </div>
-            <div class="emergency-content">
-                <h3><?php echo $translations['emergency_help']; ?></h3>
-                <p><?php echo $translations['emergency_text']; ?></p>
-                <span class="hotline-number">
-                    <i class="fas fa-phone-volume"></i> <?php echo $translations['hotline']; ?>: +375 (17) 555-55-55
-                </span>
-                <p><i class="fas fa-clock"></i> <?php echo $translations['available_24_7']; ?></p>
-            </div>
-        </div>
+
     </main>
 
     <!-- Footer -->
@@ -3169,12 +3158,7 @@ $translations = [
                 <div class="footer-section">
                     <h3><?php echo $translations['footer_title']; ?></h3>
                     <p><?php echo $translations['footer_desc']; ?></p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-telegram"></i></a>
-                        <a href="#"><i class="fab fa-viber"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
+
                 </div>
                 
                 <div class="footer-section">
@@ -3185,8 +3169,6 @@ $translations = [
                         <li><a href="translator.php"><i class="fas fa-language"></i> <?php echo $translations['translator']; ?></a></li>
                         <li><a href="map.php"><i class="fas fa-map-marked-alt"></i> <?php echo $translations['map_services']; ?></a></li>
                         <li><a href="information.php"><i class="fas fa-info-circle"></i> <?php echo $translations['information']; ?></a></li>
-                        <li><a href="login.php"><i class="fas fa-sign-in-alt"></i> <?php echo $translations['login_nav']; ?></a></li>
-                        <li><a href="register.php"><i class="fas fa-user-plus"></i> <?php echo $translations['register_nav']; ?></a></li>
                     </ul>
                 </div>
                 
@@ -3194,7 +3176,6 @@ $translations = [
                     <h3><?php echo $translations['contacts']; ?></h3>
                     <ul class="footer-links">
                         <li><i class="fas fa-envelope"></i> info@migrasupport.by</li>
-                        <li><i class="fas fa-phone"></i> +375 (17) 555-55-55</li>
                         <li><i class="fas fa-map-marker-alt"></i> <?php echo t('Минск, Беларусь', 'Minsk, Belarus', 'Minsk, Bielorrússia', 'Minsk, Biélorussie', 'Minsk, Belarus'); ?></li>
                         <li><i class="fas fa-clock"></i> <?php echo $translations['support_247']; ?></li>
                     </ul>
@@ -3202,7 +3183,7 @@ $translations = [
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2023-2026 MigraSupport. <?php echo $translations['all_rights_reserved']; ?></p>
+                <p>&copy; 2026 MigraSupport. <?php echo $translations['all_rights_reserved']; ?></p>
             </div>
         </div>
     </footer>
