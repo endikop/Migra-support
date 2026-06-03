@@ -1,13 +1,36 @@
 <?php
+// Самая первая операция - буферизация вывода
+ob_start();
+
+// Затем стартуем сессию
+session_start();
+
 require_once 'config.php';
 
 // Подключаем файл с данными аватара
 require_once 'include_avatar.php';
 
-// Проверяем авторизацию
+// Проверяем авторизацию для отображения аватара и навигации
 $isLoggedIn = isset($_SESSION['user_id']);
-$userName = $isLoggedIn ? $_SESSION['first_name'] . ' ' . $_SESSION['last_name'] : '';
-$userType = $isLoggedIn ? $_SESSION['user_type'] : '';
+$userName = '';
+$userAvatar = '';
+$userType = '';
+
+if ($isLoggedIn) {
+    $user_id = $_SESSION['user_id'];
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+        $stmt->execute([$user_id]);
+        $user = $stmt->fetch();
+        if ($user) {
+            $userName = $user['first_name'] . ' ' . $user['last_name'];
+            $userAvatar = $user['avatar'] ?? '';
+            $userType = $user['user_type'] ?? '';
+        }
+    } catch (PDOException $e) {
+        // Ошибка, но не прерываем работу
+    }
+}
 
 // Поддерживаемые языки
 $supportedLanguages = ['ru', 'en', 'pt', 'fr', 'de'];
@@ -241,7 +264,7 @@ $translations = [
             'Право на свободу передвижения',
             'Right to freedom of movement',
             'Direito à liberdade de circulação',
-            'Droit à la liberté de circulation',
+            'Droit à la liberté de mouvement',
             'Recht auf Freizügigkeit'
         )
     ],
@@ -271,7 +294,7 @@ $translations = [
             'Уплата налогов',
             'Payment of taxes',
             'Pagamento de impostos',
-            'Paiement des impôts',
+            'Paiement des taxes',
             'Steuerzahlung'
         ),
         t(
@@ -502,6 +525,9 @@ $translations = [
         'Alle Rechte vorbehalten.'
     )
 ];
+
+// Завершаем буферизацию перед выводом HTML
+ob_end_flush();
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $lang; ?>">
@@ -1804,7 +1830,7 @@ $translations = [
                         <?php endif; ?>
                         <div class="profile-dropdown">
                             <div class="user-avatar" id="profileAvatar" title="<?php echo t('Перейти в профиль', 'Go to Profile', 'Ir para o Perfil', 'Aller au Profil', 'Zum Profil gehen'); ?>">
-                                <?php if (isset($userAvatar) && $userAvatar): ?>
+                                <?php if ($userAvatar): ?>
                                     <img src="<?php echo htmlspecialchars($userAvatar); ?>" 
                                          alt="<?php echo htmlspecialchars($userName); ?>"
                                          style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
