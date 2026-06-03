@@ -752,7 +752,7 @@ function safeJsonEncode($data) {
             to { opacity: 1; }
         }
 
-        /* Header - Обновленное меню навигации */
+        /* Header - Обновленное меню навигации как в index.php */
         header {
             background: rgba(26, 26, 46, 0.95);
             backdrop-filter: blur(20px);
@@ -773,8 +773,6 @@ function safeJsonEncode($data) {
             justify-content: space-between;
             align-items: center;
             padding: 1rem 0;
-            gap: 10px;
-            flex-wrap: wrap;
         }
 
         .logo {
@@ -786,7 +784,6 @@ function safeJsonEncode($data) {
             color: white;
             text-decoration: none;
             transition: var(--transition);
-            flex-shrink: 0;
         }
 
         .logo:hover {
@@ -818,50 +815,46 @@ function safeJsonEncode($data) {
         .header-right {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
             margin-left: auto;
         }
 
-        /* Language Selector - исправлен для мобильных устройств */
+        /* Language Selector */
         .language-selector {
             display: flex;
             gap: 5px;
             align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 4px;
         }
 
         .lang-btn {
-            background: transparent;
+            background: rgba(255, 255, 255, 0.1);
             border: none;
             border-radius: 8px;
-            padding: 6px 10px;
-            color: rgba(255, 255, 255, 0.7);
+            padding: 8px 12px;
+            color: white;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            flex: 0 0 auto;
+            min-width: 50px;
             text-align: center;
-            white-space: nowrap;
         }
 
         .lang-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         .lang-btn.active {
             background: var(--gradient-primary);
-            color: white;
-            box-shadow: 0 2px 8px rgba(58, 134, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
+            gap: 12px;
         }
 
         .user-avatar {
@@ -879,7 +872,6 @@ function safeJsonEncode($data) {
             transition: var(--transition);
             cursor: pointer;
             overflow: hidden;
-            flex-shrink: 0;
         }
 
         .user-avatar:hover {
@@ -952,7 +944,7 @@ function safeJsonEncode($data) {
         }
 
         .btn {
-            padding: 8px 16px;
+            padding: 10px 20px;
             border: none;
             border-radius: 10px;
             font-weight: 600;
@@ -963,18 +955,17 @@ function safeJsonEncode($data) {
             gap: 8px;
             cursor: pointer;
             transition: var(--transition);
-            white-space: nowrap;
         }
 
         .btn-primary {
             background: var(--gradient-primary);
             color: white;
-            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
+            box-shadow: 0 6px 15px rgba(58, 134, 255, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(58, 134, 255, 0.4);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(58, 134, 255, 0.4);
         }
 
         .btn-primary:disabled {
@@ -987,28 +978,28 @@ function safeJsonEncode($data) {
             display: none;
             flex-direction: column;
             cursor: pointer;
-            padding: 8px;
-            gap: 4px;
+            padding: 10px;
+            gap: 5px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             transition: var(--transition);
-            flex-shrink: 0;
         }
 
         .burger-menu:hover {
             background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
         }
 
         .burger-line {
-            width: 22px;
-            height: 2.5px;
+            width: 24px;
+            height: 3px;
             background: white;
             transition: var(--transition);
             border-radius: 2px;
         }
 
         .burger-menu.active .burger-line:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
+            transform: rotate(45deg) translate(6px, 6px);
             background: var(--accent);
         }
 
@@ -1017,16 +1008,17 @@ function safeJsonEncode($data) {
         }
 
         .burger-menu.active .burger-line:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
+            transform: rotate(-45deg) translate(6px, -6px);
             background: var(--accent);
         }
 
-        /* Основная навигация */
+        /* Основная навигация в хедере */
         .header-nav {
             background: rgba(26, 26, 46, 0.95);
             backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         .nav-tabs {
@@ -1043,14 +1035,14 @@ function safeJsonEncode($data) {
         }
 
         .nav-tab {
-            padding: 14px 18px;
+            padding: 16px 20px;
             transition: var(--transition);
             border-bottom: 3px solid transparent;
             font-weight: 500;
             color: var(--gray-light);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             white-space: nowrap;
             border-radius: 8px 8px 0 0;
         }
@@ -1060,33 +1052,37 @@ function safeJsonEncode($data) {
             color: inherit;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .nav-tab:hover {
             color: white;
             background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
         }
 
         .nav-tab.active {
             color: white;
             border-bottom-color: var(--accent);
             background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .nav-tab i {
-            font-size: 1rem;
+            font-size: 1.1rem;
+            transition: var(--transition);
         }
 
         .nav-tab.active i {
             color: var(--accent);
+            transform: scale(1.1);
         }
 
         /* Мобильная навигация */
         .mobile-nav {
             display: none;
             position: fixed;
-            top: 65px;
+            top: 72px;
             left: 0;
             right: 0;
             background: rgba(26, 26, 46, 0.98);
@@ -1100,18 +1096,18 @@ function safeJsonEncode($data) {
         }
         
         .mobile-nav.active {
-            max-height: 450px;
+            max-height: 500px;
         }
         
         .mobile-nav-tabs {
             display: flex;
             flex-direction: column;
             list-style: none;
-            padding: 12px;
+            padding: 15px;
         }
         
         .mobile-nav-tab {
-            padding: 12px 16px;
+            padding: 14px 18px;
             transition: var(--transition);
             font-weight: 500;
             color: var(--gray-light);
@@ -1119,7 +1115,7 @@ function safeJsonEncode($data) {
             align-items: center;
             gap: 10px;
             border-radius: 8px;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
         }
         
         .mobile-nav-link {
@@ -1149,7 +1145,7 @@ function safeJsonEncode($data) {
 
         main {
             padding: 40px 0;
-            margin-top: 100px;
+            margin-top: 120px;
         }
 
         /* Hero Section */
@@ -1157,7 +1153,7 @@ function safeJsonEncode($data) {
             background: rgba(26, 26, 46, 0.7);
             backdrop-filter: blur(20px);
             border-radius: var(--radius-lg);
-            padding: 50px 30px;
+            padding: 60px 40px;
             margin-bottom: 40px;
             box-shadow: var(--shadow-xl);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1167,20 +1163,33 @@ function safeJsonEncode($data) {
             background-position: center;
             background-blend-mode: overlay;
             background-color: rgba(26, 26, 46, 0.85);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
         }
 
         .hero-title {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 800;
             margin-bottom: 20px;
             color: white;
             line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .hero-subtitle {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             max-width: 800px;
             margin-left: auto;
             margin-right: auto;
@@ -1191,7 +1200,7 @@ function safeJsonEncode($data) {
             background: rgba(26, 26, 46, 0.7);
             backdrop-filter: blur(20px);
             border-radius: var(--radius);
-            padding: 25px;
+            padding: 30px;
             margin-bottom: 25px;
             box-shadow: var(--shadow-lg);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1199,24 +1208,24 @@ function safeJsonEncode($data) {
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             box-shadow: var(--shadow-xl);
             border-color: rgba(255, 255, 255, 0.2);
         }
 
         .card-title {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: white;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .card-title i {
             color: var(--accent);
-            font-size: 1.3rem;
+            font-size: 1.4rem;
         }
 
         /* Chat Container */
@@ -1234,57 +1243,57 @@ function safeJsonEncode($data) {
         .chat-header {
             background: var(--gradient-secondary);
             color: white;
-            padding: 15px 20px;
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
         }
 
         .chat-header h3 {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 1rem;
+            gap: 10px;
+            font-size: 1.2rem;
             margin: 0;
         }
 
         .online-count {
             background: rgba(255, 255, 255, 0.2);
-            padding: 5px 10px;
+            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
         }
 
         .chat-messages {
             flex: 1;
-            padding: 15px;
+            padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
             background: rgba(0, 0, 0, 0.2);
         }
 
         .chat-messages::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
 
         .chat-messages::-webkit-scrollbar-track {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
+            border-radius: 4px;
         }
 
         .chat-messages::-webkit-scrollbar-thumb {
             background: var(--primary);
-            border-radius: 3px;
+            border-radius: 4px;
         }
 
         .message {
-            max-width: 80%;
-            padding: 10px 14px;
-            border-radius: 16px;
+            max-width: 75%;
+            padding: 14px 18px;
+            border-radius: 18px;
             position: relative;
             animation: fadeInUp 0.3s ease;
             word-wrap: break-word;
@@ -1294,24 +1303,24 @@ function safeJsonEncode($data) {
             align-self: flex-end;
             background: var(--gradient-primary);
             color: white;
-            border-bottom-right-radius: 4px;
+            border-bottom-right-radius: 5px;
         }
 
         .message.other {
             align-self: flex-start;
             background: rgba(255, 255, 255, 0.1);
             color: white;
-            border-bottom-left-radius: 4px;
+            border-bottom-left-radius: 5px;
         }
 
         .message-header {
             display: flex;
             justify-content: space-between;
             margin-bottom: 5px;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             opacity: 0.8;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 8px;
         }
 
         .message-sender {
@@ -1319,19 +1328,18 @@ function safeJsonEncode($data) {
             cursor: pointer;
         }
 
-        .message-time {
-            font-size: 0.65rem;
+        .message-sender:hover {
+            text-decoration: underline;
         }
 
-        .message-text {
-            font-size: 0.9rem;
-            line-height: 1.4;
+        .message-time {
+            font-size: 0.7rem;
         }
 
         .date-divider {
             display: flex;
             align-items: center;
-            margin: 10px 0;
+            margin: 15px 0;
         }
 
         .date-divider::before,
@@ -1343,26 +1351,26 @@ function safeJsonEncode($data) {
         }
 
         .date-divider span {
-            padding: 4px 12px;
+            padding: 5px 15px;
             background: rgba(58, 134, 255, 0.2);
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--primary-light);
             border: 1px solid rgba(58, 134, 255, 0.3);
         }
 
         .chat-input-area {
-            padding: 15px;
+            padding: 20px;
             background: rgba(26, 26, 46, 0.9);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: flex-end;
         }
 
         .chat-input {
             flex: 1;
-            padding: 10px 14px;
+            padding: 14px 18px;
             border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             resize: none;
@@ -1370,9 +1378,9 @@ function safeJsonEncode($data) {
             transition: var(--transition);
             background: rgba(255, 255, 255, 0.05);
             color: white;
-            font-size: 0.9rem;
-            min-height: 45px;
-            max-height: 100px;
+            font-size: 0.95rem;
+            min-height: 55px;
+            max-height: 110px;
         }
 
         .chat-input:focus {
@@ -1389,7 +1397,7 @@ function safeJsonEncode($data) {
         /* Rules Card */
         .rules-card {
             background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
+            padding: 20px;
             border-radius: var(--radius);
         }
 
@@ -1400,27 +1408,27 @@ function safeJsonEncode($data) {
 
         .rules-card li {
             margin-bottom: 8px;
-            font-size: 0.9rem;
+            position: relative;
         }
 
         /* Services Grid */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
         }
 
         .service-card {
             background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
+            padding: 25px;
             border-radius: var(--radius);
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: var(--transition);
         }
 
         .service-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
             box-shadow: var(--shadow-xl);
             background: rgba(255, 255, 255, 0.08);
             border-color: var(--primary);
@@ -1428,30 +1436,28 @@ function safeJsonEncode($data) {
 
         .service-card h4 {
             color: white;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .service-card p {
             color: var(--gray-light);
-            font-size: 0.9rem;
-            line-height: 1.6;
         }
 
         /* Notification */
         .notification {
-            padding: 12px 16px;
+            padding: 15px 20px;
             border-radius: var(--radius);
-            margin: 10px 0;
+            margin: 15px 0;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             animation: fadeInUp 0.5s ease;
             border-left: 4px solid;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
 
         .notification.success {
@@ -1483,25 +1489,35 @@ function safeJsonEncode($data) {
             background: rgba(13, 13, 23, 0.95);
             backdrop-filter: blur(20px);
             color: white;
-            padding: 40px 0 20px;
-            margin-top: 50px;
+            padding: 50px 0 25px;
+            margin-top: 70px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
         }
 
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
+            gap: 35px;
+            margin-bottom: 35px;
         }
 
         .footer-section h3 {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             color: white;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 700;
             position: relative;
-            padding-bottom: 8px;
+            padding-bottom: 10px;
         }
 
         .footer-section h3::after {
@@ -1509,7 +1525,7 @@ function safeJsonEncode($data) {
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 40px;
+            width: 50px;
             height: 3px;
             background: var(--gradient-primary);
             border-radius: 2px;
@@ -1517,9 +1533,9 @@ function safeJsonEncode($data) {
 
         .footer-section p {
             color: var(--gray-light);
-            line-height: 1.7;
-            margin-bottom: 15px;
-            font-size: 0.85rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
         }
 
         .footer-links {
@@ -1527,7 +1543,7 @@ function safeJsonEncode($data) {
         }
 
         .footer-links li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .footer-links a {
@@ -1536,8 +1552,8 @@ function safeJsonEncode($data) {
             transition: var(--transition);
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.85rem;
+            gap: 8px;
+            font-size: 0.9rem;
         }
 
         .footer-links a:hover {
@@ -1546,49 +1562,62 @@ function safeJsonEncode($data) {
         }
 
         .footer-links a i {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--primary);
         }
 
         .social-links {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 12px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
 
         .social-links a {
-            width: 36px;
-            height: 36px;
+            width: 42px;
+            height: 42px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             text-decoration: none;
             transition: var(--transition);
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
         .social-links a:hover {
             background: var(--gradient-primary);
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
+            transform: translateY(-4px) rotate(5deg);
+            box-shadow: 0 6px 15px rgba(58, 134, 255, 0.3);
         }
 
         .footer-bottom {
             text-align: center;
-            padding-top: 20px;
+            padding-top: 25px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--gray-light);
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        /* Censorship indicator */
+        .censorship-notice {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 5px;
         }
 
         /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .services-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
         @media (max-width: 992px) {
             .hero-title {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
             
             .hero-subtitle {
@@ -1604,7 +1633,7 @@ function safeJsonEncode($data) {
             }
             
             .header-right {
-                gap: 8px;
+                gap: 10px;
             }
             
             main {
@@ -1613,11 +1642,15 @@ function safeJsonEncode($data) {
             
             .mobile-nav {
                 display: block;
-                top: 58px;
+                top: 60px;
+            }
+            
+            .services-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             }
             
             .card-title {
-                font-size: 1.3rem;
+                font-size: 1.4rem;
             }
         }
 
@@ -1626,135 +1659,88 @@ function safeJsonEncode($data) {
                 padding: 0 15px;
             }
             
-            .header-top {
-                gap: 8px;
-            }
-            
-            .logo {
-                gap: 8px;
-            }
-            
-            .logo-icon {
-                width: 32px;
-                height: 32px;
-                font-size: 0.9rem;
-            }
-            
-            .logo-text {
-                font-size: 1.1rem;
-            }
-            
-            .language-selector {
-                padding: 3px;
-                gap: 3px;
-            }
-            
-            .lang-btn {
-                padding: 4px 6px;
-                font-size: 0.65rem;
-            }
-            
-            .user-avatar {
-                width: 32px;
-                height: 32px;
-                font-size: 0.8rem;
-            }
-            
-            .btn {
-                padding: 6px 12px;
-                font-size: 0.75rem;
-            }
-            
-            .btn i {
-                font-size: 0.7rem;
-            }
-            
             .hero-section {
-                padding: 30px 20px;
+                padding: 40px 20px;
             }
             
             .hero-title {
-                font-size: 1.6rem;
+                font-size: 1.9rem;
             }
             
             .hero-subtitle {
-                font-size: 0.9rem;
+                font-size: 0.95rem;
             }
             
             .card {
-                padding: 18px;
+                padding: 20px;
             }
             
             .card-title {
-                font-size: 1.2rem;
+                font-size: 1.3rem;
             }
             
             .chat-container {
                 height: 450px;
             }
             
-            .chat-header h3 {
-                font-size: 0.9rem;
+            .chat-header {
+                flex-direction: column;
+                text-align: center;
             }
             
-            .online-count {
-                font-size: 0.75rem;
-                padding: 4px 8px;
+            .chat-header h3 {
+                font-size: 1rem;
             }
             
             .message {
                 max-width: 90%;
-                padding: 8px 12px;
-            }
-            
-            .message-sender {
-                font-size: 0.65rem;
-            }
-            
-            .message-time {
-                font-size: 0.6rem;
-            }
-            
-            .message-text {
-                font-size: 0.85rem;
             }
             
             .chat-input-area {
-                padding: 12px;
+                padding: 15px;
                 gap: 8px;
             }
             
             .chat-input {
-                padding: 8px 12px;
-                font-size: 0.85rem;
-                min-height: 40px;
+                padding: 10px 14px;
+                font-size: 0.9rem;
+                min-height: 45px;
+            }
+            
+            .btn {
+                padding: 8px 15px;
+                font-size: 0.8rem;
+            }
+            
+            .logo {
+                font-size: 1.3rem;
+            }
+            
+            .logo-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .user-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+            
+            .lang-btn {
+                padding: 6px 8px;
+                font-size: 0.75rem;
+                min-width: 42px;
             }
             
             .services-grid {
                 grid-template-columns: 1fr;
-                gap: 15px;
-            }
-            
-            .service-card {
-                padding: 16px;
-            }
-            
-            .service-card h4 {
-                font-size: 1rem;
-            }
-            
-            .service-card p {
-                font-size: 0.85rem;
-            }
-            
-            .rules-card li {
-                font-size: 0.85rem;
             }
             
             .footer-content {
                 grid-template-columns: 1fr;
                 text-align: center;
-                gap: 25px;
             }
             
             .footer-section h3::after {
@@ -1772,86 +1758,128 @@ function safeJsonEncode($data) {
                 padding: 0 12px;
             }
             
-            .header-top {
-                flex-wrap: wrap;
-            }
-            
-            .logo {
-                order: 1;
-            }
-            
-            .burger-menu {
-                order: 2;
-            }
-            
-            .header-right {
-                order: 3;
-                width: 100%;
-                justify-content: flex-end;
-                margin-left: 0;
-            }
-            
-            .language-selector {
-                width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            
-            .lang-btn {
-                flex: 1;
-                text-align: center;
-                padding: 5px 4px;
-                font-size: 0.6rem;
-            }
-            
-            .user-info {
-                flex-shrink: 1;
-            }
-            
             .hero-title {
-                font-size: 1.4rem;
+                font-size: 1.7rem;
             }
             
             .hero-subtitle {
-                font-size: 0.85rem;
+                font-size: 0.9rem;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
             }
             
             .chat-container {
                 height: 400px;
             }
             
-            .chat-header {
-                padding: 12px 15px;
+            .message {
+                max-width: 95%;
+                padding: 10px 14px;
             }
             
-            .chat-messages {
+            .message-sender {
+                font-size: 0.7rem;
+            }
+            
+            .message-time {
+                font-size: 0.65rem;
+            }
+            
+            .chat-input-area {
                 padding: 12px;
             }
             
-            .message {
-                max-width: 95%;
+            .chat-input {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+                min-height: 40px;
+            }
+            
+            .btn {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+            }
+            
+            .btn i {
+                font-size: 0.8rem;
+            }
+            
+            .logo-text {
+                font-size: 1.1rem;
+            }
+            
+            .logo-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9rem;
+            }
+            
+            .user-avatar {
+                width: 30px;
+                height: 30px;
+                font-size: 0.8rem;
+            }
+            
+            .lang-btn {
+                padding: 4px 6px;
+                font-size: 0.68rem;
+                min-width: 36px;
             }
             
             .dropdown-menu {
-                min-width: 150px;
-                right: -10px;
+                min-width: 160px;
             }
             
             .dropdown-item {
                 padding: 10px 15px;
                 font-size: 0.85rem;
             }
-        }
-
-        @media (max-width: 480px) {
-            .language-selector {
-                gap: 2px;
+            
+            .rules-card ul {
+                padding-left: 15px;
             }
             
+            .rules-card li {
+                font-size: 0.85rem;
+                margin-bottom: 6px;
+            }
+            
+            .service-card {
+                padding: 20px;
+            }
+            
+            .service-card h4 {
+                font-size: 1rem;
+            }
+            
+            .service-card p {
+                font-size: 0.85rem;
+            }
+            
+            .footer-section h3 {
+                font-size: 1.1rem;
+            }
+            
+            .footer-links li a {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 400px) {
             .lang-btn {
-                padding: 4px 3px;
-                font-size: 0.55rem;
-                min-width: 38px;
+                padding: 4px 5px;
+                font-size: 0.65rem;
+                min-width: 32px;
+            }
+            
+            .header-right {
+                gap: 8px;
             }
             
             .btn {
@@ -1859,12 +1887,12 @@ function safeJsonEncode($data) {
                 font-size: 0.7rem;
             }
             
-            .btn .btn-text {
-                display: none;
+            .hero-title {
+                font-size: 1.5rem;
             }
             
-            .btn i {
-                margin: 0;
+            .hero-subtitle {
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -1874,21 +1902,23 @@ function safeJsonEncode($data) {
     <header>
         <div class="container header-wrapper">
             <div class="header-top">
-                <div class="burger-menu" id="burgerMenu">
-                    <div class="burger-line"></div>
-                    <div class="burger-line"></div>
-                    <div class="burger-line"></div>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="burger-menu" id="burgerMenu">
+                        <div class="burger-line"></div>
+                        <div class="burger-line"></div>
+                        <div class="burger-line"></div>
+                    </div>
+                    
+                    <a href="index.php" class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <span class="logo-text">MigraSupport</span>
+                    </a>
                 </div>
                 
-                <a href="index.php" class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-hands-helping"></i>
-                    </div>
-                    <span class="logo-text">MigraSupport</span>
-                </a>
-                
                 <div class="header-right">
-                    <!-- Language Selector - исправлен для мобильных -->
+                    <!-- Language Selector -->
                     <div class="language-selector">
                         <button class="lang-btn <?php echo $lang === 'ru' ? 'active' : ''; ?>" onclick="changeLanguage('ru')">RU</button>
                         <button class="lang-btn <?php echo $lang === 'en' ? 'active' : ''; ?>" onclick="changeLanguage('en')">EN</button>
@@ -1899,8 +1929,8 @@ function safeJsonEncode($data) {
                     
                     <div class="user-info" <?php if (!$isLoggedIn) echo 'style="display: none;"'; ?>>
                         <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
-                            <a href="dashboard.php" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.75rem;">
-                                <i class="fas fa-cog"></i> <span class="btn-text"><?php echo htmlspecialchars($translations['admin_panel'], ENT_QUOTES, 'UTF-8'); ?></span>
+                            <a href="dashboard.php" class="btn btn-primary" style="padding: 8px 15px; font-size: 0.8rem;">
+                                <i class="fas fa-cog"></i> <?php echo htmlspecialchars($translations['admin_panel'], ENT_QUOTES, 'UTF-8'); ?>
                             </a>
                         <?php endif; ?>
                         <div class="profile-dropdown">
@@ -1926,8 +1956,8 @@ function safeJsonEncode($data) {
                     
                     <?php if (!$isLoggedIn): ?>
                         <div class="auth-buttons">
-                            <a href="login.php" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.75rem;">
-                                <i class="fas fa-sign-in-alt"></i> <span class="btn-text"><?php echo htmlspecialchars($translations['login_nav'], ENT_QUOTES, 'UTF-8'); ?></span>
+                            <a href="login.php" class="btn btn-primary" style="padding: 8px 15px; font-size: 0.8rem;">
+                                <i class="fas fa-sign-in-alt"></i> <?php echo htmlspecialchars($translations['login_nav'], ENT_QUOTES, 'UTF-8'); ?>
                             </a>
                         </div>
                     <?php endif; ?>
@@ -1978,10 +2008,10 @@ function safeJsonEncode($data) {
             <h1 class="hero-title"><?php echo htmlspecialchars($translations['city_chat_title'], ENT_QUOTES, 'UTF-8'); ?></h1>
             <p class="hero-subtitle"><?php echo htmlspecialchars($translations['city_chat_desc'], ENT_QUOTES, 'UTF-8'); ?></p>
             <?php if ($isLoggedIn): ?>
-                <div style="margin-top: 20px;">
-                    <a href="personal_chats.php" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; font-size: 0.9rem;">
+                <div style="margin-top: 25px;">
+                    <a href="personal_chats.php" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; font-size: 1rem;">
                         <i class="fas fa-user-friends"></i>
-                        <span class="btn-text"><?php echo htmlspecialchars($translations['personal_chats'], ENT_QUOTES, 'UTF-8'); ?></span>
+                        <?php echo htmlspecialchars($translations['personal_chats'], ENT_QUOTES, 'UTF-8'); ?>
                     </a>
                 </div>
             <?php endif; ?>
@@ -1995,11 +2025,11 @@ function safeJsonEncode($data) {
                     <?php echo htmlspecialchars($translations['login_to_chat'], ENT_QUOTES, 'UTF-8'); ?>
                 </div>
                 
-                <div style="text-align: center; margin-top: 15px;">
+                <div style="text-align: center; margin-top: 20px;">
                     <a href="login.php" class="btn btn-primary">
                         <i class="fas fa-sign-in-alt"></i> <?php echo htmlspecialchars($translations['login_nav'], ENT_QUOTES, 'UTF-8'); ?>
                     </a>
-                    <a href="register.php" class="btn btn-primary" style="margin-left: 8px;">
+                    <a href="register.php" class="btn btn-primary" style="margin-left: 10px;">
                         <i class="fas fa-user-plus"></i> <?php echo htmlspecialchars($translations['register_nav'], ENT_QUOTES, 'UTF-8'); ?>
                     </a>
                 </div>
@@ -2151,7 +2181,7 @@ function safeJsonEncode($data) {
                 });
             }
             
-            // Burger menu
+            // Burger menu - как в index.php
             const burgerMenu = document.getElementById('burgerMenu');
             const mobileNav = document.getElementById('mobileNav');
             
@@ -2338,15 +2368,15 @@ function safeJsonEncode($data) {
                 
                 let avatarHtml = '';
                 if (escapedAvatar) {
-                    avatarHtml = `<img src="${escapedAvatar}" alt="${escapedSenderName}" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; cursor: pointer;" onclick="window.location.href='view_profile.php?id=${msg.sender_id}'">`;
+                    avatarHtml = `<img src="${escapedAvatar}" alt="${escapedSenderName}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; cursor: pointer;" onclick="window.location.href='view_profile.php?id=${msg.sender_id}'">`;
                 } else {
                     const initial = escapedSenderName.charAt(0).toUpperCase();
-                    avatarHtml = `<div style="width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #ff006e 0%, #ff9e00 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.8rem; cursor: pointer;" onclick="window.location.href='view_profile.php?id=${msg.sender_id}'">${escapeHtml(initial)}</div>`;
+                    avatarHtml = `<div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #ff006e 0%, #ff9e00 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.9rem; cursor: pointer;" onclick="window.location.href='view_profile.php?id=${msg.sender_id}'">${escapeHtml(initial)}</div>`;
                 }
                 
                 messageDiv.className = `message ${isOwnMessage ? 'own' : 'other'}`;
                 messageDiv.style.display = 'flex';
-                messageDiv.style.gap = '8px';
+                messageDiv.style.gap = '10px';
                 messageDiv.style.alignItems = 'flex-start';
                 
                 if (isOwnMessage) {

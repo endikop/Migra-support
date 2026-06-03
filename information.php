@@ -1,6 +1,10 @@
-<?php
+﻿<?php
 require_once 'config.php';
 
+// Проверяем авторизацию
+$isLoggedIn = isset($_SESSION['user_id']);
+$userName = $isLoggedIn ? $_SESSION['first_name'] . ' ' . $_SESSION['last_name'] : '';
+$userType = $isLoggedIn ? $_SESSION['user_type'] : '';
 
 // Подключаем файл с данными аватара
 require_once 'include_avatar.php';
