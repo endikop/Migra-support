@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 
 require_once 'config.php';
@@ -2015,7 +2015,7 @@ function json_encode_unicode($data) {
             transform: translateY(-2px);
         }
 
-         .logo-icon {
+        .logo-icon {
             width: 40px;
             height: 40px;
             background: var(--gradient-primary);
