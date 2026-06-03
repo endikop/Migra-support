@@ -78,7 +78,6 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
     <?php include_once 'include_animations.php'; ?>
     
     <style>
-        /* Копируем все стили из dashboard.php сюда */
         :root {
             --primary-color: #4361ee;
             --secondary-color: #3a0ca3;
@@ -106,7 +105,6 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
             min-height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
             width: var(--sidebar-width);
             background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
@@ -167,14 +165,12 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
             text-align: center;
         }
 
-        /* Main Content */
         .main-content {
             flex: 1;
             margin-left: var(--sidebar-width);
             padding: 20px;
         }
 
-        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -192,7 +188,6 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
             gap: 10px;
         }
 
-        /* User Info */
         .user-info {
             display: flex;
             align-items: center;
@@ -211,7 +206,6 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
             font-weight: bold;
         }
 
-        /* Grid и карточки */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -268,7 +262,6 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
             font-size: 0.95rem;
         }
 
-        /* Формы */
         .filter-form {
             display: flex;
             gap: 15px;
@@ -295,7 +288,6 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
             border-color: var(--primary-color);
         }
 
-        /* Кнопки */
         .btn {
             padding: 10px 20px;
             border: none;
@@ -362,7 +354,6 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
             font-size: 0.8rem;
         }
 
-        /* Таблица */
         .data-table {
             width: 100%;
             border-collapse: collapse;
@@ -386,7 +377,6 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
             background-color: #f8f9fa;
         }
 
-        /* Статусы */
         .status {
             padding: 5px 12px;
             border-radius: 20px;
@@ -410,7 +400,6 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
             color: var(--danger-color);
         }
 
-        /* No data */
         .no-data {
             text-align: center;
             padding: 40px;
@@ -423,7 +412,6 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
             color: #ddd;
         }
 
-        /* Responsive */
         @media (max-width: 1200px) {
             .sidebar {
                 width: 70px;
@@ -459,12 +447,9 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
     </style>
 </head>
 <body>
-    <!-- Подключаем единую навигацию -->
     <?php include_once 'admin_navigation.php'; ?>
 
-    <!-- Main Content -->
     <div class="main-content">
-        <!-- Header -->
         <div class="header">
             <h1><i class="fas fa-users"></i> Управление мигрантами</h1>
             <div class="user-info">
@@ -481,7 +466,6 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
             </div>
         </div>
 
-        <!-- Success Message -->
         <?php if (isset($_SESSION['success'])): ?>
             <div class="card" style="background-color: rgba(76, 201, 240, 0.1); border-left: 4px solid var(--success-color);">
                 <i class="fas fa-check-circle" style="color: var(--success-color); margin-right: 10px;"></i>
@@ -489,7 +473,6 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
             </div>
         <?php endif; ?>
 
-        <!-- Статистика -->
         <?php
         $active_count = 0;
         $pending_count = 0;
@@ -527,7 +510,6 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
             </div>
         </div>
 
-        <!-- Фильтры -->
         <div class="card">
             <div class="card-header">
                 <h2><i class="fas fa-filter"></i> Фильтры</h2>
@@ -551,7 +533,6 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
             </form>
         </div>
 
-        <!-- Список мигрантов -->
         <div class="card">
             <div class="card-header">
                 <h2><i class="fas fa-list"></i> Список мигрантов (<?php echo count($migrants); ?>)</h2>
