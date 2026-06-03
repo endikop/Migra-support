@@ -1,4 +1,7 @@
 <?php
+// Самая первая операция - буферизация вывода
+ob_start();
+
 session_start();
 
 require_once 'config.php';
@@ -856,6 +859,8 @@ $common_support_centers = array(
 // ========== НОВЫЕ МАРКЕРЫ (ДОБАВЛЕННЫЕ АДРЕСА) ==========
 
 // --- Минск ---
+$new_markers = array();
+
 $new_markers[] = [
     'title' => 'Департамент по гражданству и миграции МВД РБ (Главное управление)',
     'address' => 'г. Минск, ул. Городской Вал, 4 (вход через 3-й подъезд)',
@@ -1789,6 +1794,9 @@ function json_encode_unicode($data) {
         return $json;
     }
 }
+
+// Завершаем буферизацию перед выводом HTML
+ob_end_flush();
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $lang; ?>">
@@ -1806,6 +1814,7 @@ function json_encode_unicode($data) {
     <?php include_once 'include_animations.php'; ?>
     
     <style>
+        /* ... весь CSS остается без изменений ... */
         :root {
             --primary: #3a86ff;
             --primary-dark: #2667cc;
