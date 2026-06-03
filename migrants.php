@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once 'config.php';
 
 // Подключаем файл с данными аватара
@@ -467,6 +467,18 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
         <!-- Header -->
         <div class="header">
             <h1><i class="fas fa-users"></i> Управление мигрантами</h1>
+            <div class="user-info">
+                <div class="user-avatar">
+                    <?php 
+                    $userName = getAdminUserName();
+                    echo strtoupper(substr($userName, 0, 1));
+                    ?>
+                </div>
+                <div>
+                    <div style="font-weight: 600;"><?php echo htmlspecialchars($userName); ?></div>
+                    <div style="font-size: 0.9rem; color: var(--gray-color);"><?php echo date('d.m.Y H:i'); ?></div>
+                </div>
+            </div>
         </div>
 
         <!-- Success Message -->
@@ -546,78 +558,80 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
                 <a href="add_migrant.php" class="btn btn-primary"><i class="fas fa-user-plus"></i> Добавить мигранта</a>
             </div>
             
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Имя</th>
-                        <th>Фамилия</th>
-                        <th>Email</th>
-                        <th>Телефон</th>
-                        <th>Страна</th>
-                        <th>Паспорт</th>
-                        <th>Статус</th>
-                        <th>Дата регистрации</th>
-                        <th>Действия</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($migrants)): ?>
+            <div style="overflow-x: auto;">
+                <table class="data-table">
+                    <thead>
                         <tr>
-                            <td colspan="10" class="no-data">
-                                <i class="fas fa-user-slash"></i>
-                                <div>Мигранты не найдены</div>
-                            </td>
+                            <th>ID</th>
+                            <th>Имя</th>
+                            <th>Фамилия</th>
+                            <th>Email</th>
+                            <th>Телефон</th>
+                            <th>Страна</th>
+                            <th>Паспорт</th>
+                            <th>Статус</th>
+                            <th>Дата регистрации</th>
+                            <th>Действия</th>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($migrants as $migrant): ?>
-                        <tr>
-                            <td><?php echo $migrant['id']; ?></td>
-                            <td><strong><?php echo htmlspecialchars($migrant['first_name']); ?></strong></td>
-                            <td><?php echo htmlspecialchars($migrant['last_name']); ?></td>
-                            <td><?php echo htmlspecialchars($migrant['email']); ?></td>
-                            <td><?php echo htmlspecialchars($migrant['phone']); ?></td>
-                            <td><?php echo htmlspecialchars($migrant['country_of_origin']); ?></td>
-                            <td><code><?php echo htmlspecialchars($migrant['passport_number']); ?></code></td>
-                            <td>
-                                <span class="status <?php echo $migrant['status']; ?>">
-                                    <?php 
-                                    $status_text = '';
-                                    switch($migrant['status']) {
-                                        case 'active': $status_text = 'Активен'; break;
-                                        case 'pending': $status_text = 'Ожидание'; break;
-                                        case 'inactive': $status_text = 'Неактивен'; break;
-                                        default: $status_text = $migrant['status'];
-                                    }
-                                    echo $status_text;
-                                    ?>
-                                </span>
-                            </td>
-                            <td><?php echo date('d.m.Y', strtotime($migrant['created_at'])); ?></td>
-                            <td>
-                                <div style="display: flex; gap: 5px; flex-wrap: wrap;">
-                                    <a href="edit_migrant.php?id=<?php echo $migrant['id']; ?>" class="btn btn-sm btn-warning" title="Редактировать"><i class="fas fa-edit"></i></a>
-                                    <a href="migration_data.php?user_id=<?php echo $migrant['id']; ?>" class="btn btn-sm btn-success" title="Миграционные данные"><i class="fas fa-database"></i></a>
-                                    <form method="POST" style="display: inline;">
-                                        <input type="hidden" name="user_id" value="<?php echo $migrant['id']; ?>">
-                                        <select name="status" onchange="this.form.submit()" class="form-control" style="width: auto; padding: 5px 10px; font-size: 0.8rem;" title="Изменить статус">
-                                            <option value="pending" <?php echo $migrant['status'] == 'pending' ? 'selected' : ''; ?>>Ожидание</option>
-                                            <option value="active" <?php echo $migrant['status'] == 'active' ? 'selected' : ''; ?>>Активен</option>
-                                            <option value="inactive" <?php echo $migrant['status'] == 'inactive' ? 'selected' : ''; ?>>Неактивен</option>
-                                        </select>
-                                        <input type="hidden" name="update_status" value="1">
-                                    </form>
-                                    <form method="POST" style="display: inline;" onsubmit="return confirm('Вы уверены, что хотите удалить этого мигранта?')">
-                                        <input type="hidden" name="user_id" value="<?php echo $migrant['id']; ?>">
-                                        <button type="submit" name="delete_migrant" class="btn btn-sm btn-danger" title="Удалить"><i class="fas fa-trash"></i></button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($migrants)): ?>
+                            <tr>
+                                <td colspan="10" class="no-data">
+                                    <i class="fas fa-user-slash"></i>
+                                    <div>Мигранты не найдены</div>
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($migrants as $migrant): ?>
+                            <tr>
+                                <td><?php echo $migrant['id']; ?></td>
+                                <td><strong><?php echo htmlspecialchars($migrant['first_name']); ?></strong></td>
+                                <td><?php echo htmlspecialchars($migrant['last_name']); ?></td>
+                                <td><?php echo htmlspecialchars($migrant['email']); ?></td>
+                                <td><?php echo htmlspecialchars($migrant['phone']); ?></td>
+                                <td><?php echo htmlspecialchars($migrant['country_of_origin']); ?></td>
+                                <td><code><?php echo htmlspecialchars($migrant['passport_number']); ?></code></td>
+                                <td>
+                                    <span class="status <?php echo $migrant['status']; ?>">
+                                        <?php 
+                                        $status_text = '';
+                                        switch($migrant['status']) {
+                                            case 'active': $status_text = 'Активен'; break;
+                                            case 'pending': $status_text = 'Ожидание'; break;
+                                            case 'inactive': $status_text = 'Неактивен'; break;
+                                            default: $status_text = $migrant['status'];
+                                        }
+                                        echo $status_text;
+                                        ?>
+                                    </span>
+                                </td>
+                                <td><?php echo date('d.m.Y', strtotime($migrant['created_at'])); ?></td>
+                                <td>
+                                    <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                                        <a href="edit_migrant.php?id=<?php echo $migrant['id']; ?>" class="btn btn-sm btn-warning" title="Редактировать"><i class="fas fa-edit"></i></a>
+                                        <a href="migration_data.php?user_id=<?php echo $migrant['id']; ?>" class="btn btn-sm btn-success" title="Миграционные данные"><i class="fas fa-database"></i></a>
+                                        <form method="POST" style="display: inline;" onchange="this.submit()">
+                                            <input type="hidden" name="user_id" value="<?php echo $migrant['id']; ?>">
+                                            <select name="status" class="form-control" style="width: auto; padding: 5px 10px; font-size: 0.8rem;" title="Изменить статус">
+                                                <option value="pending" <?php echo $migrant['status'] == 'pending' ? 'selected' : ''; ?>>Ожидание</option>
+                                                <option value="active" <?php echo $migrant['status'] == 'active' ? 'selected' : ''; ?>>Активен</option>
+                                                <option value="inactive" <?php echo $migrant['status'] == 'inactive' ? 'selected' : ''; ?>>Неактивен</option>
+                                            </select>
+                                            <input type="hidden" name="update_status" value="1">
+                                        </form>
+                                        <form method="POST" style="display: inline;" onsubmit="return confirm('Вы уверены, что хотите удалить этого мигранта?')">
+                                            <input type="hidden" name="user_id" value="<?php echo $migrant['id']; ?>">
+                                            <button type="submit" name="delete_migrant" class="btn btn-sm btn-danger" title="Удалить"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </body>
