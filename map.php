@@ -3381,17 +3381,23 @@ ob_end_flush();
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>MigraSupport</h3>
-                    <p><?php echo $translations['footer_title']; ?></p>
+                    <p><?php echo t(
+                        'Комплексная система поддержки мигрантов в Беларуси. Мы помогаем с адаптацией, документами и интеграцией.',
+                        'Comprehensive migrant support system in Belarus. We help with adaptation, documents and integration.',
+                        'Sistema abrangente de apoio a migrantes na Bielorrússia. Ajudamos com adaptação, documentos e integração.',
+                        'Système complet de soutien aux migrants en Biélorussie. Nous aidons à l\'adaptation, aux documents et à l\'intégration.',
+                        'Umfassendes Migrantenunterstützungssystem in Belarus. Wir helfen bei Anpassung, Dokumenten und Integration.'
+                    ); ?></p>
                 </div>
                 
                 <div class="footer-section">
                     <h3><?php echo $translations['quick_links']; ?></h3>
                     <ul class="footer-links">
                         <li><a href="index.php"><i class="fas fa-home"></i> <?php echo $translations['home']; ?></a></li>
-                        <li><a href="information.php"><i class="fas fa-info-circle"></i> <?php echo $translations['information']; ?></a></li>
-                        <li><a href="map.php"><i class="fas fa-map-marked-alt"></i> <?php echo $translations['map_services']; ?></a></li>
-                        <li><a href="translator.php"><i class="fas fa-language"></i> <?php echo $translations['translator']; ?></a></li>
                         <li><a href="converter.php"><i class="fas fa-money-bill-wave"></i> <?php echo $translations['currency_converter']; ?></a></li>
+                        <li><a href="translator.php"><i class="fas fa-language"></i> <?php echo $translations['translator']; ?></a></li>
+                        <li><a href="map.php"><i class="fas fa-map-marked-alt"></i> <?php echo $translations['map_services']; ?></a></li>
+                        <li><a href="information.php"><i class="fas fa-info-circle"></i> <?php echo $translations['information']; ?></a></li>
                     </ul>
                 </div>
                 
@@ -3400,6 +3406,7 @@ ob_end_flush();
                     <ul class="footer-links">
                         <li><i class="fas fa-envelope"></i> info@migrasupport.by</li>
                         <li><i class="fas fa-map-marker-alt"></i> <?php echo $translations['minsk_belarus']; ?></li>
+                        <li><i class="fas fa-clock"></i> <?php echo t('Поддержка 24/7', '24/7 Support', 'Suporte 24/7', 'Support 24/7', '24/7 Support'); ?></li>
                     </ul>
                 </div>
             </div>

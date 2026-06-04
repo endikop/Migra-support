@@ -2172,13 +2172,19 @@ ob_end_flush();
         </div>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer (полностью скопирован из index.php) -->
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>MigraSupport</h3>
                     <p><?php echo $translations['footer_title']; ?></p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                    </div>
                 </div>
                 
                 <div class="footer-section">
@@ -2196,7 +2202,9 @@ ob_end_flush();
                     <h3><?php echo $translations['contacts']; ?></h3>
                     <ul class="footer-links">
                         <li><i class="fas fa-envelope"></i> info@migrasupport.by</li>
+                        <li><i class="fas fa-phone-alt"></i> +375 (17) 123-45-67</li>
                         <li><i class="fas fa-map-marker-alt"></i> <?php echo t('Минск, Беларусь', 'Minsk, Belarus', 'Minsk, Bielorrússia', 'Minsk, Biélorussie', 'Minsk, Belarus'); ?></li>
+                        <li><i class="fas fa-clock"></i> <?php echo t('Пн-Пт: 9:00-18:00', 'Mon-Fri: 9:00-18:00', 'Seg-Sex: 9:00-18:00', 'Lun-Ven: 9:00-18:00', 'Mo-Fr: 9:00-18:00'); ?></li>
                     </ul>
                 </div>
             </div>
@@ -2311,7 +2319,7 @@ ob_end_flush();
             // Ограничиваем currentSlideVisa
             currentSlideVisa = Math.min(currentSlideVisa, maxSlide);
             
-            const slideWidth = slides[0].offsetWidth;
+            const slideWidth = slides[0] ? slides[0].offsetWidth : 0;
             const gap = 30;
             const offset = -(currentSlideVisa * (slideWidth + gap));
             
