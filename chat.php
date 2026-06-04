@@ -2112,11 +2112,6 @@ function safeJsonEncode($data) {
                 <div class="footer-section">
                     <h3>MigraSupport</h3>
                     <p><?php echo htmlspecialchars($translations['footer_title'], ENT_QUOTES, 'UTF-8'); ?></p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-telegram"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
                 </div>
                 
                 <div class="footer-section">
@@ -2127,7 +2122,6 @@ function safeJsonEncode($data) {
                         <li><a href="map.php"><i class="fas fa-map-marked-alt"></i> <?php echo htmlspecialchars($translations['map_services'], ENT_QUOTES, 'UTF-8'); ?></a></li>
                         <li><a href="translator.php"><i class="fas fa-language"></i> <?php echo htmlspecialchars($translations['translator'], ENT_QUOTES, 'UTF-8'); ?></a></li>
                         <li><a href="converter.php"><i class="fas fa-money-bill-wave"></i> <?php echo htmlspecialchars($translations['currency_converter'], ENT_QUOTES, 'UTF-8'); ?></a></li>
-                        <li><a href="chat.php"><i class="fas fa-comments"></i> <?php echo htmlspecialchars($translations['city_chat'], ENT_QUOTES, 'UTF-8'); ?></a></li>
                     </ul>
                 </div>
                 
@@ -2135,14 +2129,13 @@ function safeJsonEncode($data) {
                     <h3><?php echo htmlspecialchars($translations['contacts'], ENT_QUOTES, 'UTF-8'); ?></h3>
                     <ul class="footer-links">
                         <li><i class="fas fa-envelope"></i> info@migrasupport.by</li>
-                        <li><i class="fas fa-phone"></i> +375 (17) 555-55-55</li>
                         <li><i class="fas fa-map-marker-alt"></i> <?php echo htmlspecialchars($translations['minsk_belarus'], ENT_QUOTES, 'UTF-8'); ?></li>
                     </ul>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2023-2026 MigraSupport. <?php echo htmlspecialchars($translations['all_rights_reserved'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <p>&copy; 2026 MigraSupport. <?php echo htmlspecialchars($translations['all_rights_reserved'], ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
         </div>
     </footer>

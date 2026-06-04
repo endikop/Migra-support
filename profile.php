@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // Самая первая операция - буферизация вывода
 ob_start();
 
@@ -3095,11 +3095,6 @@ $status_texts = [
                 <div class="footer-section">
                     <h3>MigraSupport</h3>
                     <p><?php echo t('Комплексная система поддержки мигрантов в Беларуси.', 'Comprehensive migrant support system in Belarus.', 'Sistema abrangente de apoio a migrantes na Bielorrússia.', 'Système complet de soutien aux migrants en Biélorussie.', 'Umfassendes Migrantenunterstützungssystem in Belarus.'); ?></p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-telegram"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
                 </div>
                 
                 <div class="footer-section">
@@ -3110,7 +3105,6 @@ $status_texts = [
                         <li><a href="map.php?lang=<?php echo $lang; ?>"><i class="fas fa-map-marked-alt"></i> <?php echo $translations['map_services']; ?></a></li>
                         <li><a href="translator.php?lang=<?php echo $lang; ?>"><i class="fas fa-language"></i> <?php echo $translations['translator']; ?></a></li>
                         <li><a href="converter.php?lang=<?php echo $lang; ?>"><i class="fas fa-money-bill-wave"></i> <?php echo $translations['currency_converter']; ?></a></li>
-                        <li><a href="chat.php?lang=<?php echo $lang; ?>"><i class="fas fa-comments"></i> <?php echo $translations['city_chat']; ?></a></li>
                     </ul>
                 </div>
                 
@@ -3118,14 +3112,13 @@ $status_texts = [
                     <h3><?php echo t('Контакты', 'Contacts', 'Contatos', 'Contacts', 'Kontakte'); ?></h3>
                     <ul class="footer-links">
                         <li><i class="fas fa-envelope"></i> info@migrasupport.by</li>
-                        <li><i class="fas fa-phone"></i> +375 (17) 555-55-55</li>
                         <li><i class="fas fa-map-marker-alt"></i> <?php echo t('Минск, Беларусь', 'Minsk, Belarus', 'Minsk, Bielorrússia', 'Minsk, Biélorussie', 'Minsk, Belarus'); ?></li>
                     </ul>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2023-2026 MigraSupport. <?php echo t('Все права защищены.', 'All rights reserved.', 'Todos os direitos reservados.', 'Tous droits réservés.', 'Alle Rechte vorbehalten.'); ?></p>
+                <p>&copy; 2026 MigraSupport. <?php echo t('Все права защищены.', 'All rights reserved.', 'Todos os direitos reservados.', 'Tous droits réservés.', 'Alle Rechte vorbehalten.'); ?></p>
             </div>
         </div>
     </footer>

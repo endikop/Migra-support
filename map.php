@@ -3382,11 +3382,6 @@ ob_end_flush();
                 <div class="footer-section">
                     <h3>MigraSupport</h3>
                     <p><?php echo $translations['footer_title']; ?></p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-telegram"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
                 </div>
                 
                 <div class="footer-section">
@@ -3404,14 +3399,13 @@ ob_end_flush();
                     <h3><?php echo $translations['contacts']; ?></h3>
                     <ul class="footer-links">
                         <li><i class="fas fa-envelope"></i> info@migrasupport.by</li>
-                        <li><i class="fas fa-phone"></i> +375 (17) 555-55-55</li>
                         <li><i class="fas fa-map-marker-alt"></i> <?php echo $translations['minsk_belarus']; ?></li>
                     </ul>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2023-2026 MigraSupport. <?php echo $translations['all_rights_reserved']; ?></p>
+                <p>&copy; 2026 MigraSupport. <?php echo $translations['all_rights_reserved']; ?></p>
             </div>
         </div>
     </footer>

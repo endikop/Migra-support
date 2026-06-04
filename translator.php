@@ -1,4 +1,5 @@
-<?php
+﻿<?php
+ob_start();
 session_start();
 require_once 'config.php';
 
@@ -2179,12 +2180,6 @@ foreach ($translations as $key => $value) {
                 <div class="footer-section">
                     <h3><?php echo $translations['footer_title']; ?></h3>
                     <p><?php echo $translations['footer_desc']; ?></p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-telegram"></i></a>
-                        <a href="#"><i class="fab fa-viber"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
                 </div>
                 
                 <div class="footer-section">
@@ -2195,8 +2190,6 @@ foreach ($translations as $key => $value) {
                         <li><a href="map.php"><i class="fas fa-map-marked-alt"></i> <?php echo $translations['map_services']; ?></a></li>
                         <li><a href="translator.php"><i class="fas fa-language"></i> <?php echo $translations['translator']; ?></a></li>
                         <li><a href="converter.php"><i class="fas fa-money-bill-wave"></i> <?php echo $translations['currency_converter']; ?></a></li>
-                        <li><a href="login.php"><i class="fas fa-sign-in-alt"></i> <?php echo $translations['login_nav']; ?></a></li>
-                        <li><a href="register.php"><i class="fas fa-user-plus"></i> <?php echo $translations['register_nav']; ?></a></li>
                     </ul>
                 </div>
                 
@@ -2204,7 +2197,6 @@ foreach ($translations as $key => $value) {
                     <h3><?php echo $translations['contacts']; ?></h3>
                     <ul class="footer-links">
                         <li><i class="fas fa-envelope"></i> info@migrasupport.by</li>
-                        <li><i class="fas fa-phone"></i> +375 (17) 555-55-55</li>
                         <li><i class="fas fa-map-marker-alt"></i> <?php echo $translations['minsk_belarus']; ?></li>
                         <li><i class="fas fa-clock"></i> <?php echo $translations['support_247']; ?></li>
                     </ul>
@@ -2212,7 +2204,7 @@ foreach ($translations as $key => $value) {
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2023-2026 MigraSupport. <?php echo $translations['copyright']; ?></p>
+                <p>&copy; 2026 MigraSupport. <?php echo $translations['copyright']; ?></p>
             </div>
         </div>
     </footer>

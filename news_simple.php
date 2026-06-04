@@ -460,7 +460,7 @@ $translations = [
 
     <footer>
         <div class="container">
-            <p>&copy; 2023-2026 MigraSupport. Все права защищены.</p>
+            <p>&copy; 2026 MigraSupport. Все права защищены.</p>
         </div>
     </footer>
 
