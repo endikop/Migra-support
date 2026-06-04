@@ -1,6 +1,6 @@
-﻿<?php
+<?php
 // Включаем буферизацию вывода ДО любого кода
-
+ob_start();
 
 session_start();
 require_once 'config.php';
@@ -36,6 +36,7 @@ function containsBannedWordsSimple($text) {
 
 // Если пользователь уже авторизован, перенаправляем на профиль
 if (isset($_SESSION['user_id'])) {
+    ob_end_clean();
     header('Location: profile.php');
     exit();
 }
@@ -850,8 +851,10 @@ $js_translations = [];
 foreach ($translations as $key => $value) {
     $js_translations[$key] = js_escape($value);
 }
+// Остальной HTML код такой же, как в вашем файле, начиная с <!DOCTYPE html>
 ?>
 <!DOCTYPE html>
+<!-- Здесь продолжается ваш HTML код, который я не изменял -->
 <html lang="<?php echo $lang; ?>">
 <head>
     <meta charset="UTF-8">

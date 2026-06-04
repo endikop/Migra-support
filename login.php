@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // Самая первая операция - буферизация вывода
 ob_start();
 
@@ -11,7 +11,7 @@ require_once 'config.php';
 // Если пользователь уже авторизован, перенаправляем на профиль
 if (isset($_SESSION['user_id'])) {
     // Очищаем буфер вывода перед установкой заголовков
-    @ob_end_clean();
+    ob_end_clean();
     header('Location: profile.php');
     exit();
 }
@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         unset($_SESSION['redirect_after_login']);
                         
                         // Очищаем буфер вывода перед установкой заголовков
-                        @ob_end_clean();
+                        ob_end_clean();
                         header("Location: $redirect");
                         exit();
                     }
