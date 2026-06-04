@@ -523,7 +523,17 @@ $translations = [
         'Avatar Atual',
         'Avatar Actuel',
         'Aktuelles Avatar'
-    )
+    ),
+    'all_rights_reserved' => t(
+        'Все права защищены.',
+        'All rights reserved.',
+        'Todos os direitos reservados.',
+        'Tous droits réservés.',
+        'Alle Rechte vorbehalten.'
+    ),
+    'contacts' => t('Контакты', 'Contacts', 'Contatos', 'Contacts', 'Kontakte'),
+    'quick_links' => t('Быстрые ссылки', 'Quick Links', 'Links Rápidos', 'Liens Rapides', 'Schnelllinks'),
+    'minsk_belarus' => t('Минск, Беларусь', 'Minsk, Belarus', 'Minsk, Bielorrússia', 'Minsk, Biélorussie', 'Minsk, Belarus')
 ];
 
 // Загружаем данные пользователя
@@ -3088,7 +3098,7 @@ $status_texts = [
         </div>
     </main>
 
-   <!-- Footer -->
+  <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
