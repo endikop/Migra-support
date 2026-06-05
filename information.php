@@ -523,7 +523,8 @@ $translations = [
         'Todos os direitos reservados.',
         'Tous droits réservés.',
         'Alle Rechte vorbehalten.'
-    )
+    ),
+     'minsk_belarus' => t('Минск, Беларусь', 'Minsk, Belarus', 'Minsk, Bielorrússia', 'Minsk, Biélorussie', 'Minsk, Belarus')
 ];
 
 // Завершаем буферизацию перед выводом HTML
