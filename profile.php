@@ -2210,16 +2210,105 @@ $status_texts = [
         }
 
         @media (max-width: 576px) {
-            .language-selector {
-                max-width: 220px;
-            }
-            
-            .lang-btn {
-                padding: 4px 5px;
-                font-size: 0.65rem;
-                min-width: 35px;
-            }
-        }
+    /* Общие отступы контейнера */
+    .container {
+        padding: 0 15px;
+    }
+    
+    /* Уменьшаем отступы шапки профиля и размер шрифта */
+    .profile-header {
+        padding: 25px 15px;
+    }
+
+    .profile-header h1 {
+        font-size: 1.6rem;
+    }
+
+    /* Уменьшаем отступы основного контента профиля */
+    .profile-content {
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .profile-sidebar, .profile-main {
+        padding: 15px;
+    }
+
+    /* Уменьшаем размер аватарки, чтобы она не съедала пол-экрана */
+    .user-avatar-large {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+
+    /* КРИТИЧНО: Фикс вылезающих за пределы экрана длинных email и данных паспорта */
+    .info-value, .user-email {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-all;
+    }
+
+    .info-item {
+        padding: 15px;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        margin-bottom: 20px;
+    }
+
+    /* Адаптивность элементов чата внутри профиля */
+    .chat-header {
+        padding: 15px;
+    }
+
+    .chat-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .message {
+        max-width: 95%; /* Даем сообщениям больше ширины на маленьких экранах */
+        padding: 10px 14px;
+        font-size: 0.9rem;
+    }
+
+    .chat-input-area {
+        padding: 15px;
+    }
+    
+    .chat-input {
+        padding: 10px;
+        font-size: 0.9rem;
+        min-height: 60px;
+    }
+
+    /* Адаптивность футера (точно как в index.php) */
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .footer-section h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+
+    /* Сохраняем твои стили для переключателя языков */
+    .language-selector {
+        max-width: 220px;
+    }
+    
+    .lang-btn {
+        padding: 4px 5px;
+        font-size: 0.65rem;
+        min-width: 35px;
+    }
+}
 
         footer {
             background: rgba(13, 13, 23, 0.95);
