@@ -974,6 +974,7 @@ function safeJsonEncode($data) {
             transform: none;
         }
 
+        /* Burger Menu */
         .burger-menu {
             display: none;
             flex-direction: column;
@@ -1492,6 +1493,7 @@ function safeJsonEncode($data) {
             padding: 50px 0 25px;
             margin-top: 70px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
         }
 
         footer::before {
@@ -1608,7 +1610,7 @@ function safeJsonEncode($data) {
             margin-top: 5px;
         }
 
-        /* Responsive Styles */
+        /* Responsive Styles - как в index.php */
         @media (max-width: 1200px) {
             .services-grid {
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -1641,7 +1643,6 @@ function safeJsonEncode($data) {
             }
             
             .mobile-nav {
-                display: block;
                 top: 60px;
             }
             

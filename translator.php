@@ -436,6 +436,7 @@ foreach ($translations as $key => $value) {
             display: flex;
             align-items: center;
             gap: 15px;
+            margin-left: auto;
         }
 
         /* Language Selector для 5 языков */
@@ -786,7 +787,8 @@ foreach ($translations as $key => $value) {
             z-index: 1000;
             overflow: hidden;
             max-height: 0;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .mobile-nav.active {
@@ -798,11 +800,18 @@ foreach ($translations as $key => $value) {
             flex-direction: column;
             list-style: none;
             padding: 15px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+        }
+        
+        .mobile-nav.active .mobile-nav-tabs {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .mobile-nav-tab {
             padding: 14px 18px;
-            transition: var(--transition);
             font-weight: 500;
             color: var(--gray-light);
             display: flex;
@@ -811,7 +820,24 @@ foreach ($translations as $key => $value) {
             border-radius: 8px;
             margin-bottom: 5px;
             font-size: 0.9rem;
+            transform: translateX(-10px);
+            opacity: 0;
+            transition: all 0.3s ease;
         }
+        
+        .mobile-nav.active .mobile-nav-tab {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .mobile-nav.active .mobile-nav-tab:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-nav.active .mobile-nav-tab:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-nav.active .mobile-nav-tab:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-nav.active .mobile-nav-tab:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-nav.active .mobile-nav-tab:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-nav.active .mobile-nav-tab:nth-child(6) { transition-delay: 0.35s; }
+        .mobile-nav.active .mobile-nav-tab:nth-child(7) { transition-delay: 0.4s; }
+        .mobile-nav.active .mobile-nav-tab:nth-child(8) { transition-delay: 0.45s; }
         
         .mobile-nav-link {
             text-decoration: none;
@@ -825,6 +851,7 @@ foreach ($translations as $key => $value) {
         .mobile-nav-tab:hover {
             color: white;
             background: rgba(255, 255, 255, 0.05);
+            transform: translateX(5px) !important;
         }
         
         .mobile-nav-tab.active {
@@ -1644,6 +1671,16 @@ foreach ($translations as $key => $value) {
                 display: block;
             }
             
+            .language-selector {
+                flex-wrap: nowrap;
+            }
+            
+            .lang-btn {
+                padding: 6px 8px;
+                font-size: 0.75rem;
+                min-width: 42px;
+            }
+            
             .services-grid {
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             }
@@ -2214,7 +2251,7 @@ foreach ($translations as $key => $value) {
             </div>
         </div>
     </footer>
-    
+
     <script>
         // ИСПРАВЛЕНО: Безопасные переводы для JavaScript
         const langTranslations = {
@@ -2272,35 +2309,30 @@ foreach ($translations as $key => $value) {
             const mobileNav = document.getElementById('mobileNav');
             
             if (burgerMenu && mobileNav) {
-                // Функция закрытия меню
-                function closeMobileMenu() {
-                    burgerMenu.classList.remove('active');
-                    mobileNav.classList.remove('active');
-                }
-                
-                // Функция открытия/закрытия меню
-                function toggleMobileMenu() {
-                    burgerMenu.classList.toggle('active');
+                burgerMenu.addEventListener('click', function() {
+                    this.classList.toggle('active');
                     mobileNav.classList.toggle('active');
-                }
-                
-                // Обработчик клика по бургер-меню
-                burgerMenu.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    toggleMobileMenu();
-                });
-                
-                // Закрытие при клике вне меню
-                document.addEventListener('click', function(event) {
-                    if (!burgerMenu.contains(event.target) && !mobileNav.contains(event.target)) {
-                        closeMobileMenu();
+                    
+                    if (mobileNav.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        document.body.style.overflow = '';
                     }
                 });
                 
-                // Закрытие при клике на ссылку в меню
+                document.addEventListener('click', function(event) {
+                    if (!burgerMenu.contains(event.target) && !mobileNav.contains(event.target)) {
+                        burgerMenu.classList.remove('active');
+                        mobileNav.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+                
                 document.querySelectorAll('.mobile-nav-link').forEach(link => {
                     link.addEventListener('click', function() {
-                        closeMobileMenu();
+                        burgerMenu.classList.remove('active');
+                        mobileNav.classList.remove('active');
+                        document.body.style.overflow = '';
                     });
                 });
             }
