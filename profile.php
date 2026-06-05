@@ -1118,19 +1118,25 @@ $status_texts = [
             gap: 15px;
         }
 
-        /* Прижимаем переключатель языков к правой части, как в Index */
-    .language-selector {
-        max-width: 220px;
-        margin-left: auto; /* Магия flexbox: выталкивает элемент максимально вправо */
-        margin-right: 0;   /* Убираем правый отступ на всякий случай */
-        justify-content: flex-end; /* Выравниваем внутренние кнопки вправо, если это flex-контейнер */
-    }
-    
-    .lang-btn {
-        padding: 4px 5px;
-        font-size: 0.65rem;
-        min-width: 35px;
-    }
+        .language-selector {
+            display: flex;
+            gap: 5px;
+            flex-wrap: nowrap;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.85rem;
+            min-width: 50px;
+            text-align: center;
+        }
 
         .lang-btn:hover {
             background: rgba(255, 255, 255, 0.2);
