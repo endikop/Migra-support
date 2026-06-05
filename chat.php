@@ -758,9 +758,9 @@ function safeJsonEncode($data) {
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            position: relative; /* Добавить */
+            z-index: 999;       /* Добавить */
+            padding: 0;         /* Добавить */
         }
 
         .header-wrapper {
@@ -1644,6 +1644,7 @@ function safeJsonEncode($data) {
             
             .mobile-nav {
                 top: 60px;
+                display: block;
             }
             
             .services-grid {
@@ -1656,8 +1657,9 @@ function safeJsonEncode($data) {
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 0 15px;
+            .header-top {
+                flex-wrap: wrap; /* Позволяет шапке переноситься на новую строку */
+                gap: 15px;
             }
             
             .hero-section {
@@ -1755,9 +1757,15 @@ function safeJsonEncode($data) {
         }
 
         @media (max-width: 576px) {
-            .container {
-                padding: 0 12px;
-            }
+    .header-top {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .header-right {
+        gap: 8px;
+        margin-left: auto;
+    }
             
             .hero-title {
                 font-size: 1.7rem;
@@ -1897,84 +1905,6 @@ function safeJsonEncode($data) {
             }
         }
         
-
-
-
-             /* FIX MOBILE HEADER */
-
-.header-right{
-    min-width:0;
-}
-
-.language-selector{
-    display:flex;
-    align-items:center;
-    gap:4px;
-    flex-wrap:nowrap;
-}
-
-@media (max-width:768px){
-
-    .header-top{
-        flex-wrap:wrap;
-        gap:15px;
-    }
-
-    .header-right{
-        gap:6px;
-        margin-left:auto;
-    }
-
-    .language-selector{
-        gap:3px;
-    }
-
-    .lang-btn{
-        padding:6px 8px;
-        font-size:0.75rem;
-        min-width:42px;
-    }
-
-    .logo-text{
-        display:none;
-    }
-}
-
-@media (max-width:576px){
-
-    .header-right{
-        gap:4px;
-    }
-
-    .language-selector{
-        gap:2px;
-    }
-
-    .lang-btn{
-        padding:5px 7px;
-        font-size:0.72rem;
-        min-width:38px;
-    }
-
-    .user-avatar{
-        width:34px;
-        height:34px;
-    }
-}
-
-@media (max-width:400px){
-
-    .language-selector{
-        transform:scale(.92);
-        transform-origin:right center;
-    }
-
-    .lang-btn{
-        padding:4px 6px;
-        font-size:0.68rem;
-        min-width:34px;
-    }
-}
     </style>
 </head>
 <body>
