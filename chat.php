@@ -812,7 +812,7 @@ function safeJsonEncode($data) {
             letter-spacing: -0.3px;
         }
 
-        .header-right {
+        ..header-right {
             display: flex;
             align-items: center;
             gap: 15px;
@@ -1093,7 +1093,8 @@ function safeJsonEncode($data) {
             z-index: 1000;
             overflow: hidden;
             max-height: 0;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .mobile-nav.active {
@@ -1105,11 +1106,18 @@ function safeJsonEncode($data) {
             flex-direction: column;
             list-style: none;
             padding: 15px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+        }
+        
+        .mobile-nav.active .mobile-nav-tabs {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .mobile-nav-tab {
             padding: 14px 18px;
-            transition: var(--transition);
             font-weight: 500;
             color: var(--gray-light);
             display: flex;
@@ -1117,7 +1125,25 @@ function safeJsonEncode($data) {
             gap: 10px;
             border-radius: 8px;
             margin-bottom: 5px;
+            font-size: 0.9rem;
+            transform: translateX(-10px);
+            opacity: 0;
+            transition: all 0.3s ease;
         }
+        
+        .mobile-nav.active .mobile-nav-tab {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .mobile-nav.active .mobile-nav-tab:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-nav.active .mobile-nav-tab:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-nav.active .mobile-nav-tab:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-nav.active .mobile-nav-tab:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-nav.active .mobile-nav-tab:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-nav.active .mobile-nav-tab:nth-child(6) { transition-delay: 0.35s; }
+        .mobile-nav.active .mobile-nav-tab:nth-child(7) { transition-delay: 0.4s; }
+        .mobile-nav.active .mobile-nav-tab:nth-child(8) { transition-delay: 0.45s; }
         
         .mobile-nav-link {
             text-decoration: none;
@@ -1131,6 +1157,7 @@ function safeJsonEncode($data) {
         .mobile-nav-tab:hover {
             color: white;
             background: rgba(255, 255, 255, 0.05);
+            transform: translateX(5px) !important;
         }
         
         .mobile-nav-tab.active {
@@ -1644,6 +1671,17 @@ function safeJsonEncode($data) {
             
             .mobile-nav {
                 top: 60px;
+                display: block;
+            }
+            
+            .language-selector {
+                flex-wrap: nowrap;
+            }
+            
+            .lang-btn {
+                padding: 6px 8px;
+                font-size: 0.75rem;
+                min-width: 42px;
             }
             
             .services-grid {
@@ -2142,427 +2180,432 @@ function safeJsonEncode($data) {
     </footer>
 
     <script>
-        // Функция экранирования HTML
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+    // Функция экранирования HTML
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
 
-        // Функция смены языка
-        function changeLanguage(lang) {
-            const url = new URL(window.location.href);
-            url.searchParams.set('lang', lang);
-            window.location.href = url.toString();
-        }
+    // Функция смены языка
+    function changeLanguage(lang) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('lang', lang);
+        window.location.href = url.toString();
+    }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Profile dropdown
-            const profileAvatar = document.getElementById('profileAvatar');
-            const dropdownMenu = document.getElementById('profileDropdown');
-            
-            if (profileAvatar && dropdownMenu) {
-                profileAvatar.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    dropdownMenu.classList.toggle('show');
-                });
+    // Функция инициализации бургер-меню
+    function initializeBurgerMenu() {
+        const burgerMenu = document.getElementById('burgerMenu');
+        const mobileNav = document.getElementById('mobileNav');
+        
+        if (burgerMenu && mobileNav) {
+            burgerMenu.addEventListener('click', function() {
+                this.classList.toggle('active');
+                mobileNav.classList.toggle('active');
                 
-                document.addEventListener('click', function(e) {
-                    if (!profileAvatar.contains(e.target) && !dropdownMenu.contains(e.target)) {
-                        dropdownMenu.classList.remove('show');
-                    }
-                });
-            }
-            
-            // Burger menu - как в index.php
-            const burgerMenu = document.getElementById('burgerMenu');
-            const mobileNav = document.getElementById('mobileNav');
-            
-            if (burgerMenu && mobileNav) {
-                function closeMobileMenu() {
-                    burgerMenu.classList.remove('active');
-                    mobileNav.classList.remove('active');
-                }
-                
-                function toggleMobileMenu() {
-                    burgerMenu.classList.toggle('active');
-                    mobileNav.classList.toggle('active');
-                }
-                
-                burgerMenu.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    toggleMobileMenu();
-                });
-                
-                document.addEventListener('click', function(event) {
-                    if (!burgerMenu.contains(event.target) && !mobileNav.contains(event.target)) {
-                        closeMobileMenu();
-                    }
-                });
-                
-                document.querySelectorAll('.mobile-nav-link').forEach(link => {
-                    link.addEventListener('click', function() {
-                        closeMobileMenu();
-                    });
-                });
-            }
-
-            <?php if ($isLoggedIn): ?>
-                // Инициализация чата
-                initializeCityChat();
-            <?php endif; ?>
-        });
-
-        <?php if ($isLoggedIn): ?>
-        // Chat functionality
-        let lastMessageId = 0;
-        let chatInterval;
-        let onlineUsersInterval;
-        let currentDisplayedDates = new Set();
-
-        // PHP translations for JavaScript
-        const chatTranslations = {
-            no_messages: <?php echo safeJsonEncode($translations['no_messages']); ?>,
-            loading_messages: <?php echo safeJsonEncode($translations['loading_messages']); ?>,
-            enter_message: <?php echo safeJsonEncode($translations['enter_message']); ?>,
-            message_too_long: <?php echo safeJsonEncode($translations['message_too_long']); ?>,
-            error_sending: <?php echo safeJsonEncode($translations['error_sending']); ?>,
-            error: <?php echo safeJsonEncode($translations['error']); ?>,
-            sending: <?php echo safeJsonEncode($translations['sending']); ?>,
-            today: <?php echo safeJsonEncode($translations['today']); ?>,
-            yesterday: <?php echo safeJsonEncode($translations['yesterday']); ?>,
-            message_censored: <?php echo safeJsonEncode($translations['message_censored']); ?>
-        };
-
-        // Month names for all languages
-        const monthNames = <?php echo safeJsonEncode($monthNames); ?>;
-        const currentLang = '<?php echo addslashes($lang); ?>';
-
-        function initializeCityChat() {
-            const sendBtn = document.getElementById('sendMessageBtn');
-            const messageInput = document.getElementById('messageInput');
-
-            if (sendBtn) {
-                sendBtn.addEventListener('click', sendMessage);
-            }
-            
-            if (messageInput) {
-                messageInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        sendMessage();
-                    }
-                });
-            }
-
-            // Load initial messages
-            loadChatMessages();
-            
-            // Setup auto-refresh
-            startChatAutoRefresh();
-            startOnlineUsersRefresh();
-        }
-
-        async function loadChatMessages() {
-            const messagesContainer = document.getElementById('chatMessages');
-            if (!messagesContainer) return;
-            
-            try {
-                const response = await fetch(`chat.php?action=get_messages&last_id=${lastMessageId}`);
-                
-                const contentType = response.headers.get('content-type');
-                if (!contentType || !contentType.includes('application/json')) {
-                    console.error('Server returned non-JSON response');
-                    return;
-                }
-                
-                const result = await response.json();
-                
-                if (result.success && result.messages) {
-                    displayChatMessages(result.messages);
-                    if (result.messages.length > 0) {
-                        lastMessageId = Math.max(...result.messages.map(msg => msg.id));
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading chat messages:', error);
-            }
-        }
-
-        function formatChatDate(dateString) {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            
-            const messageDate = new Date(dateString);
-            messageDate.setHours(0, 0, 0, 0);
-            
-            const yesterday = new Date(today);
-            yesterday.setDate(yesterday.getDate() - 1);
-            
-            if (messageDate.getTime() === today.getTime()) {
-                return chatTranslations.today;
-            } else if (messageDate.getTime() === yesterday.getTime()) {
-                return chatTranslations.yesterday;
-            } else {
-                const day = messageDate.getDate();
-                const month = (messageDate.getMonth() + 1).toString().padStart(2, '0');
-                const year = messageDate.getFullYear();
-                
-                if (currentLang === 'ru' || currentLang === 'pt' || currentLang === 'fr' || currentLang === 'de') {
-                    return `${day} ${monthNames[currentLang]?.[month] || month}`;
+                if (mobileNav.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
                 } else {
-                    return `${monthNames[currentLang]?.[month] || month} ${day}`;
+                    document.body.style.overflow = '';
                 }
-            }
-        }
-
-        function displayChatMessages(messages) {
-            const container = document.getElementById('chatMessages');
-            if (!container) return;
-            
-            const currentUserId = <?php echo (int)($_SESSION['user_id'] ?? 0); ?>;
-            
-            if (!messages || messages.length === 0) {
-                if (container.children.length === 0 || 
-                    (container.children.length === 1 && container.children[0].classList?.contains('notification'))) {
-                    container.innerHTML = `<div class="notification info"><i class="fas fa-info-circle"></i> ${escapeHtml(chatTranslations.no_messages)}</div>`;
-                }
-                return;
-            }
-            
-            const loadingNotification = container.querySelector('.notification.info');
-            if (loadingNotification && loadingNotification.textContent.includes(chatTranslations.loading_messages)) {
-                loadingNotification.remove();
-            }
-            
-            messages.sort((a, b) => a.created_at_timestamp - b.created_at_timestamp);
-            
-            let lastDate = null;
-            
-            messages.forEach(msg => {
-                const messageDate = msg.created_at_date;
-                const formattedDate = formatChatDate(messageDate);
-                
-                if (messageDate !== lastDate && !currentDisplayedDates.has(messageDate)) {
-                    const dateDivider = document.createElement('div');
-                    dateDivider.className = 'date-divider';
-                    dateDivider.innerHTML = `<span>${escapeHtml(formattedDate)}</span>`;
-                    container.appendChild(dateDivider);
-                    currentDisplayedDates.add(messageDate);
-                    lastDate = messageDate;
-                }
-                
-                const messageDiv = document.createElement('div');
-                const isOwnMessage = msg.sender_id == currentUserId;
-                
-                const escapedMessageText = escapeHtml(msg.message_text);
-                const escapedSenderName = escapeHtml(msg.sender_name);
-                const escapedAvatar = escapeHtml(msg.avatar || '');
-                
-                let avatarHtml = '';
-                if (escapedAvatar) {
-                    avatarHtml = `<img src="${escapedAvatar}" alt="${escapedSenderName}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; cursor: pointer;" onclick="window.location.href='view_profile.php?id=${msg.sender_id}'">`;
-                } else {
-                    const initial = escapedSenderName.charAt(0).toUpperCase();
-                    avatarHtml = `<div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #ff006e 0%, #ff9e00 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.9rem; cursor: pointer;" onclick="window.location.href='view_profile.php?id=${msg.sender_id}'">${escapeHtml(initial)}</div>`;
-                }
-                
-                messageDiv.className = `message ${isOwnMessage ? 'own' : 'other'}`;
-                messageDiv.style.display = 'flex';
-                messageDiv.style.gap = '10px';
-                messageDiv.style.alignItems = 'flex-start';
-                
-                if (isOwnMessage) {
-                    messageDiv.innerHTML = `
-                        <div style="flex: 1;">
-                            <div class="message-header">
-                                <span class="message-sender" onclick="window.location.href='view_profile.php?id=${msg.sender_id}'">${escapedSenderName}</span>
-                                <span class="message-time">${escapeHtml(msg.created_at_time)}</span>
-                            </div>
-                            <div class="message-text">${escapedMessageText}</div>
-                        </div>
-                        ${avatarHtml}
-                    `;
-                } else {
-                    messageDiv.innerHTML = `
-                        ${avatarHtml}
-                        <div style="flex: 1;">
-                            <div class="message-header">
-                                <span class="message-sender" onclick="window.location.href='view_profile.php?id=${msg.sender_id}'">${escapedSenderName}</span>
-                                <span class="message-time">${escapeHtml(msg.created_at_time)}</span>
-                            </div>
-                            <div class="message-text">${escapedMessageText}</div>
-                        </div>
-                    `;
-                }
-                
-                container.appendChild(messageDiv);
             });
             
-            container.scrollTop = container.scrollHeight;
-        }
-
-        async function sendMessage() {
-            const messageInput = document.getElementById('messageInput');
-            if (!messageInput) return;
+            document.addEventListener('click', function(event) {
+                if (!burgerMenu.contains(event.target) && !mobileNav.contains(event.target)) {
+                    burgerMenu.classList.remove('active');
+                    mobileNav.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
             
-            const message = messageInput.value.trim();
-            const sendBtn = document.getElementById('sendMessageBtn');
-            
-            if (!message) {
-                showChatError(chatTranslations.enter_message);
-                return;
-            }
-            
-            if (message.length > 1000) {
-                showChatError(chatTranslations.message_too_long);
-                return;
-            }
-            
-            const originalHtml = sendBtn ? sendBtn.innerHTML : '';
-            if (sendBtn) {
-                sendBtn.disabled = true;
-                sendBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${chatTranslations.sending}`;
-            }
-            
-            try {
-                const formData = new FormData();
-                formData.append('action', 'send_message');
-                formData.append('message', message);
-                
-                const response = await fetch('chat.php', {
-                    method: 'POST',
-                    body: formData
+            document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    burgerMenu.classList.remove('active');
+                    mobileNav.classList.remove('active');
+                    document.body.style.overflow = '';
                 });
-                
-                const contentType = response.headers.get('content-type');
-                if (!contentType || !contentType.includes('application/json')) {
-                    throw new Error('Сервер вернул некорректный ответ');
-                }
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    messageInput.value = '';
-                    await loadChatMessages();
-                    hideChatError();
-                    
-                    // Показываем уведомление о цензуре, если сообщение было изменено
-                    if (result.censored) {
-                        showChatWarning(chatTranslations.message_censored);
-                    }
-                } else {
-                    throw new Error(result.error || 'Unknown error');
-                }
-                
-            } catch (error) {
-                console.error('Error sending message:', error);
-                showChatError(`${chatTranslations.error_sending}: ${error.message}`);
-            } finally {
-                if (sendBtn) {
-                    sendBtn.disabled = false;
-                    sendBtn.innerHTML = originalHtml;
-                }
-            }
+            });
         }
+    }
 
-        function showChatWarning(message) {
-            let warningElement = document.getElementById('chatWarning');
-            const chatContainer = document.querySelector('.chat-container');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Инициализация бургер-меню
+        initializeBurgerMenu();
+        
+        // Profile dropdown
+        const profileAvatar = document.getElementById('profileAvatar');
+        const dropdownMenu = document.getElementById('profileDropdown');
+        
+        if (profileAvatar && dropdownMenu) {
+            profileAvatar.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('show');
+            });
             
-            if (!warningElement && chatContainer && chatContainer.parentNode) {
-                warningElement = document.createElement('div');
-                warningElement.id = 'chatWarning';
-                warningElement.className = 'notification warning';
-                warningElement.style.margin = '10px 0';
-                chatContainer.parentNode.insertBefore(warningElement, chatContainer.nextSibling);
-            }
-            
-            if (warningElement) {
-                warningElement.innerHTML = `<i class="fas fa-shield-alt"></i> ${escapeHtml(message)}`;
-                warningElement.style.display = 'block';
-                
-                setTimeout(() => {
-                    if (warningElement) {
-                        warningElement.style.display = 'none';
-                    }
-                }, 3000);
-            }
-        }
-
-        async function updateOnlineUsers() {
-            try {
-                const response = await fetch('chat.php?action=get_online_users');
-                
-                const contentType = response.headers.get('content-type');
-                if (!contentType || !contentType.includes('application/json')) {
-                    return;
+            document.addEventListener('click', function(e) {
+                if (!profileAvatar.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    dropdownMenu.classList.remove('show');
                 }
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    const onlineCountSpan = document.getElementById('onlineCount');
-                    if (onlineCountSpan) {
-                        onlineCountSpan.textContent = result.count;
-                    }
-                }
-            } catch (error) {
-                console.error('Error updating online users:', error);
-            }
+            });
         }
 
-        function startChatAutoRefresh() {
-            if (chatInterval) clearInterval(chatInterval);
-            chatInterval = setInterval(() => {
-                loadChatMessages();
-            }, 5000);
-        }
-
-        function startOnlineUsersRefresh() {
-            updateOnlineUsers();
-            if (onlineUsersInterval) clearInterval(onlineUsersInterval);
-            onlineUsersInterval = setInterval(updateOnlineUsers, 30000);
-        }
-
-        function showChatError(message) {
-            let errorElement = document.getElementById('chatError');
-            const chatContainer = document.querySelector('.chat-container');
-            
-            if (!errorElement && chatContainer && chatContainer.parentNode) {
-                errorElement = document.createElement('div');
-                errorElement.id = 'chatError';
-                errorElement.className = 'notification error';
-                errorElement.style.margin = '10px 0';
-                chatContainer.parentNode.insertBefore(errorElement, chatContainer.nextSibling);
-            }
-            
-            if (errorElement) {
-                errorElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${escapeHtml(message)}`;
-                errorElement.style.display = 'block';
-                
-                setTimeout(hideChatError, 5000);
-            }
-        }
-
-        function hideChatError() {
-            const errorElement = document.getElementById('chatError');
-            if (errorElement) {
-                errorElement.style.display = 'none';
-            }
-        }
-
-        window.addEventListener('beforeunload', function() {
-            if (chatInterval) {
-                clearInterval(chatInterval);
-            }
-            if (onlineUsersInterval) {
-                clearInterval(onlineUsersInterval);
-            }
-        });
+        <?php if ($isLoggedIn): ?>
+            // Инициализация чата
+            initializeCityChat();
         <?php endif; ?>
-    </script>
+    });
+
+    <?php if ($isLoggedIn): ?>
+    // Chat functionality
+    let lastMessageId = 0;
+    let chatInterval;
+    let onlineUsersInterval;
+    let currentDisplayedDates = new Set();
+
+    // PHP translations for JavaScript
+    const chatTranslations = {
+        no_messages: <?php echo safeJsonEncode($translations['no_messages']); ?>,
+        loading_messages: <?php echo safeJsonEncode($translations['loading_messages']); ?>,
+        enter_message: <?php echo safeJsonEncode($translations['enter_message']); ?>,
+        message_too_long: <?php echo safeJsonEncode($translations['message_too_long']); ?>,
+        error_sending: <?php echo safeJsonEncode($translations['error_sending']); ?>,
+        error: <?php echo safeJsonEncode($translations['error']); ?>,
+        sending: <?php echo safeJsonEncode($translations['sending']); ?>,
+        today: <?php echo safeJsonEncode($translations['today']); ?>,
+        yesterday: <?php echo safeJsonEncode($translations['yesterday']); ?>,
+        message_censored: <?php echo safeJsonEncode($translations['message_censored']); ?>
+    };
+
+    // Month names for all languages
+    const monthNames = <?php echo safeJsonEncode($monthNames); ?>;
+    const currentLang = '<?php echo addslashes($lang); ?>';
+
+    function initializeCityChat() {
+        const sendBtn = document.getElementById('sendMessageBtn');
+        const messageInput = document.getElementById('messageInput');
+
+        if (sendBtn) {
+            sendBtn.addEventListener('click', sendMessage);
+        }
+        
+        if (messageInput) {
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+        }
+
+        // Load initial messages
+        loadChatMessages();
+        
+        // Setup auto-refresh
+        startChatAutoRefresh();
+        startOnlineUsersRefresh();
+    }
+
+    async function loadChatMessages() {
+        const messagesContainer = document.getElementById('chatMessages');
+        if (!messagesContainer) return;
+        
+        try {
+            const response = await fetch(`chat.php?action=get_messages&last_id=${lastMessageId}`);
+            
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                console.error('Server returned non-JSON response');
+                return;
+            }
+            
+            const result = await response.json();
+            
+            if (result.success && result.messages) {
+                displayChatMessages(result.messages);
+                if (result.messages.length > 0) {
+                    lastMessageId = Math.max(...result.messages.map(msg => msg.id));
+                }
+            }
+        } catch (error) {
+            console.error('Error loading chat messages:', error);
+        }
+    }
+
+    function formatChatDate(dateString) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const messageDate = new Date(dateString);
+        messageDate.setHours(0, 0, 0, 0);
+        
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (messageDate.getTime() === today.getTime()) {
+            return chatTranslations.today;
+        } else if (messageDate.getTime() === yesterday.getTime()) {
+            return chatTranslations.yesterday;
+        } else {
+            const day = messageDate.getDate();
+            const month = (messageDate.getMonth() + 1).toString().padStart(2, '0');
+            const year = messageDate.getFullYear();
+            
+            if (currentLang === 'ru' || currentLang === 'pt' || currentLang === 'fr' || currentLang === 'de') {
+                return `${day} ${monthNames[currentLang]?.[month] || month}`;
+            } else {
+                return `${monthNames[currentLang]?.[month] || month} ${day}`;
+            }
+        }
+    }
+
+    function displayChatMessages(messages) {
+        const container = document.getElementById('chatMessages');
+        if (!container) return;
+        
+        const currentUserId = <?php echo (int)($_SESSION['user_id'] ?? 0); ?>;
+        
+        if (!messages || messages.length === 0) {
+            if (container.children.length === 0 || 
+                (container.children.length === 1 && container.children[0].classList?.contains('notification'))) {
+                container.innerHTML = `<div class="notification info"><i class="fas fa-info-circle"></i> ${escapeHtml(chatTranslations.no_messages)}</div>`;
+            }
+            return;
+        }
+        
+        const loadingNotification = container.querySelector('.notification.info');
+        if (loadingNotification && loadingNotification.textContent.includes(chatTranslations.loading_messages)) {
+            loadingNotification.remove();
+        }
+        
+        messages.sort((a, b) => a.created_at_timestamp - b.created_at_timestamp);
+        
+        let lastDate = null;
+        
+        messages.forEach(msg => {
+            const messageDate = msg.created_at_date;
+            const formattedDate = formatChatDate(messageDate);
+            
+            if (messageDate !== lastDate && !currentDisplayedDates.has(messageDate)) {
+                const dateDivider = document.createElement('div');
+                dateDivider.className = 'date-divider';
+                dateDivider.innerHTML = `<span>${escapeHtml(formattedDate)}</span>`;
+                container.appendChild(dateDivider);
+                currentDisplayedDates.add(messageDate);
+                lastDate = messageDate;
+            }
+            
+            const messageDiv = document.createElement('div');
+            const isOwnMessage = msg.sender_id == currentUserId;
+            
+            const escapedMessageText = escapeHtml(msg.message_text);
+            const escapedSenderName = escapeHtml(msg.sender_name);
+            const escapedAvatar = escapeHtml(msg.avatar || '');
+            
+            let avatarHtml = '';
+            if (escapedAvatar) {
+                avatarHtml = `<img src="${escapedAvatar}" alt="${escapedSenderName}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; cursor: pointer;" onclick="window.location.href='view_profile.php?id=${msg.sender_id}'">`;
+            } else {
+                const initial = escapedSenderName.charAt(0).toUpperCase();
+                avatarHtml = `<div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #ff006e 0%, #ff9e00 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.9rem; cursor: pointer;" onclick="window.location.href='view_profile.php?id=${msg.sender_id}'">${escapeHtml(initial)}</div>`;
+            }
+            
+            messageDiv.className = `message ${isOwnMessage ? 'own' : 'other'}`;
+            messageDiv.style.display = 'flex';
+            messageDiv.style.gap = '10px';
+            messageDiv.style.alignItems = 'flex-start';
+            
+            if (isOwnMessage) {
+                messageDiv.innerHTML = `
+                    <div style="flex: 1;">
+                        <div class="message-header">
+                            <span class="message-sender" onclick="window.location.href='view_profile.php?id=${msg.sender_id}'">${escapedSenderName}</span>
+                            <span class="message-time">${escapeHtml(msg.created_at_time)}</span>
+                        </div>
+                        <div class="message-text">${escapedMessageText}</div>
+                    </div>
+                    ${avatarHtml}
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    ${avatarHtml}
+                    <div style="flex: 1;">
+                        <div class="message-header">
+                            <span class="message-sender" onclick="window.location.href='view_profile.php?id=${msg.sender_id}'">${escapedSenderName}</span>
+                            <span class="message-time">${escapeHtml(msg.created_at_time)}</span>
+                        </div>
+                        <div class="message-text">${escapedMessageText}</div>
+                    </div>
+                `;
+            }
+            
+            container.appendChild(messageDiv);
+        });
+        
+        container.scrollTop = container.scrollHeight;
+    }
+
+    async function sendMessage() {
+        const messageInput = document.getElementById('messageInput');
+        if (!messageInput) return;
+        
+        const message = messageInput.value.trim();
+        const sendBtn = document.getElementById('sendMessageBtn');
+        
+        if (!message) {
+            showChatError(chatTranslations.enter_message);
+            return;
+        }
+        
+        if (message.length > 1000) {
+            showChatError(chatTranslations.message_too_long);
+            return;
+        }
+        
+        const originalHtml = sendBtn ? sendBtn.innerHTML : '';
+        if (sendBtn) {
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${chatTranslations.sending}`;
+        }
+        
+        try {
+            const formData = new FormData();
+            formData.append('action', 'send_message');
+            formData.append('message', message);
+            
+            const response = await fetch('chat.php', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('Сервер вернул некорректный ответ');
+            }
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                messageInput.value = '';
+                await loadChatMessages();
+                hideChatError();
+                
+                // Показываем уведомление о цензуре, если сообщение было изменено
+                if (result.censored) {
+                    showChatWarning(chatTranslations.message_censored);
+                }
+            } else {
+                throw new Error(result.error || 'Unknown error');
+            }
+            
+        } catch (error) {
+            console.error('Error sending message:', error);
+            showChatError(`${chatTranslations.error_sending}: ${error.message}`);
+        } finally {
+            if (sendBtn) {
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = originalHtml;
+            }
+        }
+    }
+
+    function showChatWarning(message) {
+        let warningElement = document.getElementById('chatWarning');
+        const chatContainer = document.querySelector('.chat-container');
+        
+        if (!warningElement && chatContainer && chatContainer.parentNode) {
+            warningElement = document.createElement('div');
+            warningElement.id = 'chatWarning';
+            warningElement.className = 'notification warning';
+            warningElement.style.margin = '10px 0';
+            chatContainer.parentNode.insertBefore(warningElement, chatContainer.nextSibling);
+        }
+        
+        if (warningElement) {
+            warningElement.innerHTML = `<i class="fas fa-shield-alt"></i> ${escapeHtml(message)}`;
+            warningElement.style.display = 'block';
+            
+            setTimeout(() => {
+                if (warningElement) {
+                    warningElement.style.display = 'none';
+                }
+            }, 3000);
+        }
+    }
+
+    async function updateOnlineUsers() {
+        try {
+            const response = await fetch('chat.php?action=get_online_users');
+            
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                return;
+            }
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                const onlineCountSpan = document.getElementById('onlineCount');
+                if (onlineCountSpan) {
+                    onlineCountSpan.textContent = result.count;
+                }
+            }
+        } catch (error) {
+            console.error('Error updating online users:', error);
+        }
+    }
+
+    function startChatAutoRefresh() {
+        if (chatInterval) clearInterval(chatInterval);
+        chatInterval = setInterval(() => {
+            loadChatMessages();
+        }, 5000);
+    }
+
+    function startOnlineUsersRefresh() {
+        updateOnlineUsers();
+        if (onlineUsersInterval) clearInterval(onlineUsersInterval);
+        onlineUsersInterval = setInterval(updateOnlineUsers, 30000);
+    }
+
+    function showChatError(message) {
+        let errorElement = document.getElementById('chatError');
+        const chatContainer = document.querySelector('.chat-container');
+        
+        if (!errorElement && chatContainer && chatContainer.parentNode) {
+            errorElement = document.createElement('div');
+            errorElement.id = 'chatError';
+            errorElement.className = 'notification error';
+            errorElement.style.margin = '10px 0';
+            chatContainer.parentNode.insertBefore(errorElement, chatContainer.nextSibling);
+        }
+        
+        if (errorElement) {
+            errorElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${escapeHtml(message)}`;
+            errorElement.style.display = 'block';
+            
+            setTimeout(hideChatError, 5000);
+        }
+    }
+
+    function hideChatError() {
+        const errorElement = document.getElementById('chatError');
+        if (errorElement) {
+            errorElement.style.display = 'none';
+        }
+    }
+
+    window.addEventListener('beforeunload', function() {
+        if (chatInterval) {
+            clearInterval(chatInterval);
+        }
+        if (onlineUsersInterval) {
+            clearInterval(onlineUsersInterval);
+        }
+    });
+    <?php endif; ?>
+</script>
 </body>
 </html>
 <?php
