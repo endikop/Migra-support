@@ -1116,6 +1116,7 @@ $status_texts = [
             display: flex;
             align-items: center;
             gap: 15px;
+            margin-left: auto;
         }
 
         .language-selector {
@@ -2117,7 +2118,6 @@ $status_texts = [
             }
             
             .header-top {
-                flex-wrap: wrap;
                 gap: 15px;
             }
             
@@ -2137,6 +2137,10 @@ $status_texts = [
                 font-size: 0.9rem;
             }
             
+            .header-right {
+                gap: 10px;
+            }
+            
             main {
                 margin-top: 60px;
             }
@@ -2146,16 +2150,10 @@ $status_texts = [
                 display: block;
             }
             
-            .language-selector {
-                flex-wrap: nowrap;
-                justify-content: center;
-                max-width: 280px;
-            }
-            
             .lang-btn {
                 padding: 6px 8px;
                 font-size: 0.75rem;
-                min-width: 45px;
+                min-width: 42px;
             }
         }
 
@@ -2196,10 +2194,6 @@ $status_texts = [
 
             .message {
                 max-width: 85%;
-            }
-            
-            .language-selector {
-                max-width: 250px;
             }
             
             .lang-btn {
@@ -2298,17 +2292,24 @@ $status_texts = [
         justify-content: center;
     }
 
-    /* Сохраняем твои стили для переключателя языков */
-    .language-selector {
-        max-width: 220px;
+    .header-right {
+        gap: 8px;
     }
-    
+
     .lang-btn {
-        padding: 4px 5px;
-        font-size: 0.65rem;
-        min-width: 35px;
+        padding: 5px 7px;
+        font-size: 0.72rem;
+        min-width: 38px;
     }
 }
+
+        @media (max-width: 400px) {
+            .lang-btn {
+                padding: 4px 6px;
+                font-size: 0.68rem;
+                min-width: 34px;
+            }
+        }
 
         footer {
             background: rgba(13, 13, 23, 0.95);
