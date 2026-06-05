@@ -1112,19 +1112,16 @@ $status_texts = [
             letter-spacing: -0.3px;
         }
 
-        /* Header Right Section */
         .header-right {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-left: auto;
         }
 
-        /* Language Selector */
         .language-selector {
             display: flex;
             gap: 5px;
-            align-items: center;
+            flex-wrap: nowrap;
         }
 
         .lang-btn {
@@ -1137,7 +1134,6 @@ $status_texts = [
             cursor: pointer;
             transition: var(--transition);
             font-size: 0.85rem;
-            flex: 0 0 auto;
             min-width: 50px;
             text-align: center;
         }
@@ -1280,7 +1276,6 @@ $status_texts = [
             box-shadow: 0 12px 25px rgba(255, 0, 84, 0.4);
         }
 
-        /* Burger Menu - обновленный как во втором коде */
         .burger-menu {
             display: none;
             flex-direction: column;
@@ -1319,16 +1314,11 @@ $status_texts = [
             background: var(--accent);
         }
 
-        /* Основная навигация в хедере - обновлена как во втором коде */
         .header-nav {
             background: rgba(26, 26, 46, 0.95);
             backdrop-filter: blur(20px);
-            position: relative;
-            z-index: 999;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            padding: 0;
         }
 
         .nav-tabs {
@@ -1353,9 +1343,7 @@ $status_texts = [
             display: flex;
             align-items: center;
             gap: 10px;
-            position: relative;
             white-space: nowrap;
-            border-radius: 8px 8px 0 0;
         }
 
         .nav-link {
@@ -1376,17 +1364,14 @@ $status_texts = [
             color: white;
             border-bottom-color: var(--accent);
             background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .nav-tab i {
             font-size: 1.1rem;
-            transition: var(--transition);
         }
 
         .nav-tab.active i {
             color: var(--accent);
-            transform: scale(1.1);
         }
 
         .mobile-nav {
@@ -1426,7 +1411,6 @@ $status_texts = [
             gap: 10px;
             border-radius: 8px;
             margin-bottom: 5px;
-            font-size: 0.9rem;
         }
         
         .mobile-nav-link {
@@ -2133,6 +2117,7 @@ $status_texts = [
             }
             
             .header-top {
+                flex-wrap: wrap;
                 gap: 15px;
             }
             
@@ -2152,10 +2137,6 @@ $status_texts = [
                 font-size: 0.9rem;
             }
             
-            .header-right {
-                gap: 10px;
-            }
-            
             main {
                 margin-top: 60px;
             }
@@ -2165,10 +2146,16 @@ $status_texts = [
                 display: block;
             }
             
+            .language-selector {
+                flex-wrap: nowrap;
+                justify-content: center;
+                max-width: 280px;
+            }
+            
             .lang-btn {
                 padding: 6px 8px;
                 font-size: 0.75rem;
-                min-width: 42px;
+                min-width: 45px;
             }
         }
 
@@ -2209,6 +2196,10 @@ $status_texts = [
 
             .message {
                 max-width: 85%;
+            }
+            
+            .language-selector {
+                max-width: 250px;
             }
             
             .lang-btn {
@@ -2307,24 +2298,17 @@ $status_texts = [
         justify-content: center;
     }
 
-    .header-right {
-        gap: 8px;
+    /* Сохраняем твои стили для переключателя языков */
+    .language-selector {
+        max-width: 220px;
     }
-
+    
     .lang-btn {
-        padding: 5px 7px;
-        font-size: 0.72rem;
-        min-width: 38px;
+        padding: 4px 5px;
+        font-size: 0.65rem;
+        min-width: 35px;
     }
 }
-
-        @media (max-width: 400px) {
-            .lang-btn {
-                padding: 4px 6px;
-                font-size: 0.68rem;
-                min-width: 34px;
-            }
-        }
 
         footer {
             background: rgba(13, 13, 23, 0.95);
