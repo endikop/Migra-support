@@ -2116,11 +2116,21 @@ $status_texts = [
                 display: flex;
             }
             
-            .header-top {
-                flex-wrap: wrap;
-                gap: 15px;
+            .header-right {
+                gap: 10px;
             }
             
+            main {
+                margin-top: 60px;
+            }
+            
+            .mobile-nav {
+                top: 60px;
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
             .logo {
                 font-size: 1.3rem;
             }
@@ -2137,29 +2147,11 @@ $status_texts = [
                 font-size: 0.9rem;
             }
             
-            main {
-                margin-top: 60px;
+            .btn {
+                padding: 8px 15px;
+                font-size: 0.8rem;
             }
-            
-            .mobile-nav {
-                top: 60px;
-                display: block;
-            }
-            
-            .language-selector {
-                flex-wrap: nowrap;
-                justify-content: center;
-                max-width: 280px;
-            }
-            
-            .lang-btn {
-                padding: 6px 8px;
-                font-size: 0.75rem;
-                min-width: 45px;
-            }
-        }
 
-        @media (max-width: 768px) {
             .profile-header {
                 padding: 30px 20px;
             }
@@ -2198,14 +2190,11 @@ $status_texts = [
                 max-width: 85%;
             }
             
-            .language-selector {
-                max-width: 250px;
-            }
-            
+            /* Language selector для мобильных */
             .lang-btn {
-                padding: 5px 6px;
-                font-size: 0.7rem;
-                min-width: 40px;
+                padding: 6px 8px;
+                font-size: 0.75rem;
+                min-width: 42px;
             }
         }
 
@@ -2298,17 +2287,25 @@ $status_texts = [
         justify-content: center;
     }
 
-    /* Сохраняем твои стили для переключателя языков */
-    .language-selector {
-        max-width: 220px;
+    /* Сохраняем стили для переключателя языков (точно как в index.php) */
+    .header-right {
+        gap: 8px;
     }
-    
+
     .lang-btn {
-        padding: 4px 5px;
-        font-size: 0.65rem;
-        min-width: 35px;
+        padding: 5px 7px;
+        font-size: 0.72rem;
+        min-width: 38px;
     }
 }
+        
+        @media (max-width: 400px) {
+            .lang-btn {
+                padding: 4px 6px;
+                font-size: 0.68rem;
+                min-width: 34px;
+            }
+        }
 
         footer {
             background: rgba(13, 13, 23, 0.95);
