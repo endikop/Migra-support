@@ -2342,24 +2342,21 @@ $status_texts = [
         }
 
         .footer-section h3 {
-            margin-bottom: 20px;
-            color: white;
-            font-size: 1.2rem;
-            font-weight: 700;
-            position: relative;
-            padding-bottom: 10px;
-        }
+    position: relative;
+    text-align: center;
+    padding-bottom: 15px;
+}
 
-        .footer-section h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: var(--gradient-primary);
-            border-radius: 2px;
-        }
+.footer-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 50px;
+    height: 3px;
+    background: var(--gradient-primary);
+}
 
         .footer-section p {
             color: var(--gray-light);
