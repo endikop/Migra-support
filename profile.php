@@ -1116,12 +1116,13 @@ $status_texts = [
             display: flex;
             align-items: center;
             gap: 15px;
+            margin-left: auto;
         }
 
         .language-selector {
             display: flex;
             gap: 5px;
-            flex-wrap: nowrap;
+            align-items: center;
         }
 
         .lang-btn {
@@ -1134,6 +1135,7 @@ $status_texts = [
             cursor: pointer;
             transition: var(--transition);
             font-size: 0.85rem;
+            flex: 0 0 auto;
             min-width: 50px;
             text-align: center;
         }
@@ -2131,6 +2133,11 @@ $status_texts = [
         }
 
         @media (max-width: 768px) {
+            .header-top {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
             .logo {
                 font-size: 1.3rem;
             }
