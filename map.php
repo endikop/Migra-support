@@ -3015,16 +3015,6 @@ ob_end_flush();
                 display: block;
             }
             
-            .language-selector {
-                flex-wrap: nowrap;
-            }
-            
-            .lang-btn {
-                padding: 6px 8px;
-                font-size: 0.75rem;
-                min-width: 42px;
-            }
-            
             .map-wrapper {
                 height: 500px;
             }
@@ -3078,6 +3068,13 @@ ob_end_flush();
                 font-size: 0.8rem;
             }
             
+            /* Language selector для мобильных */
+            .lang-btn {
+                padding: 6px 8px;
+                font-size: 0.75rem;
+                min-width: 42px;
+            }
+            
             .map-wrapper {
                 height: 400px;
             }
@@ -3126,6 +3123,24 @@ ob_end_flush();
             
             .map-wrapper {
                 height: 300px;
+            }
+            
+            .header-right {
+                gap: 8px;
+            }
+            
+            .lang-btn {
+                padding: 5px 7px;
+                font-size: 0.72rem;
+                min-width: 38px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .lang-btn {
+                padding: 4px 6px;
+                font-size: 0.68rem;
+                min-width: 34px;
             }
         }
     </style>
