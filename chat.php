@@ -800,6 +800,8 @@ function safeJsonEncode($data) {
             justify-content: center;
             color: white;
             font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
             box-shadow: 0 6px 15px rgba(58, 134, 255, 0.3);
         }
 
@@ -871,6 +873,7 @@ function safeJsonEncode($data) {
             box-shadow: 0 6px 15px rgba(255, 0, 110, 0.3);
             transition: var(--transition);
             cursor: pointer;
+            position: relative;
             overflow: hidden;
         }
 
@@ -1819,26 +1822,26 @@ function safeJsonEncode($data) {
                 font-size: 0.8rem;
             }
             
-            .logo-text {
-                font-size: 1.1rem;
+            .logo {
+                font-size: 1.3rem;
             }
             
             .logo-icon {
-                width: 30px;
-                height: 30px;
-                font-size: 0.9rem;
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
             }
             
             .user-avatar {
-                width: 30px;
-                height: 30px;
-                font-size: 0.8rem;
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
             }
             
             .lang-btn {
-                padding: 4px 6px;
-                font-size: 0.68rem;
-                min-width: 36px;
+                padding: 5px 7px;
+                font-size: 0.72rem;
+                min-width: 38px;
             }
             
             .dropdown-menu {
@@ -1882,9 +1885,9 @@ function safeJsonEncode($data) {
 
         @media (max-width: 400px) {
             .lang-btn {
-                padding: 4px 5px;
-                font-size: 0.65rem;
-                min-width: 32px;
+                padding: 4px 6px;
+                font-size: 0.68rem;
+                min-width: 34px;
             }
             
             .header-right {
