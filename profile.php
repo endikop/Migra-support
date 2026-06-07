@@ -2203,20 +2203,6 @@ $status_texts = [
                 font-size: 0.75rem;
                 min-width: 42px;
             }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .footer-section h3::after {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            .social-links {
-                justify-content: center;
-            }
         }
 
         @media (max-width: 576px) {
@@ -2291,6 +2277,21 @@ $status_texts = [
         padding: 10px;
         font-size: 0.9rem;
         min-height: 60px;
+    }
+
+    /* Адаптивность футера (точно как в index.php) */
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .footer-section h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .social-links {
+        justify-content: center;
     }
 
     /* Сохраняем стили для переключателя языков (точно как в index.php) */
