@@ -1414,7 +1414,8 @@ function getCurrencyName($currency, $lang) {
             font-size: 0.9rem;
         }
 
-        .service-info i {
+        .service-info i,
+        .service-info > span:first-child {
             color: var(--accent);
             margin-top: 3px;
             min-width: 16px;
@@ -2118,9 +2119,19 @@ function getCurrencyName($currency, $lang) {
                     'BYN' => ['USD', 'EUR', 'RUB', 'PLN']
                 ];
                 
+                // Валюты с текстовым символом вместо FA-иконки
+                $textSymbolCurrencies = ['BYN', 'PLN', 'CHF', 'CAD', 'AUD', 'NZD', 'SGD', 'HKD', 'BRL'];
+
                 foreach ($popularRates as $base => $targets): ?>
                     <div class="service-card">
-                        <h4><i class="<?php echo $currencies[$base]['icon']; ?>"></i> <?php echo getCurrencyName($currencies[$base], $lang); ?></h4>
+                        <h4>
+                            <?php if (in_array($base, $textSymbolCurrencies)): ?>
+                                <span style="font-weight:700;"><?php echo $currencies[$base]['symbol']; ?></span>
+                            <?php else: ?>
+                                <i class="<?php echo $currencies[$base]['icon']; ?>"></i>
+                            <?php endif; ?>
+                            <?php echo getCurrencyName($currencies[$base], $lang); ?>
+                        </h4>
                         <?php foreach ($targets as $target): 
                             if (isset($exchangeRates[$base]) && isset($exchangeRates[$target])) {
                                 $rate = $exchangeRates[$target] / $exchangeRates[$base];
@@ -2131,7 +2142,11 @@ function getCurrencyName($currency, $lang) {
                             }
                         ?>
                             <div class="service-info">
-                                <i class="<?php echo $currencies[$target]['icon']; ?>"></i>
+                                <?php if (in_array($target, $textSymbolCurrencies)): ?>
+                                    <span style="font-weight:700;min-width:16px;"><?php echo $currencies[$target]['symbol']; ?></span>
+                                <?php else: ?>
+                                    <i class="<?php echo $currencies[$target]['icon']; ?>"></i>
+                                <?php endif; ?>
                                 <span>1 <?php echo $base; ?> = <?php echo $rateFormatted; ?> <?php echo $target; ?></span>
                             </div>
                         <?php endforeach; ?>
@@ -2294,18 +2309,37 @@ function getCurrencyName($currency, $lang) {
             const exchangeRates = <?php echo json_encode_unicode($exchangeRates); ?>;
             const translations = <?php echo json_encode_unicode($translations); ?>;
             
+            // Список валют, для которых используется текстовый символ вместо иконки FA
+            const textSymbolCurrencies = ['BYN', 'PLN', 'CHF', 'CAD', 'AUD', 'NZD', 'SGD', 'HKD', 'BRL'];
+
             // Обновление символов валют
             function updateCurrencySymbols() {
                 const fromCurrency = fromCurrencySelect.value;
                 const toCurrency = toCurrencySelect.value;
                 
                 if (currencies[fromCurrency]) {
-                    fromSymbol.innerHTML = `<i class="${currencies[fromCurrency].icon}"></i>`;
+                    if (textSymbolCurrencies.includes(fromCurrency)) {
+                        fromSymbol.innerHTML = `<span style="font-weight:700;font-size:1rem;">${currencies[fromCurrency].symbol}</span>`;
+                    } else {
+                        fromSymbol.innerHTML = `<i class="${currencies[fromCurrency].icon}"></i>`;
+                    }
                 }
                 
                 if (currencies[toCurrency]) {
-                    toSymbol.innerHTML = `<i class="${currencies[toCurrency].icon}"></i>`;
+                    if (textSymbolCurrencies.includes(toCurrency)) {
+                        toSymbol.innerHTML = `<span style="font-weight:700;font-size:1rem;">${currencies[toCurrency].symbol}</span>`;
+                    } else {
+                        toSymbol.innerHTML = `<i class="${currencies[toCurrency].icon}"></i>`;
+                    }
                 }
+
+                // Подстраиваем padding поля ввода под ширину символа
+                requestAnimationFrame(() => {
+                    const fromW = fromSymbol.offsetWidth;
+                    const toW = toSymbol.offsetWidth;
+                    amountInput.style.paddingLeft = (fromW + 24) + 'px';
+                    resultInput.style.paddingRight = (toW + 24) + 'px';
+                });
             }
             
             // Функция конвертации
