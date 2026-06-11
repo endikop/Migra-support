@@ -2247,7 +2247,7 @@ foreach ($translations as $key => $value) {
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2026 MigraSupport. <?php echo $translations['all_rights_reserved']; ?></p>
+                <p>&copy; 2026 MigraSupport. <?php echo $translations['copyright']; ?></p>
             </div>
         </div>
     </footer>

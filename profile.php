@@ -533,7 +533,16 @@ $translations = [
     ),
     'contacts' => t('Контакты', 'Contacts', 'Contatos', 'Contacts', 'Kontakte'),
     'quick_links' => t('Быстрые ссылки', 'Quick Links', 'Links Rápidos', 'Liens Rapides', 'Schnelllinks'),
-    'minsk_belarus' => t('Минск, Беларусь', 'Minsk, Belarus', 'Minsk, Bielorrússia', 'Minsk, Biélorussie', 'Minsk, Belarus')
+    'minsk_belarus' => t('Минск, Беларусь', 'Minsk, Belarus', 'Minsk, Bielorrússia', 'Minsk, Biélorussie', 'Minsk, Belarus'),
+    'footer_title' => t('MigraSupport', 'MigraSupport', 'MigraSupport', 'MigraSupport', 'MigraSupport'),
+    'footer_desc' => t(
+        'Комплексная система поддержки мигрантов в Беларуси. Мы помогаем с адаптацией, документами и интеграцией.',
+        'Comprehensive migrant support system in Belarus. We help with adaptation, documents and integration.',
+        'Sistema abrangente de apoio a migrantes na Bielorrússia. Ajudamos com adaptação, documentos e integração.',
+        'Système complet de soutien aux migrants en Biélorussie. Nous aidons à l\'adaptation, aux documents et à l\'intégration.',
+        'Umfassendes Migrantenunterstützungssystem in Belarus. Wir helfen bei Anpassung, Dokumenten und Integration.'
+    ),
+    'support_247' => t('Поддержка 24/7', '24/7 Support', 'Suporte 24/7', 'Support 24/7', '24/7 Support')
 ];
 
 // Загружаем данные пользователя
@@ -2206,105 +2215,110 @@ $status_texts = [
         }
 
         @media (max-width: 576px) {
-    /* Общие отступы контейнера */
-    .container {
-        padding: 0 15px;
-    }
-    
-    /* Уменьшаем отступы шапки профиля и размер шрифта */
-    .profile-header {
-        padding: 25px 15px;
-    }
+            .container {
+                padding: 0 15px;
+            }
 
-    .profile-header h1 {
-        font-size: 1.6rem;
-    }
+            .profile-header {
+                padding: 25px 15px;
+            }
 
-    /* Уменьшаем отступы основного контента профиля */
-    .profile-content {
-        padding: 15px;
-        gap: 15px;
-    }
+            .profile-header h1 {
+                font-size: 1.6rem;
+            }
 
-    .profile-sidebar, .profile-main {
-        padding: 15px;
-    }
+            .profile-content {
+                padding: 15px;
+                gap: 15px;
+            }
 
-    /* Уменьшаем размер аватарки, чтобы она не съедала пол-экрана */
-    .user-avatar-large {
-        width: 80px;
-        height: 80px;
-        font-size: 2rem;
-        margin-bottom: 15px;
-    }
+            .profile-sidebar, .profile-main {
+                padding: 15px;
+            }
 
-    /* КРИТИЧНО: Фикс вылезающих за пределы экрана длинных email и данных паспорта */
-    .info-value, .user-email {
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        word-break: break-all;
-    }
+            .user-avatar-large {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+                margin-bottom: 15px;
+            }
 
-    .info-item {
-        padding: 15px;
-    }
+            .info-value, .user-email {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                word-break: break-all;
+            }
 
-    .section-title {
-        font-size: 1.25rem;
-        margin-bottom: 20px;
-    }
+            .info-item {
+                padding: 15px;
+            }
 
-    /* Адаптивность элементов чата внутри профиля */
-    .chat-header {
-        padding: 15px;
-    }
+            .section-title {
+                font-size: 1.25rem;
+                margin-bottom: 20px;
+            }
 
-    .chat-header h3 {
-        font-size: 1.1rem;
-    }
+            .chat-header {
+                padding: 15px;
+            }
 
-    .message {
-        max-width: 95%; /* Даем сообщениям больше ширины на маленьких экранах */
-        padding: 10px 14px;
-        font-size: 0.9rem;
-    }
+            .chat-header h3 {
+                font-size: 1.1rem;
+            }
 
-    .chat-input-area {
-        padding: 15px;
-    }
-    
-    .chat-input {
-        padding: 10px;
-        font-size: 0.9rem;
-        min-height: 60px;
-    }
+            .message {
+                max-width: 95%;
+                padding: 10px 14px;
+                font-size: 0.9rem;
+            }
 
-    /* Адаптивность футера (точно как в index.php) */
-    .footer-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
+            .chat-input-area {
+                padding: 15px;
+            }
 
-    .footer-section h3::after {
-        left: 50%;
-        transform: translateX(-50%);
-    }
+            .chat-input {
+                padding: 10px;
+                font-size: 0.9rem;
+                min-height: 60px;
+            }
 
-    .social-links {
-        justify-content: center;
-    }
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
 
-    /* Сохраняем стили для переключателя языков (точно как в index.php) */
-    .header-right {
-        gap: 8px;
-    }
+            .footer-section h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
 
-    .lang-btn {
-        padding: 5px 7px;
-        font-size: 0.72rem;
-        min-width: 38px;
-    }
-}
+            .footer-links {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-links li {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .header-right {
+                gap: 8px;
+            }
+
+            .lang-btn {
+                padding: 5px 7px;
+                font-size: 0.72rem;
+                min-width: 38px;
+            }
+        }
         
         @media (max-width: 400px) {
             .lang-btn {
@@ -2343,19 +2357,22 @@ $status_texts = [
 
         .footer-section h3 {
             position: relative;
-            text-align: center;
-            padding-bottom: 15px;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding-bottom: 10px;
         }
 
         .footer-section h3::after {
             content: '';
             position: absolute;
             bottom: 0;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
+            left: 0;
             width: 50px;
             height: 3px;
             background: var(--gradient-primary);
+            border-radius: 2px;
         }
 
         .footer-section p {
@@ -3193,14 +3210,9 @@ $status_texts = [
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>MigraSupport</h3>
-                    <p><?php echo t(
-                        'Комплексная система поддержки мигрантов в Беларуси. Мы помогаем с адаптацией, документами и интеграцией.',
-                        'Comprehensive migrant support system in Belarus. We help with adaptation, documents and integration.',
-                        'Sistema abrangente de apoio a migrantes na Bielorrússia. Ajudamos com adaptação, documentos e integração.',
-                        'Système complet de soutien aux migrants en Biélorussie. Nous aidons à l\'adaptation, aux documents et à l\'intégration.',
-                        'Umfassendes Migrantenunterstützungssystem in Belarus. Wir helfen bei Anpassung, Dokumenten und Integration.'
-                    ); ?></p>
+                    <h3><?php echo $translations['footer_title']; ?></h3>
+                    <p><?php echo $translations['footer_desc']; ?></p>
+
                 </div>
                 
                 <div class="footer-section">
@@ -3219,7 +3231,7 @@ $status_texts = [
                     <ul class="footer-links">
                         <li><i class="fas fa-envelope"></i> info@migrasupport.by</li>
                         <li><i class="fas fa-map-marker-alt"></i> <?php echo $translations['minsk_belarus']; ?></li>
-                        <li><i class="fas fa-clock"></i> <?php echo t('Поддержка 24/7', '24/7 Support', 'Suporte 24/7', 'Support 24/7', '24/7 Support'); ?></li>
+                        <li><i class="fas fa-clock"></i> <?php echo $translations['support_247']; ?></li>
                     </ul>
                 </div>
             </div>
