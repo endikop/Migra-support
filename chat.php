@@ -2118,37 +2118,44 @@ function safeJsonEncode($data) {
         <?php endif; ?>
     </main>
 
-    <!-- Footer -->
+   <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>MigraSupport</h3>
-                    <p><?php echo htmlspecialchars($translations['footer_title'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><?php echo t(
+                        'Комплексная система поддержки мигрантов в Беларуси. Мы помогаем с адаптацией, документами и интеграцией.',
+                        'Comprehensive migrant support system in Belarus. We help with adaptation, documents and integration.',
+                        'Sistema abrangente de apoio a migrantes na Bielorrússia. Ajudamos com adaptação, documentos e integração.',
+                        'Système complet de soutien aux migrants en Biélorussie. Nous aidons à l\'adaptation, aux documents et à l\'intégration.',
+                        'Umfassendes Migrantenunterstützungssystem in Belarus. Wir helfen bei Anpassung, Dokumenten und Integration.'
+                    ); ?></p>
                 </div>
                 
                 <div class="footer-section">
-                    <h3><?php echo htmlspecialchars($translations['quick_links'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                    <h3><?php echo $translations['quick_links']; ?></h3>
                     <ul class="footer-links">
-                        <li><a href="index.php"><i class="fas fa-home"></i> <?php echo htmlspecialchars($translations['home'], ENT_QUOTES, 'UTF-8'); ?></a></li>
-                        <li><a href="information.php"><i class="fas fa-info-circle"></i> <?php echo htmlspecialchars($translations['information'], ENT_QUOTES, 'UTF-8'); ?></a></li>
-                        <li><a href="map.php"><i class="fas fa-map-marked-alt"></i> <?php echo htmlspecialchars($translations['map_services'], ENT_QUOTES, 'UTF-8'); ?></a></li>
-                        <li><a href="translator.php"><i class="fas fa-language"></i> <?php echo htmlspecialchars($translations['translator'], ENT_QUOTES, 'UTF-8'); ?></a></li>
-                        <li><a href="converter.php"><i class="fas fa-money-bill-wave"></i> <?php echo htmlspecialchars($translations['currency_converter'], ENT_QUOTES, 'UTF-8'); ?></a></li>
+                        <li><a href="index.php"><i class="fas fa-home"></i> <?php echo $translations['home']; ?></a></li>
+                        <li><a href="converter.php"><i class="fas fa-money-bill-wave"></i> <?php echo $translations['currency_converter']; ?></a></li>
+                        <li><a href="translator.php"><i class="fas fa-language"></i> <?php echo $translations['translator']; ?></a></li>
+                        <li><a href="map.php"><i class="fas fa-map-marked-alt"></i> <?php echo $translations['map_services']; ?></a></li>
+                        <li><a href="information.php"><i class="fas fa-info-circle"></i> <?php echo $translations['information']; ?></a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-section">
-                    <h3><?php echo htmlspecialchars($translations['contacts'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                    <h3><?php echo $translations['contacts']; ?></h3>
                     <ul class="footer-links">
                         <li><i class="fas fa-envelope"></i> info@migrasupport.by</li>
-                        <li><i class="fas fa-map-marker-alt"></i> <?php echo htmlspecialchars($translations['minsk_belarus'], ENT_QUOTES, 'UTF-8'); ?></li>
+                        <li><i class="fas fa-map-marker-alt"></i> <?php echo $translations['minsk_belarus']; ?></li>
+                        <li><i class="fas fa-clock"></i> <?php echo t('Поддержка 24/7', '24/7 Support', 'Suporte 24/7', 'Support 24/7', '24/7 Support'); ?></li>
                     </ul>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2026 MigraSupport. <?php echo htmlspecialchars($translations['all_rights_reserved'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <p>&copy; 2026 MigraSupport. <?php echo $translations['all_rights_reserved']; ?></p>
             </div>
         </div>
     </footer>
