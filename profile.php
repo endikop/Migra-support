@@ -2288,8 +2288,9 @@ $status_texts = [
             }
 
             .footer-section h3::after {
-                left: 50%;
-                transform: translateX(-50%);
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                right: auto !important;
             }
 
             .footer-links {
