@@ -61,7 +61,8 @@ if ($selected_city) {
     $search = $_GET['search'] ?? '';
     $date_filter = $_GET['date'] ?? '';
     
-    $sql = "SELECT cm.*, u.first_name, u.last_name, u.email, u.user_type 
+    // ДОБАВЛЕНО u.avatar В ЗАПРОС
+    $sql = "SELECT cm.*, u.first_name, u.last_name, u.email, u.user_type, u.avatar 
             FROM city_chat_messages cm 
             LEFT JOIN users u ON cm.sender_id = u.id 
             WHERE cm.city = ?";
@@ -80,8 +81,8 @@ if ($selected_city) {
     
     $sql .= " ORDER BY cm.created_at DESC";
     
-    // Получаем общее количество для пагинации
-    $count_sql = str_replace("SELECT cm.*, u.first_name, u.last_name, u.email, u.user_type", "SELECT COUNT(*)", $sql);
+    // Получаем общее количество для пагинации (обновлен str_replace под новый запрос)
+    $count_sql = str_replace("SELECT cm.*, u.first_name, u.last_name, u.email, u.user_type, u.avatar", "SELECT COUNT(*)", $sql);
     $count_stmt = $pdo->prepare($count_sql);
     $count_stmt->execute($params);
     $total_messages = $count_stmt->fetchColumn();
@@ -171,7 +172,6 @@ if (isset($_GET['delete_message'])) {
     <title>Управление городскими чатами | Админ-панель</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Универсальные анимации -->
     <?php include_once 'include_animations.php'; ?>
     
     <style>
@@ -689,6 +689,7 @@ if (isset($_GET['delete_message'])) {
             font-weight: 600;
             font-size: 1rem;
             flex-shrink: 0;
+            overflow: hidden; /* Важно для аватаров-картинок */
         }
 
         .sender-details {
@@ -1089,12 +1090,9 @@ if (isset($_GET['delete_message'])) {
     </style>
 </head>
 <body>
-    <!-- Подключаем единую навигацию -->
     <?php include_once 'admin_navigation.php'; ?>
 
-    <!-- Main Content -->
     <div class="main-content">
-        <!-- Header -->
         <div class="header">
             <h1><i class="fas fa-city"></i> Управление городскими чатами</h1>
             <?php 
@@ -1119,7 +1117,6 @@ if (isset($_GET['delete_message'])) {
             </div>
         </div>
 
-        <!-- Welcome Card -->
         <div class="welcome-card">
             <div class="welcome-content">
                 <h2>Управление городскими чатами</h2>
@@ -1127,7 +1124,6 @@ if (isset($_GET['delete_message'])) {
             </div>
         </div>
 
-        <!-- Success & Error Messages -->
         <?php if (isset($_SESSION['success'])): ?>
             <div class="success">
                 <i class="fas fa-check-circle"></i>
@@ -1142,7 +1138,6 @@ if (isset($_GET['delete_message'])) {
             </div>
         <?php endif; ?>
 
-        <!-- Stats Cards -->
         <div class="stats-cards">
             <?php foreach ($cities as $city): ?>
                 <a href="city_chat_admin.php?city=<?php echo $city; ?>" style="text-decoration: none;">
@@ -1173,7 +1168,6 @@ if (isset($_GET['delete_message'])) {
         </div>
 
         <?php if ($selected_city): ?>
-            <!-- City Selector -->
             <div class="city-selector">
                 <h2><i class="fas fa-map-marker-alt"></i> Чат города: <span><?php echo $selected_city; ?></span></h2>
                 <div class="city-buttons">
@@ -1187,7 +1181,6 @@ if (isset($_GET['delete_message'])) {
                 </div>
             </div>
 
-            <!-- Instructions -->
             <div class="instructions">
                 <h2><i class="fas fa-info-circle"></i> Инструкция по управлению чатом</h2>
                 <p>Выбран город <strong><?php echo ucfirst($selected_city); ?></strong>. Всего сообщений: <strong><?php echo $city_stats[$selected_city]['total_messages']; ?></strong>, участников: <strong><?php echo $city_stats[$selected_city]['unique_users']; ?></strong>.</p>
@@ -1199,7 +1192,6 @@ if (isset($_GET['delete_message'])) {
                 </ul>
             </div>
 
-            <!-- Filters -->
             <div class="filters">
                 <form method="GET" class="filter-form">
                     <input type="hidden" name="city" value="<?php echo $selected_city; ?>">
@@ -1215,7 +1207,6 @@ if (isset($_GET['delete_message'])) {
                 </form>
             </div>
 
-            <!-- Chat Messages -->
             <div class="chat-container">
                 <div class="chat-header">
                     <h2>
@@ -1234,11 +1225,7 @@ if (isset($_GET['delete_message'])) {
                             <i class="fas fa-users"></i>
                             Участников: <strong style="color: var(--dark-color); margin-left: 5px;"><?php echo $city_stats[$selected_city]['unique_users']; ?></strong>
                         </span>
-                        <a href="city_chat_admin.php?city=<?php echo $selected_city; ?>&export=csv" 
-                           class="btn btn-sm btn-success" title="Экспорт в CSV">
-                            <i class="fas fa-file-export"></i> Экспорт
-                        </a>
-                    </div>
+                        </div>
                 </div>
                 
                 <div class="chat-messages">
@@ -1254,19 +1241,26 @@ if (isset($_GET['delete_message'])) {
                                 <div class="message-header">
                                     <div class="sender-info">
                                         <div class="sender-avatar">
-                                            <?php 
-                                            $initials = '';
-                                            if ($message['first_name']) {
-                                                $initials = strtoupper(substr($message['first_name'], 0, 1));
-                                                if ($message['last_name']) {
-                                                    $initials .= strtoupper(substr($message['last_name'], 0, 1));
+                                            <?php if (!empty($message['avatar'])): ?>
+                                                <img src="<?php echo htmlspecialchars($message['avatar']); ?>" 
+                                                     alt="Avatar"
+                                                     style="width: 100%; height: 100%; object-fit: cover;">
+                                            <?php else: ?>
+                                                <?php 
+                                                $initials = '';
+                                                if (!empty($message['first_name'])) {
+                                                    $initials = mb_strtoupper(mb_substr($message['first_name'], 0, 1, 'UTF-8'), 'UTF-8');
+                                                    if (!empty($message['last_name'])) {
+                                                        $initials .= mb_strtoupper(mb_substr($message['last_name'], 0, 1, 'UTF-8'), 'UTF-8');
+                                                    }
+                                                } else {
+                                                    $initials = 'U';
                                                 }
-                                            } else {
-                                                $initials = 'U';
-                                            }
-                                            echo $initials;
-                                            ?>
+                                                echo $initials;
+                                                ?>
+                                            <?php endif; ?>
                                         </div>
+                                        
                                         <div class="sender-details">
                                             <div class="sender-name">
                                                 <?php 
@@ -1321,7 +1315,6 @@ if (isset($_GET['delete_message'])) {
                 </div>
             </div>
 
-            <!-- Clear Chat Form -->
             <div class="clear-form">
                 <h3><i class="fas fa-trash-alt"></i> Очистка чата</h3>
                 <form method="POST" onsubmit="return confirmClearChat()">
@@ -1359,7 +1352,6 @@ if (isset($_GET['delete_message'])) {
             </div>
 
         <?php else: ?>
-            <!-- Instructions -->
             <div class="instructions">
                 <h2><i class="fas fa-city"></i> Выберите город для управления чатом</h2>
                 <p>Для просмотра и управления сообщениями в городских чатах выберите город из карточек статистики выше.</p>
@@ -1368,13 +1360,11 @@ if (isset($_GET['delete_message'])) {
                     <li>Просматривать все сообщения в чате</li>
                     <li>Фильтровать сообщения по дате и содержанию</li>
                     <li>Удалять отдельные сообщения или очищать весь чат</li>
-                    <li>Экспортировать данные чата</li>
                 </ul>
                 <p>Все действия логируются и могут быть отслежены в истории администратора.</p>
             </div>
         <?php endif; ?>
 
-        <!-- Info Panel -->
         <div class="chat-container">
             <div class="chat-header">
                 <h2><i class="fas fa-info-circle"></i> Информация о системе</h2>

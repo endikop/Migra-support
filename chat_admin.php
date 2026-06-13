@@ -12,9 +12,9 @@ if (!isLoggedIn() || !isAdmin()) {
 
 $chat_id = $_GET['id'] ?? 0;
 
-// Получаем информацию о чате
+// Получаем информацию о чате (ДОБАВЛЕНО ПОЛЕ u.avatar)
 $stmt = $pdo->prepare("
-    SELECT c.*, u.first_name, u.last_name, u.email, u.phone, u.city, u.country_of_origin,
+    SELECT c.*, u.first_name, u.last_name, u.email, u.phone, u.city, u.country_of_origin, u.avatar,
            a.first_name as admin_first_name, a.last_name as admin_last_name
     FROM admin_chats c 
     JOIN users u ON c.user_id = u.id 
@@ -219,6 +219,7 @@ $userName = isset($userName) ? $userName : 'Администратор';
             color: white;
             font-weight: bold;
             font-size: 1.2rem;
+            overflow: hidden; /* Важно для обрезки картинки в круг */
         }
 
         .user-details h1 {
@@ -576,21 +577,8 @@ $userName = isset($userName) ? $userName : 'Администратор';
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo">
-            <h2><i class="fas fa-user-shield"></i> <span>Админ-панель</span></h2>
-        </div>
-        <ul class="nav-menu">
-            <li><a href="dashboard.php"><i class="fas fa-home"></i> <span>Главная</span></a></li>
-            <li><a href="migrants.php"><i class="fas fa-users"></i> <span>Мигранты</span></a></li>
-            <li><a href="add_migrant.php"><i class="fas fa-user-plus"></i> <span>Добавить мигранта</span></a></li>
-            <li><a href="city_chat_admin.php"><i class="fas fa-city"></i> <span>Городские чаты</span></a></li>
-            <li><a href="chats.php" class="active"><i class="fas fa-comments"></i> <span>Личные чаты</span></a></li>
-            <li><a href="migration_data.php"><i class="fas fa-database"></i> <span>Миграционные данные</span></a></li>
-            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> <span>Выход</span></a></li>
-        </ul>
-    </div>
+    <!-- Sidebar (При необходимости можете заменить этот блок на <?php // include_once 'admin_navigation.php'; ?> как в других файлах) -->
+    <?php include_once 'admin_navigation.php'; ?>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -605,9 +593,17 @@ $userName = isset($userName) ? $userName : 'Администратор';
         <!-- Chat Header -->
         <div class="chat-header">
             <div class="chat-info">
+                <!-- БЛОК С АВАТАРОМ (ОБНОВЛЕН) -->
                 <div class="user-avatar">
-                    <?php echo strtoupper(substr($chat['first_name'], 0, 1) . substr($chat['last_name'], 0, 1)); ?>
+                    <?php if (!empty($chat['avatar'])): ?>
+                        <img src="<?php echo htmlspecialchars($chat['avatar']); ?>" 
+                             alt="<?php echo htmlspecialchars($chat['first_name']); ?>"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    <?php else: ?>
+                        <?php echo mb_strtoupper(mb_substr($chat['first_name'], 0, 1, 'UTF-8') . mb_substr($chat['last_name'], 0, 1, 'UTF-8'), 'UTF-8'); ?>
+                    <?php endif; ?>
                 </div>
+                
                 <div class="user-details">
                     <h1><?php echo htmlspecialchars($chat['first_name'] . ' ' . $chat['last_name']); ?></h1>
                     <div class="user-meta">

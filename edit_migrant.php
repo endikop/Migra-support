@@ -773,19 +773,7 @@ $visa_types = [
 </head>
 <body>
     <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo">
-            <h2><i class="fas fa-user-shield"></i> <span>Админ-панель</span></h2>
-        </div>
-        <ul class="nav-menu">
-            <li><a href="dashboard.php"><i class="fas fa-home"></i> <span>Главная</span></a></li>
-            <li><a href="migrants.php"><i class="fas fa-users"></i> <span>Мигранты</span></a></li>
-            <li><a href="add_migrant.php"><i class="fas fa-user-plus"></i> <span>Добавить мигранта</span></a></li>
-            <li><a href="migration_data.php"><i class="fas fa-database"></i> <span>Миграционные данные</span></a></li>
-            <li><a href="chats.php"><i class="fas fa-comments"></i> <span>Чаты</span></a></li>
-            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> <span>Выход</span></a></li>
-        </ul>
-    </div>
+    <?php include_once 'admin_navigation.php'; ?>
 
     <!-- Main Content -->
     <div class="main-content">

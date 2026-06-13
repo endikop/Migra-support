@@ -73,23 +73,3 @@ function getAdminUserName() {
         </li>
     </ul>
 </div>
-
-<!-- User Info Header -->
-<div class="user-info">
-    <div class="user-avatar">
-        <?php 
-        $avatar = getAdminUserAvatar();
-        $userName = getAdminUserName();
-        if ($avatar): ?>
-            <img src="<?php echo htmlspecialchars($avatar); ?>" 
-                 alt="<?php echo htmlspecialchars($userName); ?>"
-                 style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-        <?php else: 
-            echo strtoupper(substr($userName, 0, 1));
-        endif; ?>
-    </div>
-    <div>
-        <div style="font-weight: 600;"><?php echo htmlspecialchars($userName); ?></div>
-        <div style="font-size: 0.9rem; color: var(--gray-color);"><?php echo date('d.m.Y H:i'); ?></div>
-    </div>
-</div>
