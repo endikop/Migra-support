@@ -144,9 +144,10 @@ function handleGetMessages($city) {
         
         // Форматируем сообщения
         foreach ($messages as &$message) {
-            $timestamp = strtotime($message['created_at']);
-            $message['created_at_time'] = date('H:i', $timestamp);
-            $message['created_at_date'] = date('Y-m-d', $timestamp);
+            $timestamp = strtotime($message['created_at'] . ' UTC');
+            $message['created_at_utc'] = gmdate('Y-m-d\TH:i:s\Z', $timestamp);
+            $message['created_at_time'] = gmdate('H:i', $timestamp); // fallback
+            $message['created_at_date'] = gmdate('Y-m-d', $timestamp);
             $message['created_at_timestamp'] = $timestamp;
             $message['sender_name'] = htmlspecialchars($message['first_name'] . ' ' . $message['last_name'], ENT_QUOTES, 'UTF-8');
             // Сообщение уже экранировано и отцензурировано при сохранении
@@ -2169,6 +2170,29 @@ function safeJsonEncode($data) {
             return div.innerHTML;
         }
 
+        // Форматирование времени в часовой пояс пользователя
+        function formatMsgTime(utcStr) {
+            if (!utcStr) return '';
+            try {
+                return new Date(utcStr).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            } catch(e) {
+                return utcStr;
+            }
+        }
+
+        // Форматирование даты в часовой пояс пользователя
+        function formatMsgDate(utcStr) {
+            if (!utcStr) return '';
+            try {
+                const d = new Date(utcStr);
+                return d.getFullYear() + '-' +
+                    String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(d.getDate()).padStart(2, '0');
+            } catch(e) {
+                return utcStr.substring(0, 10);
+            }
+        }
+
         // Функция смены языка
         function changeLanguage(lang) {
             const url = new URL(window.location.href);
@@ -2360,7 +2384,7 @@ function safeJsonEncode($data) {
             let lastDate = null;
             
             messages.forEach(msg => {
-                const messageDate = msg.created_at_date;
+                const messageDate = msg.created_at_utc ? formatMsgDate(msg.created_at_utc) : msg.created_at_date;
                 const formattedDate = formatChatDate(messageDate);
                 
                 if (messageDate !== lastDate && !currentDisplayedDates.has(messageDate)) {
@@ -2392,12 +2416,14 @@ function safeJsonEncode($data) {
                 messageDiv.style.gap = '10px';
                 messageDiv.style.alignItems = 'flex-start';
                 
+                const msgTime = msg.created_at_utc ? formatMsgTime(msg.created_at_utc) : escapeHtml(msg.created_at_time);
+
                 if (isOwnMessage) {
                     messageDiv.innerHTML = `
                         <div style="flex: 1;">
                             <div class="message-header">
                                 <span class="message-sender" onclick="window.location.href='view_profile.php?id=${msg.sender_id}'">${escapedSenderName}</span>
-                                <span class="message-time">${escapeHtml(msg.created_at_time)}</span>
+                                <span class="message-time">${msgTime}</span>
                             </div>
                             <div class="message-text">${escapedMessageText}</div>
                         </div>
@@ -2409,7 +2435,7 @@ function safeJsonEncode($data) {
                         <div style="flex: 1;">
                             <div class="message-header">
                                 <span class="message-sender" onclick="window.location.href='view_profile.php?id=${msg.sender_id}'">${escapedSenderName}</span>
-                                <span class="message-time">${escapeHtml(msg.created_at_time)}</span>
+                                <span class="message-time">${msgTime}</span>
                             </div>
                             <div class="message-text">${escapedMessageText}</div>
                         </div>
