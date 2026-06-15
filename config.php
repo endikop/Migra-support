@@ -33,7 +33,6 @@ try {
         $password, 
         $options
     );
-    $pdo->exec("SET time_zone = '+03:00'"); 
 } catch(PDOException $e) {
     // Логируем ошибку и выводим общее сообщение
     error_log("Ошибка подключения к БД: " . $e->getMessage());
