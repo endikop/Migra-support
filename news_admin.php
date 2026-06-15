@@ -245,56 +245,27 @@ $userAvatar = isset($userAvatar) ? $userAvatar : null;
 </head>
 <body>
     <!-- Sidebar - единая панель навигации -->
-    <div class="sidebar">
-        <div class="logo">
-            <h2><i class="fas fa-user-shield"></i> <span>Админ-панель</span></h2>
-        </div>
-        <ul class="nav-menu">
-            <li><a href="dashboard.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>">
-                <i class="fas fa-home"></i> <span>Главная</span></a>
-            </li>
-            <li><a href="migrants.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'migrants.php' ? 'active' : ''; ?>">
-                <i class="fas fa-users"></i> <span>Мигранты</span></a>
-            </li>
-            <li><a href="add_migrant.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'add_migrant.php' ? 'active' : ''; ?>">
-                <i class="fas fa-user-plus"></i> <span>Добавить мигранта</span></a>
-            </li>
-            <li><a href="city_chat_admin.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'city_chat_admin.php' ? 'active' : ''; ?>">
-                <i class="fas fa-city"></i> <span>Городские чаты</span></a>
-            </li>
-            <li><a href="chats.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'chats.php' ? 'active' : ''; ?>">
-                <i class="fas fa-comments"></i> <span>Личные чаты</span></a>
-            </li>
-            <li><a href="migration_data.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'migration_data.php' ? 'active' : ''; ?>">
-                <i class="fas fa-database"></i> <span>Миграционные данные</span></a>
-            </li>
-            <li><a href="censorship_admin.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'censorship_admin.php' ? 'active' : ''; ?>">
-                <i class="fas fa-shield-alt"></i> <span>Цензура</span></a>
-            </li>
-            <li><a href="news_admin.php" class="active">
-                <i class="fas fa-newspaper"></i> <span>Новости</span></a>
-            </li>
-            <li><a href="index.php" target="_blank">
-                <i class="fas fa-external-link-alt"></i> <span>На сайт</span></a>
-            </li>
-            <li><a href="logout.php">
-                <i class="fas fa-sign-out-alt"></i> <span>Выход</span></a>
-            </li>
-        </ul>
-    </div>
+    <!-- Подключаем единую навигацию -->
+    <?php include_once 'admin_navigation.php'; ?>
 
     <div class="main-content">
+        <!-- Header -->
         <div class="header">
-            <h1><i class="fas fa-newspaper"></i> Управление новостями</h1>
+            <h1><i class="fas fa-comments"></i> Управление чатами</h1>
+            <?php 
+            // Получаем данные администратора аналогично dashboard и migrants
+            $userAvatar = function_exists('getAdminUserAvatar') ? getAdminUserAvatar() : (isset($userAvatar) ? $userAvatar : null);
+            $userName = function_exists('getAdminUserName') ? getAdminUserName() : (isset($userName) ? $userName : 'Администратор');
+            ?>
             <div class="user-info">
                 <div class="user-avatar">
                     <?php if ($userAvatar): ?>
                         <img src="<?php echo htmlspecialchars($userAvatar); ?>" 
                              alt="<?php echo htmlspecialchars($userName); ?>"
                              style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-                    <?php else: ?>
-                        <?php echo strtoupper(substr($userName, 0, 1)); ?>
-                    <?php endif; ?>
+                    <?php else: 
+                        echo strtoupper(substr($userName, 0, 1));
+                    endif; ?>
                 </div>
                 <div>
                     <div style="font-weight: 600;"><?php echo htmlspecialchars($userName); ?></div>

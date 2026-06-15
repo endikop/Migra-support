@@ -454,12 +454,19 @@ $pageTitle = 'Управление мигрантами | Админ-панел�
     <div class="main-content">
         <div class="header">
             <h1><i class="fas fa-users"></i> Управление мигрантами</h1>
+            <?php 
+            $userAvatar = getAdminUserAvatar();
+            $userName = getAdminUserName();
+            ?>
             <div class="user-info">
                 <div class="user-avatar">
-                    <?php 
-                    $userName = getAdminUserName();
-                    echo strtoupper(substr($userName, 0, 1));
-                    ?>
+                    <?php if ($userAvatar): ?>
+                        <img src="<?php echo htmlspecialchars($userAvatar); ?>" 
+                             alt="<?php echo htmlspecialchars($userName); ?>"
+                             style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                    <?php else: 
+                        echo strtoupper(substr($userName, 0, 1));
+                    endif; ?>
                 </div>
                 <div>
                     <div style="font-weight: 600;"><?php echo htmlspecialchars($userName); ?></div>

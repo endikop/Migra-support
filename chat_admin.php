@@ -689,14 +689,15 @@ $userName = isset($userName) ? $userName : 'Администратор';
             <!-- Input Area -->
             <?php if ($chat['status'] == 'open'): ?>
             <form method="POST" class="chat-input-area" id="messageForm">
-                <div class="input-wrapper">
-                    <textarea name="message" id="messageInput" class="chat-input" 
-                              placeholder="Введите ваше сообщение..." rows="1" required></textarea>
-                    <button type="submit" name="send_message" class="btn btn-primary" id="sendButton">
-                        <i class="fas fa-paper-plane"></i> Отправить
-                    </button>
-                </div>
-            </form>
+    <input type="hidden" name="send_message" value="1">
+    <div class="input-wrapper">
+        <textarea name="message" id="messageInput" class="chat-input" 
+                  placeholder="Введите ваше сообщение..." rows="1" required></textarea>
+        <button type="submit" class="btn btn-primary" id="sendButton">
+            <i class="fas fa-paper-plane"></i> Отправить
+        </button>
+    </div>
+</form>
             <?php else: ?>
             <div class="chat-input-area">
                 <div class="input-wrapper">
