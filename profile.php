@@ -3034,6 +3034,10 @@ $status_texts = [
                                 <?php else: 
                                     $last_date = null;
                                     foreach ($admin_messages as $msg): 
+                                        // Генерируем UTC метку для JS
+                                        $timestamp = strtotime($msg['created_at'] . ' UTC');
+                                        $utc_iso = gmdate('Y-m-d\TH:i:s\Z', $timestamp);
+                                        
                                         $message_date = date('Y-m-d', strtotime($msg['created_at']));
                                         $today = date('Y-m-d');
                                         $yesterday = date('Y-m-d', strtotime('-1 day'));
@@ -3051,7 +3055,7 @@ $status_texts = [
                                             }
                                             ?>
                                             <div class="message system">
-                                                <div class="message-content"><?php echo $date_display; ?></div>
+                                                <div class="message-content local-date" data-utc="<?php echo $utc_iso; ?>"><?php echo $date_display; ?></div>
                                             </div>
                                             <?php
                                         }
@@ -3085,7 +3089,7 @@ $status_texts = [
                                                     <?php endif; ?>
                                                     <?php echo $sender_name; ?>
                                                 </div>
-                                                <div class="message-time"><?php echo date('H:i', strtotime($msg['created_at'])); ?></div>
+                                                <div class="message-time local-time" data-utc="<?php echo $utc_iso; ?>"><?php echo date('H:i', strtotime($msg['created_at'])); ?></div>
                                             </div>
                                             <div class="message-content"><?php echo htmlspecialchars($msg['message_text']); ?></div>
                                         </div>
@@ -3399,7 +3403,77 @@ $status_texts = [
                     showSection('admin-chat');
                 });
             });
+            // --- ЛОГИКА ЛОКАЛЬНОГО ВРЕМЕНИ (КАК В CHAT.PHP) ---
             
+            // Форматирование времени (ЧЧ:ММ)
+            function formatLocalTime(utcStr) {
+                if (!utcStr) return '';
+                try {
+                    return new Date(utcStr).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                } catch(e) {
+                    return utcStr;
+                }
+            }
+
+            // Словари для дат
+            const dateTranslations = {
+                today: '<?php echo t("Сегодня", "Today", "Hoje", "Aujourd\'hui", "Heute"); ?>',
+                yesterday: '<?php echo t("Вчера", "Yesterday", "Ontem", "Hier", "Gestern"); ?>'
+            };
+
+            const monthNames = {
+                'ru': {'01': 'Января', '02': 'Февраля', '03': 'Марта', '04': 'Апреля', '05': 'Мая', '06': 'Июня', '07': 'Июля', '08': 'Августа', '09': 'Сентября', '10': 'Октября', '11': 'Ноября', '12': 'Декабря'},
+                'en': {'01': 'January', '02': 'February', '03': 'March', '04': 'April', '05': 'May', '06': 'June', '07': 'July', '08': 'August', '09': 'September', '10': 'October', '11': 'November', '12': 'December'},
+                'pt': {'01': 'Janeiro', '02': 'Fevereiro', '03': 'Março', '04': 'Abril', '05': 'Maio', '06': 'Junho', '07': 'Julho', '08': 'Agosto', '09': 'Setembro', '10': 'Outubro', '11': 'Novembro', '12': 'Dezembro'},
+                'fr': {'01': 'Janvier', '02': 'Février', '03': 'Mars', '04': 'Avril', '05': 'Mai', '06': 'Juin', '07': 'Juillet', '08': 'Août', '09': 'Septembre', '10': 'Octobre', '11': 'Novembro', '12': 'Décembre'},
+                'de': {'01': 'Januar', '02': 'Februar', '03': 'März', '04': 'April', '05': 'Mai', '06': 'Juni', '07': 'Juli', '08': 'August', '09': 'September', '10': 'Oktober', '11': 'November', '12': 'Dezember'}
+            };
+            const currentLang = '<?php echo $lang; ?>';
+
+            // Форматирование дат разделителей
+            function formatLocalDate(utcStr, fallback) {
+                if (!utcStr) return fallback;
+                try {
+                    const messageDate = new Date(utcStr);
+                    messageDate.setHours(0, 0, 0, 0);
+                    
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    const yesterday = new Date(today);
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    
+                    if (messageDate.getTime() === today.getTime()) {
+                        return dateTranslations.today;
+                    } else if (messageDate.getTime() === yesterday.getTime()) {
+                        return dateTranslations.yesterday;
+                    } else {
+                        const day = messageDate.getDate();
+                        const month = String(messageDate.getMonth() + 1).padStart(2, '0');
+                        
+                        if (['ru', 'pt', 'fr', 'de'].includes(currentLang)) {
+                            return `${day} ${monthNames[currentLang][month] || month}`;
+                        } else {
+                            return `${monthNames[currentLang][month] || month} ${day}`;
+                        }
+                    }
+                } catch(e) {
+                    return fallback;
+                }
+            }
+
+            // Применяем локальное время
+            document.querySelectorAll('.local-time').forEach(el => {
+                const utcTime = el.getAttribute('data-utc');
+                if (utcTime) el.textContent = formatLocalTime(utcTime);
+            });
+
+            // Применяем локальную дату к разделителям
+            document.querySelectorAll('.local-date').forEach(el => {
+                const utcTime = el.getAttribute('data-utc');
+                const fallback = el.textContent;
+                if (utcTime) el.textContent = formatLocalDate(utcTime, fallback);
+            });
             // Автопрокрутка чата при загрузке
             const chatMessages = document.getElementById('admin-chat-messages');
             if (chatMessages) {
