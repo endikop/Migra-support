@@ -223,6 +223,9 @@ if (isset($_GET['action']) || isset($_POST['action'])) {
                 ");
                 $stmt->execute([$chatId]);
                 $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($messages as &$msg) {
+                    $msg['created_at'] = str_replace(' ', 'T', $msg['created_at']) . 'Z';
+                }
                 echo json_encode($messages);
                 break;
                 
