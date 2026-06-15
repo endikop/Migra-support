@@ -41,7 +41,8 @@ foreach ($cities as $city) {
     $stmt = $pdo->prepare("SELECT created_at FROM city_chat_messages WHERE city = ? ORDER BY created_at DESC LIMIT 1");
     $stmt->execute([$city]);
     $last_msg = $stmt->fetchColumn();
-    $city_stats[$city]['last_message'] = $last_msg ? date('d.m.Y H:i', strtotime($last_msg)) : 'Нет сообщений';
+    $city_stats[$city]['last_message'] = $last_msg ? gmdate('d.m.Y H:i', strtotime($last_msg . ' UTC')) : 'Нет сообщений';
+    $city_stats[$city]['last_message_utc'] = $last_msg ? gmdate('Y-m-d\TH:i:s\Z', strtotime($last_msg . ' UTC')) : '';
     
     // Уникальные участники
     $stmt = $pdo->prepare("SELECT COUNT(DISTINCT sender_id) FROM city_chat_messages WHERE city = ?");
@@ -1158,9 +1159,9 @@ if (isset($_GET['delete_message'])) {
                             <i class="fas fa-users"></i>
                             Участников: <?php echo $city_stats[$city]['unique_users']; ?>
                         </div>
-                        <div class="last-message">
+                        <div class="last-message"<?php if ($city_stats[$city]['last_message_utc']): ?> data-utc="<?php echo $city_stats[$city]['last_message_utc']; ?>"<?php endif; ?>>
                             <i class="far fa-clock"></i>
-                            Последнее: <?php echo $city_stats[$city]['last_message']; ?>
+                            Последнее: <span class="msg-time-display"><?php echo $city_stats[$city]['last_message']; ?></span>
                         </div>
                     </div>
                 </a>
@@ -1287,9 +1288,9 @@ if (isset($_GET['delete_message'])) {
                                             <?php endif; ?>
                                         </div>
                                     </div>
-                                    <div class="message-time">
+                                    <div class="message-time" data-utc="<?php echo gmdate('Y-m-d\TH:i:s\Z', strtotime($message['created_at'] . ' UTC')); ?>">
                                         <i class="far fa-clock"></i>
-                                        <?php echo date('d.m.Y H:i:s', strtotime($message['created_at'])); ?>
+                                        <span class="msg-time-display"><?php echo gmdate('d.m.Y H:i:s', strtotime($message['created_at'] . ' UTC')); ?></span>
                                     </div>
                                 </div>
                                 
@@ -1425,8 +1426,55 @@ if (isset($_GET['delete_message'])) {
             return confirm('Вы уверены, что хотите удалить это сообщение?\n\nЭто действие нельзя отменить.');
         }
 
+        // Форматирование времени в часовой пояс пользователя (как в chat.php)
+        function formatMsgTime(utcStr) {
+            if (!utcStr) return '';
+            try {
+                return new Date(utcStr).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            } catch(e) {
+                return utcStr;
+            }
+        }
+
+        function formatMsgDateTime(utcStr) {
+            if (!utcStr) return '';
+            try {
+                const d = new Date(utcStr);
+                const date = d.getFullYear() + '-' +
+                    String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(d.getDate()).padStart(2, '0');
+                const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                return date + ' ' + time;
+            } catch(e) {
+                return utcStr;
+            }
+        }
+
         // Анимация при загрузке
         document.addEventListener('DOMContentLoaded', function() {
+            // Конвертируем время сообщений в часовой пояс пользователя
+            document.querySelectorAll('.message-time[data-utc]').forEach(function(el) {
+                const utcStr = el.getAttribute('data-utc');
+                const display = el.querySelector('.msg-time-display');
+                if (display && utcStr) {
+                    display.textContent = formatMsgDateTime(utcStr);
+                }
+            });
+
+            // Конвертируем время последнего сообщения в карточках городов
+            document.querySelectorAll('.last-message[data-utc]').forEach(function(el) {
+                const utcStr = el.getAttribute('data-utc');
+                const display = el.querySelector('.msg-time-display');
+                if (display && utcStr) {
+                    const d = new Date(utcStr);
+                    const date = d.getFullYear() + '-' +
+                        String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                        String(d.getDate()).padStart(2, '0');
+                    const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    display.textContent = date + ' ' + time;
+                }
+            });
+
             const statCards = document.querySelectorAll('.stat-card');
             statCards.forEach((card, index) => {
                 card.style.animationDelay = `${index * 0.1}s`;

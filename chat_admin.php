@@ -35,7 +35,8 @@ $stmt->execute([$chat_id, $_SESSION['user_id']]);
 // Получаем сообщения
 $stmt = $pdo->prepare("
     SELECT m.*, u.first_name, u.last_name, u.user_type,
-           DATE_FORMAT(m.created_at, '%d.%m.%Y %H:%i') as created_at,
+           DATE_FORMAT(m.created_at, '%Y-%m-%dT%H:%i:%sZ') as created_at_utc,
+           DATE_FORMAT(m.created_at, '%d.%m.%Y %H:%i') as created_at_fallback,
            CASE 
                 WHEN m.sender_id = ? THEN 'admin'
                 ELSE 'user'
@@ -652,7 +653,9 @@ $userName = isset($userName) ? $userName : 'Администратор';
             </div>
             <div class="info-item">
                 <span class="info-label">Дата создания</span>
-                <span class="info-value"><?php echo date('d.m.Y H:i', strtotime($chat['created_at'])); ?></span>
+                <span class="info-value" data-utc="<?php echo gmdate('Y-m-d\TH:i:s\Z', strtotime($chat['created_at'] . ' UTC')); ?>">
+                    <span class="msg-time-display"><?php echo gmdate('d.m.Y H:i', strtotime($chat['created_at'] . ' UTC')); ?></span>
+                </span>
             </div>
         </div>
 
@@ -676,7 +679,9 @@ $userName = isset($userName) ? $userName : 'Администратор';
                                         <i class="fas fa-user-shield" style="margin-left: 5px;"></i>
                                     <?php endif; ?>
                                 </span>
-                                <span class="message-time"><?php echo $message['created_at']; ?></span>
+                                <span class="message-time" data-utc="<?php echo htmlspecialchars($message['created_at_utc']); ?>">
+                                    <span class="msg-time-display"><?php echo htmlspecialchars($message['created_at_fallback']); ?></span>
+                                </span>
                             </div>
                             <div class="message-bubble">
                                 <div class="message-text"><?php echo nl2br(htmlspecialchars($message['message_text'])); ?></div>
@@ -729,6 +734,48 @@ $userName = isset($userName) ? $userName : 'Администратор';
     </div>
 
     <script>
+        // Форматирование времени в часовой пояс пользователя (как в chat.php)
+        function formatMsgTime(utcStr) {
+            if (!utcStr) return '';
+            try {
+                return new Date(utcStr).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            } catch(e) {
+                return utcStr;
+            }
+        }
+
+        function formatMsgDateTime(utcStr) {
+            if (!utcStr) return '';
+            try {
+                const d = new Date(utcStr);
+                const date = d.getFullYear() + '-' +
+                    String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(d.getDate()).padStart(2, '0');
+                const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                return date + ' ' + time;
+            } catch(e) {
+                return utcStr;
+            }
+        }
+
+        // Конвертируем все времена на странице в часовой пояс пользователя
+        function convertAllTimes() {
+            document.querySelectorAll('.message-time[data-utc]').forEach(function(el) {
+                const utcStr = el.getAttribute('data-utc');
+                const display = el.querySelector('.msg-time-display');
+                if (display && utcStr) {
+                    display.textContent = formatMsgTime(utcStr);
+                }
+            });
+            document.querySelectorAll('[data-utc]:not(.message-time)').forEach(function(el) {
+                const utcStr = el.getAttribute('data-utc');
+                const display = el.querySelector('.msg-time-display');
+                if (display && utcStr) {
+                    display.textContent = formatMsgDateTime(utcStr);
+                }
+            });
+        }
+
         // Прокрутка к последнему сообщению
         function scrollToBottom() {
             const container = document.getElementById('chatMessages');
@@ -805,6 +852,7 @@ $userName = isset($userName) ? $userName : 'Администратор';
                         const currentMessages = document.getElementById('chatMessages').innerHTML;
                         if (currentMessages !== newMessages.innerHTML) {
                             document.getElementById('chatMessages').innerHTML = newMessages.innerHTML;
+                            convertAllTimes();
                             scrollToBottom();
                         }
                     }
@@ -828,6 +876,7 @@ $userName = isset($userName) ? $userName : 'Администратор';
 
         // Прокрутка при загрузке
         scrollToBottom();
+        convertAllTimes();
         
         // Фокус на поле ввода при загрузке
         if (textarea) {

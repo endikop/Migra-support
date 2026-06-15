@@ -592,7 +592,7 @@ $userAvatar = isset($userAvatar) ? $userAvatar : null;
                 </div>
                 <div>
                     <div style="font-weight: 600;"><?php echo htmlspecialchars($userName); ?></div>
-                    <div style="font-size: 0.9rem; color: var(--gray-color);"><?php echo date('d.m.Y H:i'); ?></div>
+                    <div style="font-size: 0.9rem; color: var(--gray-color);"><span id="currentTime"></span></div>
                 </div>
             </div>
         </div>
@@ -727,7 +727,9 @@ $userAvatar = isset($userAvatar) ? $userAvatar : null;
                                     <span style="color: var(--gray-color);">0</span>
                                 <?php endif; ?>
                             </td>
-                            <td><?php echo date('d.m.Y H:i', strtotime($chat['updated_at'])); ?></td>
+                            <td data-utc="<?php echo gmdate('Y-m-d\TH:i:s\Z', strtotime($chat['updated_at'] . ' UTC')); ?>">
+                                <span class="msg-time-display"><?php echo gmdate('d.m.Y H:i', strtotime($chat['updated_at'] . ' UTC')); ?></span>
+                            </td>
                             <td>
                                 <div class="action-buttons">
                                     <a href="chat_admin.php?id=<?php echo $chat['id']; ?>" 
@@ -769,6 +771,45 @@ $userAvatar = isset($userAvatar) ? $userAvatar : null;
     </div>
 
     <script>
+        // Форматирование времени в часовой пояс пользователя (как в chat.php)
+        function formatMsgDateTime(utcStr) {
+            if (!utcStr) return '';
+            try {
+                const d = new Date(utcStr);
+                const date = d.getFullYear() + '-' +
+                    String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(d.getDate()).padStart(2, '0');
+                const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                return date + ' ' + time;
+            } catch(e) {
+                return utcStr;
+            }
+        }
+
+        // Конвертируем время обновления чатов в часовой пояс пользователя
+        document.querySelectorAll('td[data-utc]').forEach(function(el) {
+            const utcStr = el.getAttribute('data-utc');
+            const display = el.querySelector('.msg-time-display');
+            if (display && utcStr) {
+                display.textContent = formatMsgDateTime(utcStr);
+            }
+        });
+
+        // Текущее время пользователя
+        function updateCurrentTime() {
+            const el = document.getElementById('currentTime');
+            if (el) {
+                const d = new Date();
+                const date = d.getFullYear() + '-' +
+                    String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(d.getDate()).padStart(2, '0');
+                const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                el.textContent = date + ' ' + time;
+            }
+        }
+        updateCurrentTime();
+        setInterval(updateCurrentTime, 60000);
+
         // Таймер автообновления
         let timeLeft = 30;
         const timerElement = document.getElementById('timer');
