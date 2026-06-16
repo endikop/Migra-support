@@ -435,7 +435,7 @@ $translations = [
                 <h1 class="news-title"><?php echo htmlspecialchars($news['title']); ?></h1>
                 
                 <div class="news-meta">
-                    <span><i class="fas fa-calendar-alt"></i> <?php echo date('d.m.Y H:i', strtotime($news['created_at'])); ?></span>
+                    <span><i class="fas fa-calendar-alt"></i> <?php echo date('d.m.Y H:i', strtotime($news['created_at']) + 10800); ?></span>
                     <?php if (!empty($news['first_name'])): ?>
                     <span><i class="fas fa-user"></i> <?php echo $translations['author']; ?>: <?php echo htmlspecialchars($news['first_name'] . ' ' . $news['last_name']); ?></span>
                     <?php endif; ?>

@@ -374,7 +374,7 @@ $userAvatar = isset($userAvatar) ? $userAvatar : null;
                                     <?php echo $item['is_active'] ? 'Активна' : 'Скрыта'; ?>
                                 </span>
                             </td>
-                            <td><?php echo date('d.m.Y H:i', strtotime($item['created_at'])); ?></td>
+                            <td><?php echo date('d.m.Y H:i', strtotime($item['created_at']) + 10800); ?></td>
                             <td>
                                 <div class="actions">
                                     <a href="news_admin.php?edit=<?php echo $item['id']; ?>" class="btn btn-sm btn-warning" title="Редактировать">
