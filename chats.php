@@ -11,6 +11,29 @@ if (!isLoggedIn() || !isAdmin()) {
     exit;
 }
 
+// ── AJAX-эндпоинт: список чатов в JSON ────────────────────────────────────
+if (isset($_GET['action']) && $_GET['action'] === 'get_chats') {
+    header('Content-Type: application/json');
+    $s = $_GET['search'] ?? '';
+    $sf = $_GET['status'] ?? '';
+    $sql2 = "SELECT c.id, c.status, c.admin_id, c.updated_at, c.subject,
+                    u.first_name, u.last_name, u.email, u.city,
+                    (SELECT COUNT(*) FROM admin_chat_messages WHERE chat_id = c.id AND is_read = 0 AND sender_id = c.user_id) as unread_count
+             FROM admin_chats c JOIN users u ON c.user_id = u.id WHERE 1=1";
+    $p2 = [];
+    if (!empty($s)) {
+        $sql2 .= " AND (u.first_name LIKE ? OR u.last_name LIKE ? OR u.email LIKE ? OR c.subject LIKE ?)";
+        $t = "%$s%"; $p2 = [$t,$t,$t,$t];
+    }
+    if (!empty($sf)) { $sql2 .= " AND c.status = ?"; $p2[] = $sf; }
+    $sql2 .= " ORDER BY c.updated_at DESC";
+    $st2 = $pdo->prepare($sql2); $st2->execute($p2);
+    $counts = $pdo->query("SELECT SUM(status='open') as open_count, SUM(status='pending') as pending_count, SUM(status='closed') as closed_count FROM admin_chats")->fetch(PDO::FETCH_ASSOC);
+    echo json_encode(['chats' => $st2->fetchAll(PDO::FETCH_ASSOC), 'counts' => $counts]);
+    exit;
+}
+// ──────────────────────────────────────────────────────────────────────────
+
 // Получение списка чатов
 $search = $_GET['search'] ?? '';
 $status_filter = $_GET['status'] ?? '';
@@ -42,9 +65,9 @@ $chats = $stmt->fetchAll();
 // Обработка действий
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['assign_chat'])) {
-        $chat_id = $_POST['chat_id'];
+        $chat_id = (int)$_POST['chat_id'];
         
-        $stmt = $pdo->prepare("UPDATE admin_chats SET admin_id = ?, status = 'open' WHERE id = ?");
+        $stmt = $pdo->prepare("UPDATE admin_chats SET admin_id = ?, status = 'open', updated_at = NOW() WHERE id = ?");
         $stmt->execute([$_SESSION['user_id'], $chat_id]);
         
         $_SESSION['success'] = 'Чат успешно назначен вам!';
@@ -53,26 +76,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     if (isset($_POST['close_chat'])) {
-        $chat_id = $_POST['chat_id'];
+        $chat_id = (int)$_POST['chat_id'];
         
-        $stmt = $pdo->prepare("UPDATE admin_chats SET status = 'closed' WHERE id = ?");
+        $stmt = $pdo->prepare("UPDATE admin_chats SET status = 'closed', updated_at = NOW() WHERE id = ?");
         $stmt->execute([$chat_id]);
         
         $_SESSION['success'] = 'Чат закрыт!';
         header('Location: chats.php');
         exit;
     }
+
+    if (isset($_POST['open_chat'])) {
+        $chat_id = (int)$_POST['chat_id'];
+
+        $stmt = $pdo->prepare("UPDATE admin_chats SET status = 'open', updated_at = NOW() WHERE id = ?");
+        $stmt->execute([$chat_id]);
+
+        $_SESSION['success'] = 'Чат открыт!';
+        header('Location: chats.php');
+        exit;
+    }
+
+    if (isset($_POST['delete_chat'])) {
+        $chat_id = (int)$_POST['chat_id'];
+
+        // Сначала удаляем все сообщения, потом сам чат
+        $stmt = $pdo->prepare("DELETE FROM admin_chat_messages WHERE chat_id = ?");
+        $stmt->execute([$chat_id]);
+
+        $stmt = $pdo->prepare("DELETE FROM admin_chats WHERE id = ?");
+        $stmt->execute([$chat_id]);
+
+        $_SESSION['success'] = 'Чат удалён!';
+        header('Location: chats.php');
+        exit;
+    }
     
     if (isset($_POST['send_message'])) {
-        $chat_id = $_POST['chat_id'];
+        $chat_id = (int)$_POST['chat_id'];
         $message = trim($_POST['message']);
         
         if (!empty($message)) {
             $stmt = $pdo->prepare("INSERT INTO admin_chat_messages (chat_id, sender_id, message_text) VALUES (?, ?, ?)");
             $stmt->execute([$chat_id, $_SESSION['user_id'], $message]);
             
-            // Обновляем время чата
-            $stmt = $pdo->prepare("UPDATE admin_chats SET updated_at = CURRENT_TIMESTAMP WHERE id = ?");
+            $stmt = $pdo->prepare("UPDATE admin_chats SET updated_at = NOW() WHERE id = ?");
             $stmt->execute([$chat_id]);
             
             $_SESSION['success'] = 'Сообщение отправлено!';
@@ -374,6 +422,15 @@ $userAvatar = isset($userAvatar) ? $userAvatar : null;
         .btn-danger {
             background-color: var(--danger-color);
             color: white;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #b02a37;
         }
 
         .btn-sm {
@@ -751,15 +808,36 @@ $userAvatar = isset($userAvatar) ? $userAvatar : null;
                                     
                                     <?php if ($chat['status'] == 'open'): ?>
                                         <form method="POST" style="display: inline;" 
-                                              onsubmit="return confirm('Вы уверены, что хотите закрыть этот чат?')">
+                                              onsubmit="return confirm('Закрыть этот чат?')">
                                             <input type="hidden" name="chat_id" value="<?php echo $chat['id']; ?>">
                                             <button type="submit" name="close_chat" 
                                                     class="btn btn-sm btn-danger"
                                                     title="Закрыть чат">
-                                                <i class="fas fa-times"></i>
+                                                <i class="fas fa-lock"></i>
                                             </button>
                                         </form>
                                     <?php endif; ?>
+
+                                    <?php if ($chat['status'] == 'closed'): ?>
+                                        <form method="POST" style="display: inline;">
+                                            <input type="hidden" name="chat_id" value="<?php echo $chat['id']; ?>">
+                                            <button type="submit" name="open_chat" 
+                                                    class="btn btn-sm btn-success"
+                                                    title="Открыть чат снова">
+                                                <i class="fas fa-lock-open"></i>
+                                            </button>
+                                        </form>
+                                    <?php endif; ?>
+
+                                    <form method="POST" style="display: inline;" 
+                                          onsubmit="return confirm('Удалить чат и все сообщения? Это действие необратимо!')">
+                                        <input type="hidden" name="chat_id" value="<?php echo $chat['id']; ?>">
+                                        <button type="submit" name="delete_chat" 
+                                                class="btn btn-sm btn-delete"
+                                                title="Удалить чат">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -771,78 +849,136 @@ $userAvatar = isset($userAvatar) ? $userAvatar : null;
     </div>
 
     <script>
-        // Форматирование времени в часовой пояс пользователя (как в chat.php)
+        function escHtml(str) {
+            return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
         function formatMsgDateTime(utcStr) {
             if (!utcStr) return '';
             try {
                 const d = new Date(utcStr);
-                const date = d.getFullYear() + '-' +
-                    String(d.getMonth() + 1).padStart(2, '0') + '-' +
-                    String(d.getDate()).padStart(2, '0');
-                const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                return date + ' ' + time;
-            } catch(e) {
-                return utcStr;
-            }
+                return d.getFullYear() + '-' +
+                    String(d.getMonth()+1).padStart(2,'0') + '-' +
+                    String(d.getDate()).padStart(2,'0') + ' ' +
+                    d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+            } catch(e) { return utcStr; }
         }
 
-        // Конвертируем время обновления чатов в часовой пояс пользователя
+        function convertTableTimes() {
+            document.querySelectorAll('td[data-utc]').forEach(el => {
+                const display = el.querySelector('.msg-time-display');
+                if (display) display.textContent = formatMsgDateTime(el.getAttribute('data-utc'));
+            });
+        }
         convertTableTimes();
 
-        // Текущее время пользователя
         function updateCurrentTime() {
             const el = document.getElementById('currentTime');
-            if (el) {
-                const d = new Date();
-                const date = d.getFullYear() + '-' +
-                    String(d.getMonth() + 1).padStart(2, '0') + '-' +
-                    String(d.getDate()).padStart(2, '0');
-                const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                el.textContent = date + ' ' + time;
-            }
+            if (!el) return;
+            const d = new Date();
+            el.textContent = d.getFullYear() + '-' +
+                String(d.getMonth()+1).padStart(2,'0') + '-' +
+                String(d.getDate()).padStart(2,'0') + ' ' +
+                d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
         }
         updateCurrentTime();
         setInterval(updateCurrentTime, 60000);
 
-        // Конвертируем времена во всех ячейках таблицы
-        function convertTableTimes() {
-            document.querySelectorAll('td[data-utc]').forEach(function(el) {
-                const utcStr = el.getAttribute('data-utc');
-                const display = el.querySelector('.msg-time-display');
-                if (display && utcStr) {
-                    display.textContent = formatMsgDateTime(utcStr);
-                }
-            });
+        // ── AJAX обновление через JSON ────────────────────────────────────────
+        function buildActionButtons(chat) {
+            const statusText = {open:'Открыт', pending:'Ожидает', closed:'Закрыт'};
+            let btns = `<a href="chat_admin.php?id=${chat.id}" class="btn btn-sm btn-primary" title="Открыть чат">
+                            <i class="fas fa-comments"></i> Чат
+                        </a>`;
+
+            if (!chat.admin_id && chat.status === 'pending') {
+                btns += `<form method="POST" style="display:inline;">
+                            <input type="hidden" name="chat_id" value="${chat.id}">
+                            <button type="submit" name="assign_chat" class="btn btn-sm btn-success" title="Взять в работу">
+                                <i class="fas fa-user-check"></i>
+                            </button>
+                         </form>`;
+            }
+
+            if (chat.status === 'open') {
+                btns += `<form method="POST" style="display:inline;" onsubmit="return confirm('Закрыть этот чат?')">
+                            <input type="hidden" name="chat_id" value="${chat.id}">
+                            <button type="submit" name="close_chat" class="btn btn-sm btn-danger" title="Закрыть чат">
+                                <i class="fas fa-lock"></i>
+                            </button>
+                         </form>`;
+            }
+
+            if (chat.status === 'closed') {
+                btns += `<form method="POST" style="display:inline;">
+                            <input type="hidden" name="chat_id" value="${chat.id}">
+                            <button type="submit" name="open_chat" class="btn btn-sm btn-success" title="Открыть чат снова">
+                                <i class="fas fa-lock-open"></i>
+                            </button>
+                         </form>`;
+            }
+
+            btns += `<form method="POST" style="display:inline;" onsubmit="return confirm('Удалить чат и все сообщения? Это необратимо!')">
+                        <input type="hidden" name="chat_id" value="${chat.id}">
+                        <button type="submit" name="delete_chat" class="btn btn-sm btn-delete" title="Удалить чат">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                     </form>`;
+
+            return `<div class="action-buttons">${btns}</div>`;
         }
 
-        // AJAX-обновление строк таблицы без перезагрузки страницы
         function refreshChatList() {
-            fetch(window.location.href)
-                .then(r => r.text())
-                .then(html => {
-                    const doc = new DOMParser().parseFromString(html, 'text/html');
+            const url = new URL(window.location.href);
+            url.searchParams.set('action', 'get_chats');
 
-                    // Обновляем tbody таблицы целиком
-                    const newTbody = doc.querySelector('.data-table tbody');
-                    const curTbody = document.querySelector('.data-table tbody');
-                    if (newTbody && curTbody) {
-                        curTbody.innerHTML = newTbody.innerHTML;
-                        convertTableTimes();
+            fetch(url.toString())
+                .then(r => r.json())
+                .then(data => {
+                    const tbody = document.querySelector('.data-table tbody');
+                    if (!tbody) return;
+
+                    if (!data.chats || data.chats.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="8" class="no-data">
+                            <i class="fas fa-comment-slash" style="font-size:2rem;margin-bottom:10px;"></i>
+                            <div>Чаты не найдены</div></td></tr>`;
+                    } else {
+                        const statusText = {open:'Открыт', pending:'Ожидает', closed:'Закрыт'};
+                        tbody.innerHTML = data.chats.map(chat => {
+                            const utc = chat.updated_at ? chat.updated_at.replace(' ','T')+'Z' : '';
+                            const unread = chat.unread_count > 0
+                                ? `<span class="unread-badge">${chat.unread_count}</span>`
+                                : `<span style="color:var(--gray-color);">0</span>`;
+                            return `<tr>
+                                <td>${chat.id}</td>
+                                <td>
+                                    <strong>${escHtml(chat.first_name+' '+chat.last_name)}</strong><br>
+                                    <small style="color:var(--gray-color);">${escHtml(chat.email)}</small>
+                                </td>
+                                <td>${escHtml(chat.subject)}</td>
+                                <td>${escHtml(chat.city)}</td>
+                                <td><span class="status ${chat.status}">${statusText[chat.status]||chat.status}</span></td>
+                                <td>${unread}</td>
+                                <td data-utc="${utc}"><span class="msg-time-display">${formatMsgDateTime(utc)}</span></td>
+                                <td>${buildActionButtons(chat)}</td>
+                            </tr>`;
+                        }).join('');
                     }
 
-                    // Обновляем счётчики статистики (карточки вверху)
-                    doc.querySelectorAll('.stat-value').forEach(function(el, i) {
-                        const cur = document.querySelectorAll('.stat-value')[i];
-                        if (cur) cur.textContent = el.textContent;
-                    });
+                    if (data.counts) {
+                        const vals = document.querySelectorAll('.stat-value');
+                        const total = (parseInt(data.counts.open_count)||0) + (parseInt(data.counts.pending_count)||0);
+                        if (vals[0]) vals[0].textContent = total;
+                        if (vals[1]) vals[1].textContent = data.counts.open_count || 0;
+                        if (vals[2]) vals[2].textContent = data.counts.pending_count || 0;
+                        if (vals[3]) vals[3].textContent = data.counts.closed_count || 0;
+                    }
                 })
                 .catch(err => console.error('Ошибка обновления:', err));
         }
 
-        // Таймер с обратным отсчётом
         let timeLeft = 30;
         const timerElement = document.getElementById('timer');
-
         setInterval(() => {
             timeLeft--;
             if (timerElement) timerElement.textContent = timeLeft;
