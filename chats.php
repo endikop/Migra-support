@@ -16,7 +16,7 @@ $search = $_GET['search'] ?? '';
 $status_filter = $_GET['status'] ?? '';
 
 $sql = "SELECT c.*, u.first_name, u.last_name, u.email, u.phone, u.city,
-               (SELECT COUNT(*) FROM admin_chat_messages WHERE chat_id = c.id AND is_read = 0 AND sender_id != c.admin_id) as unread_count
+               (SELECT COUNT(*) FROM admin_chat_messages WHERE chat_id = c.id AND is_read = 0 AND sender_id = c.user_id) as unread_count
         FROM admin_chats c 
         JOIN users u ON c.user_id = u.id 
         WHERE 1=1";
@@ -787,13 +787,7 @@ $userAvatar = isset($userAvatar) ? $userAvatar : null;
         }
 
         // Конвертируем время обновления чатов в часовой пояс пользователя
-        document.querySelectorAll('td[data-utc]').forEach(function(el) {
-            const utcStr = el.getAttribute('data-utc');
-            const display = el.querySelector('.msg-time-display');
-            if (display && utcStr) {
-                display.textContent = formatMsgDateTime(utcStr);
-            }
-        });
+        convertTableTimes();
 
         // Текущее время пользователя
         function updateCurrentTime() {
@@ -810,21 +804,53 @@ $userAvatar = isset($userAvatar) ? $userAvatar : null;
         updateCurrentTime();
         setInterval(updateCurrentTime, 60000);
 
-        // Таймер автообновления
+        // Конвертируем времена во всех ячейках таблицы
+        function convertTableTimes() {
+            document.querySelectorAll('td[data-utc]').forEach(function(el) {
+                const utcStr = el.getAttribute('data-utc');
+                const display = el.querySelector('.msg-time-display');
+                if (display && utcStr) {
+                    display.textContent = formatMsgDateTime(utcStr);
+                }
+            });
+        }
+
+        // AJAX-обновление строк таблицы без перезагрузки страницы
+        function refreshChatList() {
+            fetch(window.location.href)
+                .then(r => r.text())
+                .then(html => {
+                    const doc = new DOMParser().parseFromString(html, 'text/html');
+
+                    // Обновляем tbody таблицы целиком
+                    const newTbody = doc.querySelector('.data-table tbody');
+                    const curTbody = document.querySelector('.data-table tbody');
+                    if (newTbody && curTbody) {
+                        curTbody.innerHTML = newTbody.innerHTML;
+                        convertTableTimes();
+                    }
+
+                    // Обновляем счётчики статистики (карточки вверху)
+                    doc.querySelectorAll('.stat-value').forEach(function(el, i) {
+                        const cur = document.querySelectorAll('.stat-value')[i];
+                        if (cur) cur.textContent = el.textContent;
+                    });
+                })
+                .catch(err => console.error('Ошибка обновления:', err));
+        }
+
+        // Таймер с обратным отсчётом
         let timeLeft = 30;
         const timerElement = document.getElementById('timer');
-        
-        if (timerElement) {
-            const countdown = setInterval(() => {
-                timeLeft--;
-                timerElement.textContent = timeLeft;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    window.location.reload();
-                }
-            }, 1000);
-        }
+
+        setInterval(() => {
+            timeLeft--;
+            if (timerElement) timerElement.textContent = timeLeft;
+            if (timeLeft <= 0) {
+                timeLeft = 30;
+                refreshChatList();
+            }
+        }, 1000);
     </script>
     
 </body>
