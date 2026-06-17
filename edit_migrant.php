@@ -21,6 +21,13 @@ if (!$migrant_id) {
     exit;
 }
 
+// Преобразует пустую строку даты в NULL, чтобы MySQL не падал с ошибкой
+// "Incorrect date value: ''" при незаполненном поле типа date/datetime
+function nullable_date($value) {
+    $value = trim((string)$value);
+    return $value === '' ? null : $value;
+}
+
 // Получаем данные мигранта
 $migrant = null;
 $errors = [];
@@ -63,14 +70,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Миграционные данные
     $visa_type = trim($_POST['visa_type'] ?? '');
     $visa_number = trim($_POST['visa_number'] ?? '');
-    $visa_issue_date = trim($_POST['visa_issue_date'] ?? '');
-    $arrival_date = trim($_POST['arrival_date'] ?? '');
-    $visa_expiry_date = trim($_POST['visa_expiry_date'] ?? '');
+    $visa_issue_date = nullable_date($_POST['visa_issue_date'] ?? '');
+    $arrival_date = nullable_date($_POST['arrival_date'] ?? '');
+    $visa_expiry_date = nullable_date($_POST['visa_expiry_date'] ?? '');
     $purpose_of_stay = trim($_POST['purpose_of_stay'] ?? '');
     $employer_name = trim($_POST['employer_name'] ?? '');
     $work_permit_number = trim($_POST['work_permit_number'] ?? '');
     $residential_address = trim($_POST['residential_address'] ?? '');
-    $registration_date = trim($_POST['registration_date'] ?? '');
+    $registration_date = nullable_date($_POST['registration_date'] ?? '');
     
     // Валидация данных
     if (empty($first_name)) {
