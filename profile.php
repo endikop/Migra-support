@@ -1719,6 +1719,14 @@ $status_texts = [
             padding-right: 40px;
         }
 
+        /* Сами пункты выпадающего списка браузер рисует на белом фоне,
+           поэтому здесь принудительно делаем текст тёмным, чтобы он не
+           "пропадал" (белый на белом) */
+        select.form-input option {
+            color: #1a1a1a;
+            background-color: #ffffff;
+        }
+
         input[type="date"].form-input {
             padding: 11px 15px;
         }
