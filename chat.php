@@ -87,6 +87,37 @@ function handleSendMessage($city) {
         return;
     }
     
+    // Защита от спама: не чаще одного сообщения раз в 10 секунд
+    define('CHAT_COOLDOWN_SECONDS', 10);
+    
+    try {
+        $stmt = $pdo->prepare("
+            SELECT TIMESTAMPDIFF(SECOND, MAX(created_at), NOW()) AS seconds_since_last
+            FROM city_chat_messages
+            WHERE sender_id = ?
+        ");
+        $stmt->execute([$userId]);
+        $cooldownRow = $stmt->fetch(PDO::FETCH_ASSOC);
+        $secondsSinceLast = $cooldownRow['seconds_since_last'];
+        
+        // Если значение отрицательное - последнее сообщение датировано "будущим"
+        // (некорректные данные/рассинхронизация времени). В этом случае кулдаун
+        // не применяем, чтобы не блокировать чат из-за аномалии в данных.
+        if ($secondsSinceLast !== null && $secondsSinceLast >= 0 && $secondsSinceLast < CHAT_COOLDOWN_SECONDS) {
+            $secondsLeft = CHAT_COOLDOWN_SECONDS - (int)$secondsSinceLast;
+            echo json_encode([
+                'success' => false,
+                'error' => "Подождите {$secondsLeft} сек. перед отправкой следующего сообщения",
+                'cooldown' => true,
+                'seconds_left' => $secondsLeft
+            ]);
+            return;
+        }
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'error' => 'Ошибка базы данных: ' . $e->getMessage()]);
+        return;
+    }
+    
     try {
         // Применяем цензуру к сообщению
         $censoredMessage = $message;
@@ -2263,6 +2294,8 @@ function safeJsonEncode($data) {
         let chatInterval;
         let onlineUsersInterval;
         let currentDisplayedDates = new Set();
+        let sendCooldownInterval = null;
+        const CHAT_COOLDOWN_SECONDS = 10;
 
         // PHP translations for JavaScript
         const chatTranslations = {
@@ -2455,6 +2488,11 @@ function safeJsonEncode($data) {
             const message = messageInput.value.trim();
             const sendBtn = document.getElementById('sendMessageBtn');
             
+            // Если кнопка заблокирована из-за отсчёта - не отправляем
+            if (sendBtn && sendBtn.disabled && sendBtn.dataset.cooldown === '1') {
+                return;
+            }
+            
             if (!message) {
                 showChatError(chatTranslations.enter_message);
                 return;
@@ -2470,6 +2508,8 @@ function safeJsonEncode($data) {
                 sendBtn.disabled = true;
                 sendBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${chatTranslations.sending}`;
             }
+            
+            let startedCooldown = false;
             
             try {
                 const formData = new FormData();
@@ -2497,6 +2537,16 @@ function safeJsonEncode($data) {
                     if (result.censored) {
                         showChatWarning(chatTranslations.message_censored);
                     }
+                    
+                    // Запускаем 10-секундный отсчёт перед следующей отправкой
+                    startSendCooldown(CHAT_COOLDOWN_SECONDS, originalHtml);
+                    startedCooldown = true;
+                } else if (result.cooldown) {
+                    // Сервер сообщил, сколько секунд осталось ждать (например, открыта другая вкладка)
+                    const secondsLeft = result.seconds_left || CHAT_COOLDOWN_SECONDS;
+                    showChatError(result.error || `Подождите ${secondsLeft} сек.`);
+                    startSendCooldown(secondsLeft, originalHtml);
+                    startedCooldown = true;
                 } else {
                     throw new Error(result.error || 'Unknown error');
                 }
@@ -2505,11 +2555,44 @@ function safeJsonEncode($data) {
                 console.error('Error sending message:', error);
                 showChatError(`${chatTranslations.error_sending}: ${error.message}`);
             } finally {
-                if (sendBtn) {
+                if (sendBtn && !startedCooldown) {
                     sendBtn.disabled = false;
                     sendBtn.innerHTML = originalHtml;
                 }
             }
+        }
+
+        function startSendCooldown(seconds, restoreHtml) {
+            const sendBtn = document.getElementById('sendMessageBtn');
+            if (!sendBtn) return;
+            
+            if (sendCooldownInterval) {
+                clearInterval(sendCooldownInterval);
+                sendCooldownInterval = null;
+            }
+            
+            const fallbackHtml = sendBtn.dataset.originalHtml || sendBtn.innerHTML;
+            const htmlToRestore = restoreHtml || fallbackHtml;
+            sendBtn.dataset.originalHtml = htmlToRestore;
+            
+            let secondsLeft = Math.max(1, Math.ceil(seconds));
+            sendBtn.disabled = true;
+            sendBtn.dataset.cooldown = '1';
+            sendBtn.innerHTML = `<i class="fas fa-clock"></i> <span class="btn-text">${secondsLeft}с</span>`;
+            
+            sendCooldownInterval = setInterval(() => {
+                secondsLeft--;
+                
+                if (secondsLeft <= 0) {
+                    clearInterval(sendCooldownInterval);
+                    sendCooldownInterval = null;
+                    sendBtn.disabled = false;
+                    sendBtn.dataset.cooldown = '0';
+                    sendBtn.innerHTML = htmlToRestore;
+                } else {
+                    sendBtn.innerHTML = `<i class="fas fa-clock"></i> <span class="btn-text">${secondsLeft}с</span>`;
+                }
+            }, 1000);
         }
 
         function showChatWarning(message) {
@@ -2604,6 +2687,9 @@ function safeJsonEncode($data) {
             }
             if (onlineUsersInterval) {
                 clearInterval(onlineUsersInterval);
+            }
+            if (sendCooldownInterval) {
+                clearInterval(sendCooldownInterval);
             }
         });
         <?php endif; ?>
